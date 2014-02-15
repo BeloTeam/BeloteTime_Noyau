@@ -11,7 +11,7 @@ public class JeuxBelote {
 	public static void main (String [] arguments)
 	{
 		Paquet jeux = new Paquet();
-		JoueurProgramme[] joueur = new JoueurProgramme[4];
+		JoueurIntelligence[] joueur = new JoueurIntelligence[4];
 		Fenetre tapis = new Fenetre();
 		int prend = 4;// variable pour savoir qui prend
 		String jeuxatout=new String("");// variable pour la couleur d'atout
@@ -24,7 +24,7 @@ public class JeuxBelote {
 		boolean manchej;
 		Carte retourne;
 		for (int i=0;i<4;i++){
-			joueur[i] = new JoueurProgramme();
+			joueur[i] = new JoueurIntelligence();
 		}
 		//========================================================
 		jeux.creelejeux();

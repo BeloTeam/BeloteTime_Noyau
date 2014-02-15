@@ -40,7 +40,13 @@ public class Paquet {
 		longJeuxdist = 0;
 	}
 	
-
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	// ===============================================================	
 	// cree le jeux de cartes
 	public void creelejeux(){
@@ -110,6 +116,12 @@ public class Paquet {
  		this.initial[30]=c31;
  		this.initial[31]=c32;
 	}
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//===============================================================
 	// affiche les paquet de carte
 	public void affiche(){
@@ -119,6 +131,13 @@ public class Paquet {
 		} 
 		Terminal.ecrireStringln("-----------------------");
 	} 
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//===============================================================
 	// melange le jeux
 	public void donneJeuBeloteBattu(){
@@ -143,6 +162,13 @@ public class Paquet {
 		}
 		this.longJeuxdist=u;
 	}
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================================
 	//remet les cartes
 	public int remetjeux(Carte[] x,int y){
@@ -160,6 +186,14 @@ public class Paquet {
 		y=0;
 	  	return y;
 	}
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================================
 	//remet les cartes 2
 	public void remetjeux2(){
@@ -187,6 +221,14 @@ public class Paquet {
 			this.longJeuxdist++;
 		}
 	}
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================
 	//on coupe le jeux
 	public void coupe(int y){
@@ -212,6 +254,14 @@ public class Paquet {
 				this.melange(coupe);
 		}
 	}
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//==============================================
 	//coupe le jeux de carte
 	public void melange(int y){
@@ -236,6 +286,13 @@ public class Paquet {
 			}
 		}
 	}
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//============================================
 	// qui remporte la manche
 	public int remportemanche(String y,int u){
@@ -276,6 +333,14 @@ public class Paquet {
 		}
 		return pos;
 	}
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//===============================================================
 	// affiche les paquet de carte
 	public void affiche2(){
@@ -291,6 +356,14 @@ public class Paquet {
 		Terminal.ecrireStringln("un total de point joueur 1 et 3 :"+this.pointplis[1]);
 		Terminal.ecrireStringln("-----------------------"); 
 	} 
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//========================================
 	//modifie les cartemaitre
 	public void modifiemaitre(Carte x,int y){
@@ -313,6 +386,14 @@ public class Paquet {
 		
 		}
 	}
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//========================================================
 	// efface les references
 	public void razpaquet(){

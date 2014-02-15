@@ -5,7 +5,7 @@
  * 
  * */
 
-public class JoueurProgramme
+public class JoueurIntelligence
 {
 	
 	private Carte monPaquet[]= new Carte [8];
@@ -15,7 +15,11 @@ public class JoueurProgramme
 	private boolean belote;
 	
 	
-	//====================================================
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	public void affichejoueur(int x){
 		for (int i=0; i<Fenetre.nbcartej[x]; i++) {
 			Terminal.ecrireStringln("valeur jeux joueur "+x+" carte n "+i+" valeur "+this.monPaquet[i].getFigure().getNom()+" "+this.monPaquet[i].getCouleur().getNom());
@@ -24,6 +28,11 @@ public class JoueurProgramme
 	}
 	
 	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//==========================================================
 	// recoit la carte sur le paquet
 	public int recoit(Carte[] tabCards,int y,Carte u){
@@ -40,6 +49,11 @@ public class JoueurProgramme
 	}
 	
 	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//========================================================
 	// prend premier tour
 	public void prendpremier(int numeroJoueur,Carte carteRetournee,int nbcarte){
@@ -104,7 +118,11 @@ public class JoueurProgramme
 		
 	}
 	
-	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//====================================================
 	// gestion pour prendre au deuxieme tour
 	public void prenddeuxieme(int numeroJoueur,Carte carteRetournee,int nbcarte){
@@ -204,7 +222,11 @@ public class JoueurProgramme
 		}
 	}
 	
-	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//================================
 	//Trie le jeux de carte
 	public void trijeux(String coulatout){
@@ -232,7 +254,11 @@ public class JoueurProgramme
 
 	}
 	
-	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================
 	//joue premier 
 	public Carte jouepremier(int numeroJoueur,Carte card,String carteret,String coulatout){
@@ -295,6 +321,11 @@ public class JoueurProgramme
 		return renvoijouee;
 	}
 
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	public void afficherMain()
 	{
 		Terminal.ecrireStringln("Affichage main : ");

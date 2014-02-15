@@ -8,6 +8,11 @@ public class Arbitre
 {
 	
 	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	public static int quidonne(int donne){
 		//affiche avant le traitement qui doit donner le jeux
 		Terminal.ecrireStringln("qui donne dans arbitre J"+donne);
@@ -27,6 +32,12 @@ public class Arbitre
 	}
 	
 	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================
 	// figure d'une carte
 	public static int fig2(Carte x){
@@ -57,6 +68,13 @@ public class Arbitre
 		}
 		return vaaff;
 	}
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//===================================
 	// le rang d'une couleur de la carte
 	public static int coulrang(Carte x){
@@ -75,6 +93,12 @@ public class Arbitre
 		}
 		return vaaff2;		
 	}
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//======================================
 	// renvois la valeur d'une carte	
 	public static int Points(Carte carte,String nomCouleurAtout){
@@ -125,6 +149,12 @@ public class Arbitre
 		}
 		return point1;
 	}
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	//=====================================================
 	//points sur une manche
 	public static int Pointsjeu(Carte card,String y,String u){
@@ -198,8 +228,14 @@ public class Arbitre
 		}
 		return point1;
 	}
-	//=====================================================
-	//gagne la manche
+	
+	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume 
+	 * */
 	public static boolean Gagnemanche(int[] x,int y){
 		boolean v= false;
 		if (y==1 || y==3){
@@ -217,19 +253,28 @@ public class Arbitre
 		}
 		return v;
 	}
-	//====================================================
-	// test fijn manche pour savoir si la partie est fini
-	public static int testfinmanche(int x,int y){
-		int v=0;
-		if(x<y){
-			v=y;	
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume test fijn manche pour savoir si la partie est fini
+	 * */
+	public static int testfinmanche(int pointsEquipe1,int pointsEquipe2){
+		
+		int pointsEquipeGagnante=0;
+		if(pointsEquipe1<pointsEquipe2){
+			pointsEquipeGagnante=pointsEquipe2;	
 		}else{
-			y=v;
+			pointsEquipe2=pointsEquipeGagnante;
 		}
-		return v;
+		return pointsEquipeGagnante;
 	}
-	//==============================================
-	//test carte jouer
+	
+	/**
+	 * @param 
+	 * @return 
+	 * @resume test carte jouer
+	 * */
 	public static boolean testcartejouee(Carte[] main,String y, Carte uv,String coulatout){
 		boolean v=false;
 		boolean test;
@@ -279,10 +324,8 @@ public class Arbitre
 	/**
 	 * @param une main de type Carte[], la carte retournee en string, la couleur d'atout en string
 	 * @return un int => la position de la carte a jouer dans la main
-	 * @resume 
+	 * @resume test pour jeux nieme
 	 * */
-	//========================================================
-	//test pour jeux nieme
 	public static int testcartejouee2(Carte[] main,String carteretournee,String couleurAtout){
 		int indiceCarteAJouer=0;
 		Terminal.ecrireStringln("Carte demandee : "+carteretournee);
