@@ -55,18 +55,16 @@ public class JoueurIntelligence {
 	// ========================================================
 	// prend premier tour
 	public void prendpremier(int numeroJoueur, Carte carteRetournee, int nbcarte) {
-		String rep, rep2 = "o", coulatout;
-		boolean recup, hasValet = false, hasNeuf = false;
+		String rep = new String();
+		boolean hasValet = false, hasNeuf = false;
 		int totalpoint = 0, nbAtout = 0;
 
 		switch (numeroJoueur) {
 		case 0:
 			Terminal.ecrireStringln("Vous voulez prendre aux premier tour ? (o,n)");
 			rep = Terminal.lireString();
-			recup = rep.equals(rep2);
-			if (recup == true) {
+			if (rep.equals("o")) {
 				this.recoitVal = 1;
-				// il a pris donc recoitVal=1
 			} else {
 				this.recoitVal = 0;
 			}
@@ -132,11 +130,9 @@ public class JoueurIntelligence {
 	 * */
 	// ====================================================
 	// gestion pour prendre au deuxieme tour
-	public void prenddeuxieme(int numeroJoueur, Carte carteRetournee,
-			int nbcarte) {
+	public void prenddeuxieme(int numeroJoueur, Carte carteRetournee, int nbcarte) {
 		String rep = new String();
-		CouleurEnum atoutret = CouleurEnum.Coeur; // Foireuse cette init
-		CouleurEnum couleur;
+		CouleurEnum atoutret = CouleurEnum.NotInitialized;
 		
 		Object[] coulAtout = new Object[4];
 		coulAtout[0] = CouleurEnum.Coeur;
@@ -144,36 +140,32 @@ public class JoueurIntelligence {
 		coulAtout[2] = CouleurEnum.Trefle;
 		coulAtout[3] = CouleurEnum.Carreau;
 
-		boolean recup, hasValetCouleurCourante = false, hasNeufCouleurCourante = false;
+		boolean hasValetCouleurCourante = false, hasNeufCouleurCourante = false;
 		boolean hasValetCouleurPrecedente = false, hasNeufCouleurPrecedente = false;
 		int totalpoint = 0, pointInt = 0, nbAtoutCouleurPrecedente = 0, nbAtoutCouleurCourante = 0;
 
-		Terminal.ecrireStringln("Deuxieme tour : joueur " + numeroJoueur
-				+ " reflechi ...");
+		Terminal.ecrireStringln("Deuxieme tour : joueur " + numeroJoueur + " reflechi ...");
+		
 		// En fonction du joueur
 		switch (numeroJoueur) {
 		case 0:
-			Terminal.ecrireStringln("Vous voulez prendre aux Deuxiéme tour ? (o,n)");
+			Terminal.ecrireStringln("Vous voulez prendre aux Deuxième tour ? (o,n)");
 			rep = Terminal.lireString();
-			recup = rep.equals("o");
-			if (recup == true) {
+			
+			if (rep.equals("o")) {
 				Terminal.ecrireStringln("Vous voulez prendre a quel couleur ? (Coeur,Pique,Trefle,Carreau)");
 				rep = Terminal.lireString();
 				this.recoitVal = 1;
-				recup = rep.equals(CouleurEnum.Coeur.toString());
-				if (recup == true) {
+				if (rep.equals(CouleurEnum.Coeur.toString())) {
 					this.choixAtout = CouleurEnum.Coeur;
 				}
-				recup = rep.equals(CouleurEnum.Carreau.toString());
-				if (recup == true) {
+				if (rep.equals(CouleurEnum.Carreau.toString())) {
 					this.choixAtout = CouleurEnum.Carreau;
 				}
-				recup = rep.equals(CouleurEnum.Trefle.toString());
-				if (recup == true) {
+				if (rep.equals(CouleurEnum.Trefle.toString())) {
 					this.choixAtout = CouleurEnum.Trefle;
 				}
-				recup = rep.equals(CouleurEnum.Pique.toString());
-				if (recup == true) {
+				if (rep.equals(CouleurEnum.Pique.toString())) {
 					this.choixAtout = CouleurEnum.Pique;
 				}
 			} else {
@@ -245,19 +237,13 @@ public class JoueurIntelligence {
 	// ================================
 	// Trie le jeux de carte
 	public void trijeux(CouleurEnum jeuxAtout) {
-		int respos;
 		int pos = 0;
-		int val1;
-		int val3;
-		boolean recup;
 		Carte Paquettampon1[] = new Carte[8];
 
 		String[] couleurtri = { "Coeur", "Trefle", "Carreau", "Pique" };
 		for (int x = 0; x < 4; x++) {
-			respos = 0;
 			for (int y = 0; y < 8; y++) {
-				recup = couleurtri[x].equals(this.monPaquet[y].getCouleur().toString());
-				if (recup == true) {
+				if (couleurtri[x].equals(this.monPaquet[y].getCouleur().toString())) {
 					Paquettampon1[pos] = this.monPaquet[y];
 					pos++;
 				}
@@ -266,7 +252,6 @@ public class JoueurIntelligence {
 		for (int y = 0; y < 8; y++) {
 			this.monPaquet[y] = Paquettampon1[y];
 		}
-
 	}
 
 	/**
@@ -276,8 +261,7 @@ public class JoueurIntelligence {
 	 * */
 	// ======================================
 	// joue premier
-	public Carte jouepremier(int numeroJoueur, Carte card,
-			CouleurEnum carteret, CouleurEnum coulatout) {
+	public Carte jouepremier(int numeroJoueur, Carte card, CouleurEnum carteret, CouleurEnum coulatout) {
 
 		/* AFFICHAGE */
 		System.out.println("Methode jouepremier : \nParametres :");
@@ -290,7 +274,6 @@ public class JoueurIntelligence {
 
 		Carte renvoijouee = this.monPaquet[0];
 		int rep;
-		boolean test;
 		switch (numeroJoueur) {
 		case 0:
 			int n = 20;
@@ -301,9 +284,7 @@ public class JoueurIntelligence {
 					rep--;
 					if (rep >= 0 && rep <= 7) {
 						renvoijouee = this.monPaquet[rep];
-						test = Arbitre.testcartejouee(this.monPaquet, carteret,
-								renvoijouee, coulatout);
-						if (test == true) {
+						if (Arbitre.testcartejouee(this.monPaquet, carteret, renvoijouee, coulatout)) {
 							for (int v = rep; v < 8; v++) {
 								if (v + 1 < 8) {
 									this.monPaquet[v] = this.monPaquet[v + 1];

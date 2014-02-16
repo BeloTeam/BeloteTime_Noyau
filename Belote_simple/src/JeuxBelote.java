@@ -12,7 +12,7 @@ public class JeuxBelote {
 		JoueurIntelligence[] joueur = new JoueurIntelligence[4];
 		Fenetre tapis = new Fenetre();
 		int prend = 4; // variable pour savoir qui prend
-		CouleurEnum jeuxAtout = CouleurEnum.Blanc;// variable pour la couleur
+		CouleurEnum jeuxAtout = CouleurEnum.NotInitialized;// variable pour la couleur
 													// d'atout
 		// qui donne le jeux
 		int donne = 0;
@@ -20,7 +20,6 @@ public class JeuxBelote {
 		int n1 = 0;
 		int n2 = 0;
 		int gagne = 0;
-		boolean manchej;
 		Carte retourne;
 		for (int i = 0; i < 4; i++) {
 			joueur[i] = new JoueurIntelligence();
@@ -246,8 +245,7 @@ public class JeuxBelote {
 						tapis.pointj0j2 = tapis.pointj0j2 + 250;
 					}
 				} else {
-					manchej = Arbitre.Gagnemanche(jeux.getPointplis(), prend);
-					if (manchej == true) {
+					if (Arbitre.Gagnemanche(jeux.getPointplis(), prend)) {
 						tapis.pointj1j3 = tapis.pointj1j3
 								+ jeux.getPointplis()[1];
 						tapis.pointj0j2 = tapis.pointj0j2
@@ -263,7 +261,7 @@ public class JeuxBelote {
 				// =========================
 				// remet les cartes dans le paquet
 				jeux.remetjeux2();
-				jeuxAtout = CouleurEnum.Blanc;
+				jeuxAtout = CouleurEnum.NotInitialized;
 				tapis.affichecarter(retourne, jeuxAtout);
 				tapis.affichejeux(joueur[0].getMonPaquet());
 			}
