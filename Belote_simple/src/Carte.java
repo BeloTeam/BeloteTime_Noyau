@@ -7,16 +7,15 @@
 
 
 public class Carte {
-	
-	private Couleur couleur ;
+	private CouleurEnum couleur ;
 	private Figure figure;
 	
-	public Carte ( Couleur couleur , Figure figure ){
-		this.couleur= couleur ;
-		this.figure= figure ;
+	public Carte (CouleurEnum couleur, Figure figure){
+		this.couleur = couleur;
+		this.figure = figure;
 	}
 
-	public Couleur getCouleur() {
+	public CouleurEnum getCouleur() {
 		return couleur;
 	}
 
@@ -24,9 +23,8 @@ public class Carte {
 		return figure;
 	}
 	
-	public  String toString()
-	{
-		return this.figure.getNom()+" de "+this.couleur.getNom();
+	public  String toString() {
+		return this.figure.getNom() + " de " + this.couleur;
 	}
 	
 	

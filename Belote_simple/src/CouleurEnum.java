@@ -5,5 +5,5 @@
  * */
 public enum CouleurEnum 
 {
-	Coeur,Pique,Carreau,Trefle;
+	Coeur,Pique,Carreau,Trefle,Blanc;
 }

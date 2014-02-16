@@ -4,7 +4,7 @@
  *  @resume classe représentant une couleur de carte
  * */
 
-class Couleur {
+/*class Couleur {
 	private String nom;
 	public static Couleur Coeur = new Couleur ("Coeur");
 	public static Couleur Pique = new Couleur ("Pique");
@@ -18,4 +18,4 @@ class Couleur {
 	public String getNom() {
 		return nom;
 	}
-}
+}*/

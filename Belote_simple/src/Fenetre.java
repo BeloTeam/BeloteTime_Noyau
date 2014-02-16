@@ -72,16 +72,17 @@ public class Fenetre extends JFrame implements ActionListener {
 	// affiche le jeux du joueur 0 
 	public void affichejeux(Carte[] valpq) {
 		int x =	Fenetre.nbcartej[0];
-		for (int v=0 ; v<x; v++){
-			Fenetre.cartej0[v] = new ImageIcon ("image/"+valpq[v].getFigure().getNom()+valpq[v].getCouleur().getNom()+".gif");
+		for (int v=0 ; v<x; v++){ 
+			// Pb exception leve ici
+			Fenetre.cartej0[v] = new ImageIcon ("image/" + valpq[v].getFigure().getNom() + valpq[v].getCouleur() + ".gif");
 		}		
 		paneau.repaint();
 	}
 	//================================================
 	// affiche la carte retourne
-	public void affichecarter(Carte valpq,String imatout) {
-		Fenetre.carter = new ImageIcon("image/"+valpq.getFigure().getNom()+valpq.getCouleur().getNom()+".gif");
-		Fenetre.atout=new ImageIcon("image/"+imatout+".gif");
+	public void affichecarter(Carte valpq, CouleurEnum  jeuxatout) {
+		Fenetre.carter = new ImageIcon("image/" + valpq.getFigure().getNom() + valpq.getCouleur() + ".gif");
+		Fenetre.atout = new ImageIcon("image/" + jeuxatout + ".gif");
 		paneau.repaint();
 	}
 	//==========================================
@@ -93,7 +94,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	//==========================================
 	//afiche carte jouee
 	public void affichej(Carte y,int u) {
-		Fenetre.cartej[u] = new ImageIcon ("image/"+y.getFigure().getNom()+y.getCouleur().getNom()+".gif");
+		Fenetre.cartej[u] = new ImageIcon ("image/"+y.getFigure().getNom()+y.getCouleur() + ".gif");
 		paneau.repaint();
 	}
 	//=========================================

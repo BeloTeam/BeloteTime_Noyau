@@ -6,8 +6,6 @@
 
 public class Arbitre
 {
-
-	/* ------- WARNING, qu'elle est l'interet de cette fonction ?! ------- */
 	/**
 	 * @param int donne ; Contient le numero du joueur courant qui donne.
 	 * @return int donne ; Contient le numero du joueur qui donne a la partie suivant
@@ -15,20 +13,15 @@ public class Arbitre
 	 * Cette fonction doit etre appele apres la fin d'une partie.
 	 * */
 	public static int quidonne(int donne){
-		//affiche avant le traitement qui doit donner le jeux
-		Terminal.ecrireStringln("qui donne dans arbitre J" + donne);
 		donne = (donne + 1) % 3;
-		//affiche la personne qui doit donner le jeux
-		Terminal.ecrireStringln("qui donne dans arbitre J" + donne);
 		return donne;
 	}
-	/* ------- ------------------------------------------------- ------- */
 
 	
 	/**
 	 * @param 
 	 * @return 
-	 * @resume figure d'une carte
+	 * @resume Identifie 
 	 * */
 	public static int fig2(final Carte x){
 		int vaaff = 0;
@@ -69,16 +62,16 @@ public class Arbitre
 	// le rang d'une couleur de la carte
 	public static int coulrang(Carte x){
 		int vaaff2=0;
-		if (x.getCouleur()==Couleur.Coeur){
+		if (x.getCouleur()==CouleurEnum.Coeur){
 			vaaff2=0;
 		}
-		if (x.getCouleur()==Couleur.Pique){
+		if (x.getCouleur()==CouleurEnum.Pique){
 			vaaff2=1;
 		}
-		if (x.getCouleur()==Couleur.Carreau){
+		if (x.getCouleur()==CouleurEnum.Carreau){
 			vaaff2=2;
 		}
-		if (x.getCouleur()==Couleur.Trefle){
+		if (x.getCouleur()==CouleurEnum.Trefle){
 			vaaff2=3;
 		}
 		return vaaff2;		
@@ -91,29 +84,29 @@ public class Arbitre
 	 * */
 	//======================================
 	// renvois la valeur d'une carte	
-	public static int Points(Carte carte,String nomCouleurAtout){
-		int point1=0;
-		String vcouleur;
+	public static int Points(Carte carte, CouleurEnum couleurAtout){
+		int point1 = 0;
+		CouleurEnum vcouleur;
 		int vfigure;
-		vcouleur=carte.getCouleur().getNom();
-		vfigure=fig2(carte);
-		if (nomCouleurAtout==vcouleur){
+		vcouleur = carte.getCouleur();
+		vfigure = fig2(carte);
+		if (couleurAtout == vcouleur){
 			switch(vfigure){
-				case 1 : point1=0;
+				case 1 : point1 = 0;
 					break;
-				case 2 : point1=0;
+				case 2 : point1 = 0;
 					break;
-				case 3 : point1=14;
+				case 3 : point1 = 14;
 					break;
-				case 4 : point1=10;
+				case 4 : point1 = 10;
 					break;	
-				case 5 : point1=20;
+				case 5 : point1 = 20;
 					break;
-				case 6 : point1=3;
+				case 6 : point1 = 3;
 					break;
-				case 7 : point1=4;
+				case 7 : point1 = 4;
 					break;
-				case 8 : point1=11;
+				case 8 : point1 = 11;
 					break;
 			}
 		}else{
@@ -147,11 +140,11 @@ public class Arbitre
 	 * */
 	//=====================================================
 	//points sur une manche
-	public static int Pointsjeu(Carte card,String y,String u){
+	public static int Pointsjeu(Carte carte, CouleurEnum couleurJoueur1, CouleurEnum couleurJoueur2){
 		int point1=0;
 		int vfigure;
-		vfigure=fig2(card);
-		if (y==card.getCouleur().getNom()){
+		vfigure=fig2(carte);
+		if (couleurJoueur1 == carte.getCouleur()){
 			switch(vfigure){
 				case 1 : point1=9;
 					break;
@@ -172,7 +165,7 @@ public class Arbitre
 			}
 		}else{
 			
-			if (u==card.getCouleur().getNom()){
+			if (couleurJoueur2 == carte.getCouleur()){
 				switch(vfigure){
 					case 1 : point1=1;
 						break;
@@ -265,41 +258,41 @@ public class Arbitre
 	 * @return 
 	 * @resume test carte jouer
 	 * */
-	public static boolean testcartejouee(Carte[] main,String y, Carte uv,String coulatout){
-		boolean v=false;
+	public static boolean testcartejouee(Carte[] main, CouleurEnum y, Carte uv, CouleurEnum couleurAtout){
+		boolean v = false;
 		boolean test;
-		test=y.equals("");
+		test = y.equals("");
 		testc :	if(test==true){
 				v=true;	
 				break testc ;
 			}else{
 				//test si la carte est de la couleur du jeux jouer
-				test=uv.getCouleur().getNom().equals(y);
+				test=uv.getCouleur().equals(y);
 			 	if(test==true){
 					v=true;	
 					break testc ;		
 				}else{
 					//test si une des cartes est de la couleur du jeux 
 					for(int i=0 ; i<8 ;i++){
-						test=main[i].getCouleur().getNom().equals(y);
+						test=main[i].getCouleur().equals(y);
 						if(test==true){
 							v=false;
-							Terminal.ecrireStringln("Jouer une carte de la couleur demander "+y);
+							Terminal.ecrireStringln("Jouer une carte de la couleur demander " + y);
 							break testc ;
 						}
 					}
 					//Test si la carte est de la couleur de l'atout
-					test=uv.getCouleur().getNom().equals(coulatout);
+					test=uv.getCouleur().equals(couleurAtout);
 					if (test==true){
 						v=true;
 						break testc ;		
 					}else{
 						// test si au moins une carte est de la couleur de l'atout
 						for(int i=0 ; i<8 ;i++){
-							test=main[i].getCouleur().getNom().equals(coulatout);
+							test=main[i].getCouleur().equals(couleurAtout);
 							if(test==true){
 								v=false;
-								Terminal.ecrireStringln("Jouer une carte d'atout  "+coulatout);
+								Terminal.ecrireStringln("Jouer une carte d'atout  " + couleurAtout);
 								break testc ;
 							}
 						}
@@ -316,10 +309,10 @@ public class Arbitre
 	 * @return un int => la position de la carte a jouer dans la main
 	 * @resume test pour jeux nieme
 	 * */
-	public static int testcartejouee2(Carte[] main,String carteretournee,String couleurAtout){
+	public static int testcartejouee2(Carte[] main, CouleurEnum carteret, CouleurEnum couleurAtout){
 		int indiceCarteAJouer=0;
-		Terminal.ecrireStringln("Carte demandee : "+carteretournee);
-		boolean test = carteretournee.equals("");
+		Terminal.ecrireStringln("Carte demandee : "+ carteret);
+		boolean test = carteret.equals("");
 		
 		/*
 		 *  A FAIRE
@@ -334,14 +327,14 @@ public class Arbitre
 		testc :	
 			if(!test){
 				for(int i=0 ; i<8 ;i++){
-					test=main[i].getCouleur().getNom().equals(carteretournee);
+					test=main[i].getCouleur().equals(carteret);
 					if(test){
 						indiceCarteAJouer=i;
 						break testc ;
 					}	
 				}
 				for(int i=0 ; i<8 ;i++){
-					test=main[i].getCouleur().getNom().equals(couleurAtout);
+					test=main[i].getCouleur().equals(couleurAtout);
 					if(test){
 						indiceCarteAJouer=i;
 						break testc ;
