@@ -19,141 +19,51 @@ public class Arbitre {
 		return donne;
 	}
 
-	/**
-	 * @param
-	 * @return
-	 * @resume Identifie
-	 * */
-	private static int fig2(final Carte x) {
-		int vaaff = 0;
-		if (x.getFigure() == Figure.Sept) {
-			vaaff = 1;
-		}
-		if (x.getFigure() == Figure.Huit) {
-			vaaff = 2;
-		}
-		if (x.getFigure() == Figure.Neuf) {
-			vaaff = 3;
-		}
-		if (x.getFigure() == Figure.Dix) {
-			vaaff = 4;
-		}
-		if (x.getFigure() == Figure.Valet) {
-			vaaff = 5;
-		}
-		if (x.getFigure() == Figure.Dame) {
-			vaaff = 6;
-		}
-		if (x.getFigure() == Figure.Roi) {
-			vaaff = 7;
-		}
-		if (x.getFigure() == Figure.As) {
-			vaaff = 8;
-		}
-		return vaaff;
-	}
 
 	/**
 	 * @param
 	 * @return
 	 * @resume
 	 * */
-	// ===================================
-	// le rang d'une couleur de la carte
-	public static int coulrang(final Carte x) {
-		int vaaff2;
-		switch(x.getCouleur()) {
-		case Coeur :
-			vaaff2 = 0;
-			break;
-		case Pique :
-			vaaff2 = 1;
-			break;
-		case Carreau :
-			vaaff2 = 2;
-			break;
-		default: // par defaut trefle
-			vaaff2 = 3;
-			break;
-		}
-		
-		return vaaff2;
-	}
-
-	/**
-	 * @param
-	 * @return
-	 * @resume
-	 * */
-	// ======================================
 	// renvois la valeur d'une carte
 	public static int Points(final Carte carte, final CouleurEnum couleurAtout) {
-		int point1 = 0;
-		CouleurEnum vcouleur;
-		int vfigure;
-		vcouleur = carte.getCouleur();
-		vfigure = fig2(carte);
-		if(couleurAtout.toString().equals(vcouleur.toString())) {
-			switch (vfigure) {
-			case 1:
-				point1 = 0;
-				break;
-			case 2:
-				point1 = 0;
-				break;
-			case 3:
-				point1 = 14;
-				break;
-			case 4:
-				point1 = 10;
-				break;
-			case 5:
-				point1 = 20;
-				break;
-			case 6:
-				point1 = 3;
-				break;
-			case 7:
-				point1 = 4;
-				break;
-			case 8:
-				point1 = 11;
-				break;
-			default:
-				break;
+		int point = 0;
+		
+		switch (carte.getFigure()) {
+		case Sept:
+			point = 0;
+			break;
+		case Huit:
+			point = 0;
+			break;
+		case Neuf:
+			if(couleurAtout.equals(carte.getCouleur())) {
+				point = 14;
+			}else{
+				point = 0;
 			}
-		} else {
-			switch (vfigure) {
-			case 1:
-				point1 = 0;
-				break;
-			case 2:
-				point1 = 0;
-				break;
-			case 3:
-				point1 = 0;
-				break;
-			case 4:
-				point1 = 10;
-				break;
-			case 5:
-				point1 = 2;
-				break;
-			case 6:
-				point1 = 3;
-				break;
-			case 7:
-				point1 = 4;
-				break;
-			case 8:
-				point1 = 11;
-				break;
-			default:
-				break;
+			break;
+		case Dix:
+			point = 10;
+			break;
+		case Valet:
+			if(couleurAtout.equals(carte.getCouleur())) {
+				point = 20;
+			}else{
+				point = 2;
 			}
-
+			break;
+		case Dame:
+			point = 3;
+			break;
+		case Roi:
+			point = 4;
+			break;
+		default : // As
+			point = 11;
+			break;
 		}
-		return point1;
+		return point;
 	}
 
 	/**
@@ -161,110 +71,102 @@ public class Arbitre {
 	 * @return
 	 * @resume
 	 * */
-	// =====================================================
 	// points sur une manche
-	public static int Pointsjeu(final Carte carte,
-			final CouleurEnum couleurJoueur1, final CouleurEnum couleurJoueur2) {
-		int point1 = 0;
-		int vfigure;
-		vfigure = fig2(carte);
-		if (couleurJoueur1.toString().equals(carte.getCouleur().toString())) {
-			switch (vfigure) {
-			case 1:
-				point1 = 9;
+	public static int Pointsjeu(final Carte carte, final CouleurEnum couleurJoueur1, final CouleurEnum couleurJoueur2) {
+		int point = 0;
+		if (couleurJoueur1.equals(carte.getCouleur())) {
+			switch (carte.getFigure()) {
+			case Sept:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 9;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 1;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 2:
-				point1 = 10;
+			case Huit:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 10;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 2;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 3:
-				point1 = 15;
+			case Neuf:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 15;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 3;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 4:
-				point1 = 13;
+			case Dix:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 13;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 7;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 5:
-				point1 = 16;
+			case Valet:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 16;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 4;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 6:
-				point1 = 11;
+			case Dame:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 11;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 5;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 7:
-				point1 = 12;
+			case Roi:
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 12;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 6;
+					} else {
+						point = 0;
+					}
+				}
 				break;
-			case 8:
-				point1 = 14;
-				break;
-			default:
+			default: // As
+				if (couleurJoueur1.equals(carte.getCouleur())) {
+					point = 14;
+				} else {
+					if (couleurJoueur2.equals(carte.getCouleur())) {
+						point = 8;
+					} else {
+						point = 0;
+					}
+				}
 				break;
 			}
-		} else {
-
-			if (couleurJoueur2.toString().equals(carte.getCouleur().toString())) {
-				switch (vfigure) {
-				case 1:
-					point1 = 1;
-					break;
-				case 2:
-					point1 = 2;
-					break;
-				case 3:
-					point1 = 3;
-					break;
-				case 4:
-					point1 = 7;
-					break;
-				case 5:
-					point1 = 4;
-					break;
-				case 6:
-					point1 = 5;
-					break;
-				case 7:
-					point1 = 6;
-					break;
-				case 8:
-					point1 = 8;
-					break;
-				default:
-					break;
-				}
-			} else {
-
-				switch (vfigure) {
-				case 0:
-					point1 = 0;
-					break;
-				case 1:
-					point1 = 0;
-					break;
-				case 2:
-					point1 = 0;
-					break;
-				case 3:
-					point1 = 0;
-					break;
-				case 4:
-					point1 = 0;
-					break;
-				case 5:
-					point1 = 0;
-					break;
-				case 6:
-					point1 = 0;
-					break;
-				case 7:
-					point1 = 0;
-					break;
-				case 8:
-					point1 = 0;
-					break;
-				default:
-					break;
-				}
-
-			}
-		}
-		return point1;
+		} 
+		return point;
 	}
 
 	/**
@@ -314,18 +216,18 @@ public class Arbitre {
 			final CouleurEnum y, final Carte uv, final CouleurEnum couleurAtout) {
 		boolean v = false;
 
-		testc: if (y.toString().equals(CouleurEnum.NotInitialized.toString())) {
+		testc: if (y.equals(CouleurEnum.NotInitialized)) {
 			v = true;
 			break testc;
 		} else {
 			// test si la carte est de la couleur du jeux jouer
-			if (uv.getCouleur().toString().equals(y.toString())) {
+			if (uv.getCouleur().equals(y)) {
 				v = true;
 				break testc;
 			} else {
 				// test si une des cartes est de la couleur du jeux
 				for (int i = 0; i < 8; i++) {
-					if (main[i].getCouleur().toString().equals(y.toString())) {
+					if (main[i].getCouleur().equals(y)) {
 						v = false;
 						Terminal.ecrireStringln("Jouer une carte de la couleur demander "
 								+ y);
@@ -333,13 +235,13 @@ public class Arbitre {
 					}
 				}
 				// Test si la carte est de la couleur de l'atout
-				if (uv.getCouleur().toString().equals(couleurAtout.toString())) {
+				if (uv.getCouleur().equals(couleurAtout)) {
 					v = true;
 					break testc;
 				} else {
 					// test si au moins une carte est de la couleur de l'atout
 					for (int i = 0; i < 8; i++) {
-						if (main[i].getCouleur().toString().equals(couleurAtout.toString())) {
+						if (main[i].getCouleur().equals(couleurAtout)) {
 							v = false;
 							Terminal.ecrireStringln("Jouer une carte d'atout  " + couleurAtout);
 							break testc;
@@ -360,11 +262,9 @@ public class Arbitre {
 	 * @return un int => la position de la carte a jouer dans la main
 	 * @resume test pour jeux nieme
 	 * */
-	public static int testcartejouee2(final Carte[] main,
-			final CouleurEnum carteret, final CouleurEnum couleurAtout) {
+	public static int testcartejouee2(final Carte[] main, final CouleurEnum carteret, final CouleurEnum couleurAtout) {
 		int indiceCarteAJouer = 0;
 		Terminal.ecrireStringln("Carte demandee : " + carteret);
-		boolean test = carteret.toString().equals(CouleurEnum.NotInitialized.toString());
 
 		/*
 		 * A FAIRE changer la methode pour qu'elle prenne la bonne carte - jouer
@@ -374,24 +274,21 @@ public class Arbitre {
 		 * carte non atout si aucun des cas precedents
 		 */
 
-		testc: if (!test) {
+		testc: if (!carteret.equals(CouleurEnum.NotInitialized)) {
 			for (int i = 0; i < 8; i++) {
-				test = main[i].getCouleur().toString().equals(carteret.toString());
-				if (test) {
+				if (main[i].getCouleur().equals(carteret.toString())) {
 					indiceCarteAJouer = i;
 					break testc;
 				}
 			}
 			for (int i = 0; i < 8; i++) {
-				test = main[i].getCouleur().toString().equals(couleurAtout.toString());
-				if (test) {
+				if (main[i].getCouleur().equals(couleurAtout)) {
 					indiceCarteAJouer = i;
 					break testc;
 				}
 			}
 			indiceCarteAJouer = 0;
 		}
-
 		return indiceCarteAJouer;
 	}
 }

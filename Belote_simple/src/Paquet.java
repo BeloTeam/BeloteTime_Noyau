@@ -34,7 +34,7 @@ public class Paquet {
 		plisJ0J2 = new Carte[32];
 		maitre = new Carte[4];
 		tapisjeux = new Carte[4];
-		blanc = new Carte(CouleurEnum.Blanc, Figure.Blanc);
+		blanc = new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized);
 		carteJoue = CouleurEnum.NotInitialized;
 		longJeuxdist = 0;
 	}
@@ -44,41 +44,40 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ===============================================================
 	// cree le jeux de cartes
 	public void creelejeux() {
-		Carte c1 = new Carte(CouleurEnum.Pique, Figure.As);
-		Carte c2 = new Carte(CouleurEnum.Pique, Figure.Roi);
-		Carte c3 = new Carte(CouleurEnum.Pique, Figure.Dame);
-		Carte c4 = new Carte(CouleurEnum.Pique, Figure.Valet);
-		Carte c5 = new Carte(CouleurEnum.Pique, Figure.Dix);
-		Carte c6 = new Carte(CouleurEnum.Pique, Figure.Neuf);
-		Carte c7 = new Carte(CouleurEnum.Pique, Figure.Huit);
-		Carte c8 = new Carte(CouleurEnum.Pique, Figure.Sept);
-		Carte c9 = new Carte(CouleurEnum.Carreau, Figure.As);
-		Carte c10 = new Carte(CouleurEnum.Carreau, Figure.Roi);
-		Carte c11 = new Carte(CouleurEnum.Carreau, Figure.Dame);
-		Carte c12 = new Carte(CouleurEnum.Carreau, Figure.Valet);
-		Carte c13 = new Carte(CouleurEnum.Carreau, Figure.Dix);
-		Carte c14 = new Carte(CouleurEnum.Carreau, Figure.Neuf);
-		Carte c15 = new Carte(CouleurEnum.Carreau, Figure.Huit);
-		Carte c16 = new Carte(CouleurEnum.Carreau, Figure.Sept);
-		Carte c17 = new Carte(CouleurEnum.Trefle, Figure.As);
-		Carte c18 = new Carte(CouleurEnum.Trefle, Figure.Roi);
-		Carte c19 = new Carte(CouleurEnum.Trefle, Figure.Dame);
-		Carte c20 = new Carte(CouleurEnum.Trefle, Figure.Valet);
-		Carte c21 = new Carte(CouleurEnum.Trefle, Figure.Dix);
-		Carte c22 = new Carte(CouleurEnum.Trefle, Figure.Neuf);
-		Carte c23 = new Carte(CouleurEnum.Trefle, Figure.Huit);
-		Carte c24 = new Carte(CouleurEnum.Trefle, Figure.Sept);
-		Carte c25 = new Carte(CouleurEnum.Coeur, Figure.As);
-		Carte c26 = new Carte(CouleurEnum.Coeur, Figure.Roi);
-		Carte c27 = new Carte(CouleurEnum.Coeur, Figure.Dame);
-		Carte c28 = new Carte(CouleurEnum.Coeur, Figure.Valet);
-		Carte c29 = new Carte(CouleurEnum.Coeur, Figure.Dix);
-		Carte c30 = new Carte(CouleurEnum.Coeur, Figure.Neuf);
-		Carte c31 = new Carte(CouleurEnum.Coeur, Figure.Huit);
-		Carte c32 = new Carte(CouleurEnum.Coeur, Figure.Sept);
+		Carte c1 = new Carte(CouleurEnum.Pique, FigureEnum.As);
+		Carte c2 = new Carte(CouleurEnum.Pique, FigureEnum.Roi);
+		Carte c3 = new Carte(CouleurEnum.Pique, FigureEnum.Dame);
+		Carte c4 = new Carte(CouleurEnum.Pique, FigureEnum.Valet);
+		Carte c5 = new Carte(CouleurEnum.Pique, FigureEnum.Dix);
+		Carte c6 = new Carte(CouleurEnum.Pique, FigureEnum.Neuf);
+		Carte c7 = new Carte(CouleurEnum.Pique, FigureEnum.Huit);
+		Carte c8 = new Carte(CouleurEnum.Pique, FigureEnum.Sept);
+		Carte c9 = new Carte(CouleurEnum.Carreau, FigureEnum.As);
+		Carte c10 = new Carte(CouleurEnum.Carreau, FigureEnum.Roi);
+		Carte c11 = new Carte(CouleurEnum.Carreau, FigureEnum.Dame);
+		Carte c12 = new Carte(CouleurEnum.Carreau, FigureEnum.Valet);
+		Carte c13 = new Carte(CouleurEnum.Carreau, FigureEnum.Dix);
+		Carte c14 = new Carte(CouleurEnum.Carreau, FigureEnum.Neuf);
+		Carte c15 = new Carte(CouleurEnum.Carreau, FigureEnum.Huit);
+		Carte c16 = new Carte(CouleurEnum.Carreau, FigureEnum.Sept);
+		Carte c17 = new Carte(CouleurEnum.Trefle, FigureEnum.As);
+		Carte c18 = new Carte(CouleurEnum.Trefle, FigureEnum.Roi);
+		Carte c19 = new Carte(CouleurEnum.Trefle, FigureEnum.Dame);
+		Carte c20 = new Carte(CouleurEnum.Trefle, FigureEnum.Valet);
+		Carte c21 = new Carte(CouleurEnum.Trefle, FigureEnum.Dix);
+		Carte c22 = new Carte(CouleurEnum.Trefle, FigureEnum.Neuf);
+		Carte c23 = new Carte(CouleurEnum.Trefle, FigureEnum.Huit);
+		Carte c24 = new Carte(CouleurEnum.Trefle, FigureEnum.Sept);
+		Carte c25 = new Carte(CouleurEnum.Coeur, FigureEnum.As);
+		Carte c26 = new Carte(CouleurEnum.Coeur, FigureEnum.Roi);
+		Carte c27 = new Carte(CouleurEnum.Coeur, FigureEnum.Dame);
+		Carte c28 = new Carte(CouleurEnum.Coeur, FigureEnum.Valet);
+		Carte c29 = new Carte(CouleurEnum.Coeur, FigureEnum.Dix);
+		Carte c30 = new Carte(CouleurEnum.Coeur, FigureEnum.Neuf);
+		Carte c31 = new Carte(CouleurEnum.Coeur, FigureEnum.Huit);
+		Carte c32 = new Carte(CouleurEnum.Coeur, FigureEnum.Sept);
 
 		this.initial[0] = c1;
 		this.initial[1] = c2;
@@ -119,14 +118,10 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ===============================================================
 	// affiche les paquet de carte
 	public void affiche() {
 		for (int i = 0; i < 32; i++) {
-			Terminal.ecrireStringln("valeur jeux melange carte n" + i + " "
-					+ jeuxdist[i].getFigure().getNom() + " "
-					+ jeuxdist[i].getCouleur());
-
+			Terminal.ecrireStringln("valeur jeux melange carte n" + i + " " + jeuxdist[i].getFigure() + " " + jeuxdist[i].getCouleur());
 		}
 		Terminal.ecrireStringln("-----------------------");
 	}
@@ -136,7 +131,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ===============================================================
 	// melange le jeux
 	public void donneJeuBeloteBattu() {
 		int n = 32;
@@ -166,7 +160,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ======================================================
 	// remet les cartes
 	public int remetjeux(Carte[] x, int y) {
 		for (int u = 0; u < y; u++) {
@@ -189,7 +182,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ======================================================
 	// remet les cartes 2
 	public void remetjeux2() {
 		for (int u = 0; u < this.posplis[0]; u++) {
@@ -222,7 +214,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ======================================
 	// on coupe le jeux
 	public void coupe(int y) {
 		int coupe;
@@ -254,7 +245,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ==============================================
 	// coupe le jeux de carte
 	public void melange(int y) {
 		for (int u = 0; u <= y; u++) {
@@ -284,7 +274,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ============================================
 	// qui remporte la manche
 	public int remportemanche(CouleurEnum y, int u) {
 		int pos = 0;
@@ -330,25 +319,17 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ===============================================================
 	// affiche les paquet de carte
 	public void affiche2() {
 		for (int i = 0; i < this.posplis[0]; i++) {
-			Terminal.ecrireStringln("valeur plis j0 et j2  carte n" + i + " "
-					+ this.plisJ0J2[i].getFigure().getNom() + " "
-					+ this.plisJ0J2[i].getCouleur());
-
+			Terminal.ecrireStringln("valeur plis j0 et j2  carte n" + i + " " + this.plisJ0J2[i].getFigure() + " " + this.plisJ0J2[i].getCouleur());
 		}
-		Terminal.ecrireStringln("un total de point joueur 0 et 2 :"
-				+ this.pointplis[0]);
+		Terminal.ecrireStringln("un total de point joueur 0 et 2 :" + this.pointplis[0]);
 		Terminal.ecrireStringln("-----------------------");
 		for (int i = 0; i < this.posplis[1]; i++) {
-			Terminal.ecrireStringln("valeur plis j1 et j3 carte n" + i + " "
-					+ this.plisJ1J3[i].getFigure().getNom() + " "
-					+ this.plisJ1J3[i].getCouleur());
+			Terminal.ecrireStringln("valeur plis j1 et j3 carte n" + i + " " + this.plisJ1J3[i].getFigure() + " " + this.plisJ1J3[i].getCouleur());
 		}
-		Terminal.ecrireStringln("un total de point joueur 1 et 3 :"
-				+ this.pointplis[1]);
+		Terminal.ecrireStringln("un total de point joueur 1 et 3 :" + this.pointplis[1]);
 		Terminal.ecrireStringln("-----------------------");
 	}
 
@@ -357,26 +338,23 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ========================================
 	// modifie les cartemaitre
 	public void modifiemaitre(Carte x, int y) {
 		if (y == 0) {
-			switch (Arbitre.coulrang(x)) {
-			case 0:
-				this.maitre[0] = new Carte(CouleurEnum.Coeur, Figure.Valet);
+			switch (x.getCouleur()) {
+			case Coeur:
+				this.maitre[0] = new Carte(CouleurEnum.Coeur, FigureEnum.Valet);
 				break;
-			case 1:
-				this.maitre[1] = new Carte(CouleurEnum.Pique, Figure.Valet);
+			case Pique:
+				this.maitre[1] = new Carte(CouleurEnum.Pique, FigureEnum.Valet);
 				break;
-			case 2:
-				this.maitre[2] = new Carte(CouleurEnum.Carreau, Figure.Valet);
+			case Carreau:
+				this.maitre[2] = new Carte(CouleurEnum.Carreau, FigureEnum.Valet);
 				break;
-			case 3:
-				this.maitre[3] = new Carte(CouleurEnum.Trefle, Figure.Valet);
+			default: // Trefle
+				this.maitre[3] = new Carte(CouleurEnum.Trefle, FigureEnum.Valet);
 				break;
 			}
-		} else {
-
 		}
 	}
 
@@ -385,7 +363,6 @@ public class Paquet {
 	 * @return
 	 * @resume
 	 * */
-	// ========================================================
 	// efface les references
 	public void razpaquet() {
 		this.pointplis[0] = 0;

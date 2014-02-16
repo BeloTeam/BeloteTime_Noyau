@@ -10,8 +10,7 @@ public class JoueurIntelligence {
 	private Carte monPaquet[] = new Carte[8];
 	private int recoitVal = 0;
 	private CouleurEnum choixAtout;
-	private Carte carteJoue;
-	private boolean belote;
+
 
 	/**
 	 * @param
@@ -20,9 +19,7 @@ public class JoueurIntelligence {
 	 * */
 	public void affichejoueur(int x) {
 		for (int i = 0; i < Fenetre.nbcartej[x]; i++) {
-			Terminal.ecrireStringln("valeur jeux joueur " + x + " carte n " + i
-					+ " valeur " + this.monPaquet[i].getFigure().getNom() + " "
-					+ this.monPaquet[i].getCouleur());
+			Terminal.ecrireStringln("valeur jeux joueur " + x + " carte n " + i + " valeur " + this.monPaquet[i].getFigure() + " " + this.monPaquet[i].getCouleur());
 		}
 		Terminal.ecrireStringln("-----------------------");
 	}
@@ -32,7 +29,6 @@ public class JoueurIntelligence {
 	 * @return
 	 * @resume
 	 * */
-	// ==========================================================
 	// recoit la carte sur le paquet
 	public int recoit(Carte[] tabCards, int y, Carte u) {
 		this.monPaquet[y] = tabCards[0];
@@ -52,7 +48,6 @@ public class JoueurIntelligence {
 	 * @return
 	 * @resume
 	 * */
-	// ========================================================
 	// prend premier tour
 	public void prendpremier(int numeroJoueur, Carte carteRetournee, int nbcarte) {
 		String rep = new String();
@@ -76,19 +71,16 @@ public class JoueurIntelligence {
 				 * on regarde le nombre d'atout qu'il possede et s'il a le valet
 				 * et 9
 				 */
-				if (this.monPaquet[i].getCouleur().toString().equals(carteRetournee.getCouleur().toString())) {
-					if (this.monPaquet[i].getFigure().getNom().equals("Valet")
-							|| carteRetournee.getFigure().getNom().equals("Valet")) {
+				if (this.monPaquet[i].getCouleur().equals(carteRetournee.getCouleur())) {
+					if (this.monPaquet[i].getFigure().equals(FigureEnum.Valet) || carteRetournee.getFigure().equals(FigureEnum.Valet)) {
 						hasValet = true;
 					}
-					if (this.monPaquet[i].getFigure().getNom().equals("Neuf")
-							|| carteRetournee.getFigure().getNom().equals("Neuf")) {
+					if (this.monPaquet[i].getFigure().equals(FigureEnum.Neuf) || carteRetournee.getFigure().equals(FigureEnum.Neuf)) {
 						hasNeuf = true;
 					}
 					nbAtout++;
 				}
-				totalpoint += Arbitre.Points(this.monPaquet[i],
-						carteRetournee.getCouleur());
+				totalpoint += Arbitre.Points(this.monPaquet[i], carteRetournee.getCouleur());
 			}
 
 			// ajout des points de la carte du milieu
@@ -101,14 +93,9 @@ public class JoueurIntelligence {
 			 * 40pts et plus de 5 atouts
 			 */
 			Terminal.ecrireStringln("Joueur " + numeroJoueur + " : ");
-			Terminal.ecrireStringln("Nombre d'atouts : " + nbAtout
-					+ ", Valet : " + hasValet + " Neuf : " + hasNeuf
-					+ ", points : " + totalpoint);
-			if (totalpoint >= 40
-					&& ((nbAtout < 4 && hasValet && hasNeuf)
-							|| (nbAtout > 3 && nbAtout < 5 && hasValet) || (nbAtout >= 5))) {
-				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur
-						+ " qui a pris : ");
+			Terminal.ecrireStringln("Nombre d'atouts : " + nbAtout + ", Valet : " + hasValet + " Neuf : " + hasNeuf + ", points : " + totalpoint);
+			if (totalpoint >= 40 && ((nbAtout < 4 && hasValet && hasNeuf) || (nbAtout > 3 && nbAtout < 5 && hasValet) || (nbAtout >= 5))) {
+				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur + " qui a pris : ");
 				for (int i = 0; i < 7; i++) {
 					Terminal.ecrireStringln("carte : " + monPaquet[i]);
 				}
@@ -128,7 +115,6 @@ public class JoueurIntelligence {
 	 * @return
 	 * @resume
 	 * */
-	// ====================================================
 	// gestion pour prendre au deuxieme tour
 	public void prenddeuxieme(int numeroJoueur, Carte carteRetournee, int nbcarte) {
 		String rep = new String();
@@ -185,11 +171,11 @@ public class JoueurIntelligence {
 
 				for (int j = 0; j < nbcarte; j++) {
 					// on regarde les atouts
-					if (this.monPaquet[j].getCouleur().toString().equals(((CouleurEnum) coulAtout[i]).toString())) {
-						if (this.monPaquet[j].getFigure().getNom().equals("Valet")) {
+					if (this.monPaquet[j].getCouleur().equals(((CouleurEnum) coulAtout[i]))) {
+						if (this.monPaquet[j].getFigure().equals(FigureEnum.Valet)) {
 							hasValetCouleurCourante = true;
 						}
-						if (this.monPaquet[j].getFigure().getNom().equals("Neuf")) {
+						if (this.monPaquet[j].getFigure().equals(FigureEnum.Neuf)) {
 							hasNeufCouleurCourante = true;
 						}
 						nbAtoutCouleurCourante++;
@@ -234,7 +220,6 @@ public class JoueurIntelligence {
 	 * @return
 	 * @resume
 	 * */
-	// ================================
 	// Trie le jeux de carte
 	public void trijeux(CouleurEnum jeuxAtout) {
 		int pos = 0;
@@ -259,7 +244,6 @@ public class JoueurIntelligence {
 	 * @return
 	 * @resume
 	 * */
-	// ======================================
 	// joue premier
 	public Carte jouepremier(int numeroJoueur, Carte card, CouleurEnum carteret, CouleurEnum coulatout) {
 

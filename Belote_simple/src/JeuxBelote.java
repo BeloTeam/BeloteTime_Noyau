@@ -24,11 +24,9 @@ public class JeuxBelote {
 		for (int i = 0; i < 4; i++) {
 			joueur[i] = new JoueurIntelligence();
 		}
-		// ========================================================
 		jeux.creelejeux();
 		// affiche le nombre de carte dans le paquet initial
 		Terminal.ecrireStringln("valeur " + jeux.getInitial().length);
-		// ========================================================
 		// melange le jeux
 		jeux.donneJeuBeloteBattu();
 		tapis.initFenetre();
@@ -40,7 +38,6 @@ public class JeuxBelote {
 			for (int y = 0; y < 4; y++) {
 				joueur[y].affichejoueur(y);
 			}
-			// =====================
 			// donne premier tour
 			n = 2;
 			n1 = donne;
@@ -95,7 +92,6 @@ public class JeuxBelote {
 				joueur[y].affichejoueur(y);
 			}
 			tapis.affichecarter(retourne, jeuxAtout);
-			// =========================================
 			// affiche sur le terminal le jeux du paquet
 			// jeux.affiche();
 			// affiche sur l'interface graphique le jeux du joueur 0
@@ -188,10 +184,7 @@ public class JeuxBelote {
 					}
 				}
 				tapis.affichecarter(retourne, jeuxAtout);
-				joueur[0].trijeux(jeuxAtout);
-				
-				System.out.println(joueur[0].getMonPaquet());
-				
+				joueur[0].trijeux(jeuxAtout);	
 				tapis.affichejeux(joueur[0].getMonPaquet());
 				tapis.effacecarteplis();
 
@@ -236,7 +229,6 @@ public class JeuxBelote {
 				for (int y = 0; y < 4; y++) {
 					joueur[y].affichejoueur(y);
 				}
-				// =========================
 				// Qui gagne la manche
 				if (jeux.getPosplis()[0] == 0 || jeux.getPosplis()[1] == 0) {
 					if (jeux.getPosplis()[0] == 0) {
@@ -258,7 +250,6 @@ public class JeuxBelote {
 						}
 					}
 				}
-				// =========================
 				// remet les cartes dans le paquet
 				jeux.remetjeux2();
 				jeuxAtout = CouleurEnum.NotInitialized;

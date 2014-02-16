@@ -8,9 +8,9 @@
 
 public class Carte {
 	private CouleurEnum couleur;
-	private Figure figure;
+	private FigureEnum figure;
 
-	public Carte(CouleurEnum couleur, Figure figure) {
+	public Carte(CouleurEnum couleur, FigureEnum figure) {
 		this.couleur = couleur;
 		this.figure = figure;
 	}
@@ -19,11 +19,11 @@ public class Carte {
 		return couleur;
 	}
 
-	public Figure getFigure() {
+	public FigureEnum getFigure() {
 		return figure;
 	}
 
 	public String toString() {
-		return this.figure.getNom() + " de " + this.couleur;
+		return this.figure + " de " + this.couleur;
 	}
 }

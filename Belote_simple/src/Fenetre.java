@@ -55,7 +55,6 @@ public class Fenetre extends JFrame implements ActionListener {
 	private JMenuBar barreMenus;
 	private JMenuItem fermer;
 
-	// ==============================================
 	// Initialise le plateau
 	public void affiche() {
 		for (int v = 0; v < 8; v++) {
@@ -69,54 +68,40 @@ public class Fenetre extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 
-	// ==========================================
 	// affiche le jeux du joueur 0
 	public void affichejeux(Carte[] valpq) {
 		int x = Fenetre.nbcartej[0];
 		for (int v = 0; v < x; v++) {
-			System.out.println("couleur qipzdupq : " + valpq[v].getCouleur().toString());
-			// Pb exception leve ici
-			Fenetre.cartej0[v] = new ImageIcon("image/"
-					+ valpq[v].getFigure().getNom() + valpq[v].getCouleur()
-					+ ".gif");
+			Fenetre.cartej0[v] = new ImageIcon("image/" + valpq[v].getFigure() + valpq[v].getCouleur() + ".gif");
 		}
 		paneau.repaint();
 	}
 
-	// ================================================
 	// affiche la carte retourne
 	public void affichecarter(Carte valpq, CouleurEnum jeuxatout) {
-		Fenetre.carter = new ImageIcon("image/" + valpq.getFigure().getNom()
-				+ valpq.getCouleur() + ".gif");
+		Fenetre.carter = new ImageIcon("image/" + valpq.getFigure() + valpq.getCouleur() + ".gif");
 		Fenetre.atout = new ImageIcon("image/" + jeuxatout + ".gif");
 		paneau.repaint();
 	}
 
-	// ==========================================
 	// efface le paquet du centre
 	public void effacecarteplis() {
 		Fenetre.cartepl = new ImageIcon("");
 		paneau.repaint();
 	}
 
-	// ==========================================
 	// afiche carte jouee
 	public void affichej(Carte y, int u) {
-		Fenetre.cartej[u] = new ImageIcon("image/" + y.getFigure().getNom()
-				+ y.getCouleur() + ".gif");
+		Fenetre.cartej[u] = new ImageIcon("image/" + y.getFigure() + y.getCouleur() + ".gif");
 		paneau.repaint();
 	}
 
-	// =========================================
 	public void raffiche() {
 		paneau.repaint();
 	}
 }
 
 class Superpanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Superpanel() {
@@ -127,7 +112,6 @@ class Superpanel extends JPanel {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Dimension taille = getSize();
 		// jeux joueur 3
 		int valposx3 = 5;
 		int valposy3 = 125;
