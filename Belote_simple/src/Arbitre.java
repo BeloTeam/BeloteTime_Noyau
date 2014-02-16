@@ -90,7 +90,7 @@ public class Arbitre {
 		int vfigure;
 		vcouleur = carte.getCouleur();
 		vfigure = fig2(carte);
-		if (couleurAtout == vcouleur) {
+		if (couleurAtout.toString().equals(vcouleur.toString())) {
 			switch (vfigure) {
 			case 1:
 				point1 = 0;
@@ -165,7 +165,7 @@ public class Arbitre {
 		int point1 = 0;
 		int vfigure;
 		vfigure = fig2(carte);
-		if (couleurJoueur1 == carte.getCouleur()) {
+		if (couleurJoueur1.toString().equals(carte.getCouleur().toString())) {
 			switch (vfigure) {
 			case 1:
 				point1 = 9;
@@ -318,14 +318,14 @@ public class Arbitre {
 			break testc;
 		} else {
 			// test si la carte est de la couleur du jeux jouer
-			test = uv.getCouleur().equals(y);
+			test = uv.getCouleur().toString().equals(y.toString());
 			if (test == true) {
 				v = true;
 				break testc;
 			} else {
 				// test si une des cartes est de la couleur du jeux
 				for (int i = 0; i < 8; i++) {
-					test = main[i].getCouleur().equals(y);
+					test = main[i].getCouleur().toString().equals(y.toString());
 					if (test == true) {
 						v = false;
 						Terminal.ecrireStringln("Jouer une carte de la couleur demander "
@@ -334,18 +334,17 @@ public class Arbitre {
 					}
 				}
 				// Test si la carte est de la couleur de l'atout
-				test = uv.getCouleur().equals(couleurAtout);
+				test = uv.getCouleur().toString().equals(couleurAtout.toString());
 				if (test == true) {
 					v = true;
 					break testc;
 				} else {
 					// test si au moins une carte est de la couleur de l'atout
 					for (int i = 0; i < 8; i++) {
-						test = main[i].getCouleur().equals(couleurAtout);
+						test = main[i].getCouleur().toString().equals(couleurAtout.toString());
 						if (test == true) {
 							v = false;
-							Terminal.ecrireStringln("Jouer une carte d'atout  "
-									+ couleurAtout);
+							Terminal.ecrireStringln("Jouer une carte d'atout  " + couleurAtout);
 							break testc;
 						}
 					}
@@ -368,7 +367,7 @@ public class Arbitre {
 			final CouleurEnum carteret, final CouleurEnum couleurAtout) {
 		int indiceCarteAJouer = 0;
 		Terminal.ecrireStringln("Carte demandee : " + carteret);
-		boolean test = carteret.equals("");
+		boolean test = carteret.toString().equals(CouleurEnum.NotInitialized.toString());
 
 		/*
 		 * A FAIRE changer la methode pour qu'elle prenne la bonne carte - jouer
@@ -380,14 +379,14 @@ public class Arbitre {
 
 		testc: if (!test) {
 			for (int i = 0; i < 8; i++) {
-				test = main[i].getCouleur().equals(carteret);
+				test = main[i].getCouleur().toString().equals(carteret.toString());
 				if (test) {
 					indiceCarteAJouer = i;
 					break testc;
 				}
 			}
 			for (int i = 0; i < 8; i++) {
-				test = main[i].getCouleur().equals(couleurAtout);
+				test = main[i].getCouleur().toString().equals(couleurAtout.toString());
 				if (test) {
 					indiceCarteAJouer = i;
 					break testc;

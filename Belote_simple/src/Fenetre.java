@@ -74,6 +74,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	public void affichejeux(Carte[] valpq) {
 		int x = Fenetre.nbcartej[0];
 		for (int v = 0; v < x; v++) {
+			System.out.println("couleur qipzdupq : " + valpq[v].getCouleur().toString());
 			// Pb exception leve ici
 			Fenetre.cartej0[v] = new ImageIcon("image/"
 					+ valpq[v].getFigure().getNom() + valpq[v].getCouleur()

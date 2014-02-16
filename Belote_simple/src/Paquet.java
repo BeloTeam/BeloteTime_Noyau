@@ -35,7 +35,7 @@ public class Paquet {
 		maitre = new Carte[4];
 		tapisjeux = new Carte[4];
 		blanc = new Carte(CouleurEnum.Blanc, Figure.Blanc);
-		carteJoue = CouleurEnum.Blanc;
+		carteJoue = CouleurEnum.NotInitialized;
 		longJeuxdist = 0;
 	}
 

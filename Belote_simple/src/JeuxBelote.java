@@ -53,8 +53,7 @@ public class JeuxBelote {
 					n1 = 0;
 				}
 				for (int i = 0; i < 3; i++) {
-					tapis.nbcartej[n1] = joueur[n1].recoit(jeux.getJeuxdist(),
-							tapis.nbcartej[n1], jeux.getBlanc());
+					tapis.nbcartej[n1] = joueur[n1].recoit(jeux.getJeuxdist(), tapis.nbcartej[n1], jeux.getBlanc());
 				}
 				jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 3);
 				n2++;
@@ -72,8 +71,7 @@ public class JeuxBelote {
 					n1 = 0;
 				}
 				for (int i = 0; i < 2; i++) {
-					tapis.nbcartej[n1] = joueur[n1].recoit(jeux.getJeuxdist(),
-							tapis.nbcartej[n1], jeux.getBlanc());
+					tapis.nbcartej[n1] = joueur[n1].recoit(jeux.getJeuxdist(), tapis.nbcartej[n1], jeux.getBlanc());
 				}
 				jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 2);
 				n2++;
@@ -102,6 +100,7 @@ public class JeuxBelote {
 			// affiche sur le terminal le jeux du paquet
 			// jeux.affiche();
 			// affiche sur l'interface graphique le jeux du joueur 0
+			
 			tapis.affichejeux(joueur[0].getMonPaquet());
 			// prend premier tour
 			n = 2;
@@ -191,6 +190,9 @@ public class JeuxBelote {
 				}
 				tapis.affichecarter(retourne, jeuxAtout);
 				joueur[0].trijeux(jeuxAtout);
+				
+				System.out.println(joueur[0].getMonPaquet());
+				
 				tapis.affichejeux(joueur[0].getMonPaquet());
 				tapis.effacecarteplis();
 
@@ -202,19 +204,16 @@ public class JeuxBelote {
 						n1 = gagne;
 					}
 					n2 = 0;
-					jeux.setCarteJoue(CouleurEnum.Blanc);
+					jeux.setCarteJoue(CouleurEnum.NotInitialized);
 					while (n2 != 4) {
 
 						if (n1 > 3) {
 							n1 = 0;
 						}
 						Terminal.ecrireStringln("le joueur " + n1 + " joue");
-						jeux.getTapisjeux()[n1] = joueur[n1]
-								.jouepremier(n1, jeux.getBlanc(),
-										jeux.getCarteJoue(), jeuxAtout);
+						jeux.getTapisjeux()[n1] = joueur[n1].jouepremier(n1, jeux.getBlanc(), jeux.getCarteJoue(), jeuxAtout);
 						if (n2 == 0) {
-							jeux.setCarteJoue(jeux.getTapisjeux()[n1]
-									.getCouleur());
+							jeux.setCarteJoue(jeux.getTapisjeux()[n1].getCouleur());
 						}
 						tapis.nbcartej[n1] = tapis.nbcartej[n1] - 1;
 						tapis.affichej(jeux.getTapisjeux()[n1], n1);
