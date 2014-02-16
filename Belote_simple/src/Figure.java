@@ -1,12 +1,12 @@
 /**
- *  @class Figure
- *  @author lacertus, Nathan
- *  @resume Définition des cartes de 7 .. As
+ * @class Figure
+ * @author lacertus, Nathan
+ * @resume Définition des cartes de 7 .. As
  * 
  * */
 
 class Figure {
-	
+
 	private String nom;
 
 	public static Figure Sept = new Figure("Sept");
@@ -18,12 +18,11 @@ class Figure {
 	public static Figure Roi = new Figure("Roi");
 	public static Figure As = new Figure("As");
 	public static Figure Blanc = new Figure("");
-	
-	
-	public Figure ( String nomFigure ){
-		this.nom = nomFigure ;
+
+	public Figure(String nomFigure) {
+		this.nom = nomFigure;
 	}
-	
+
 	public String getNom() {
 		return nom;
 	}
