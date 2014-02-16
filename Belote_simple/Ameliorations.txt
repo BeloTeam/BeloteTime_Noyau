@@ -5,7 +5,7 @@ APPLICATIONS DES BONNE PRATIQUES CAR CODE  :
 - utiliser des collections (arraylist) plutot que des tableaux basiques
 - Enlever les attributs declarés en static et les methodes statiques dans certains cas
 - Pour la classe couleur utiliser un enum plutot que des attributs static
-- Faire un encadré de commentaire pour expliquer les methodes (param entree, sortie ...)
+- Faire un encadré de commentaire pour expliquer les methodes, utiliser javadoc(param entree, sortie ...)
 
 
 Quand on aura fait tout ça :

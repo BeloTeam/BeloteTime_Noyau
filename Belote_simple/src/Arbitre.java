@@ -6,65 +6,55 @@
 
 public class Arbitre
 {
-	
-	
+
+	/* ------- WARNING, qu'elle est l'interet de cette fonction ?! ------- */
 	/**
-	 * @param 
-	 * @return 
-	 * @resume 
+	 * @param int donne ; Contient le numero du joueur courant qui donne.
+	 * @return int donne ; Contient le numero du joueur qui donne a la partie suivant
+	 * @resume Fonction qui retourne le numero du joueur devant donner a la partie suivante.
+	 * Cette fonction doit etre appele apres la fin d'une partie.
 	 * */
 	public static int quidonne(int donne){
 		//affiche avant le traitement qui doit donner le jeux
-		Terminal.ecrireStringln("qui donne dans arbitre J"+donne);
-		switch(donne){
-			case 0 : donne = 1;
-				break;
-			case 1 : donne = 2;
-				break;
-			case 2 : donne = 3;
-				break;
-			case 3 : donne = 0;
-				break;
-		}
+		Terminal.ecrireStringln("qui donne dans arbitre J" + donne);
+		donne = (donne + 1) % 3;
 		//affiche la personne qui doit donner le jeux
-		Terminal.ecrireStringln("qui donne dans arbitre J"+donne);
+		Terminal.ecrireStringln("qui donne dans arbitre J" + donne);
 		return donne;
 	}
-	
-	
+	/* ------- ------------------------------------------------- ------- */
+
 	
 	/**
 	 * @param 
 	 * @return 
-	 * @resume 
+	 * @resume figure d'une carte
 	 * */
-	//======================================
-	// figure d'une carte
-	public static int fig2(Carte x){
-		int vaaff=0;
-		if (x.getFigure()==Figure.Sept){
-			vaaff=1;
+	public static int fig2(final Carte x){
+		int vaaff = 0;
+		if (x.getFigure() == Figure.Sept){
+			vaaff = 1;
 		}
-		if (x.getFigure()==Figure.Huit){
-			vaaff=2;
+		if (x.getFigure() == Figure.Huit){
+			vaaff = 2;
 		}
-		if (x.getFigure()==Figure.Neuf){
-			vaaff=3;
+		if (x.getFigure() == Figure.Neuf){
+			vaaff = 3;
 		}
-		if (x.getFigure()==Figure.Dix){
-			vaaff=4;
+		if (x.getFigure() == Figure.Dix){
+			vaaff = 4;
 		}
-		if (x.getFigure()==Figure.Valet){
-			vaaff=5;
+		if (x.getFigure() == Figure.Valet){
+			vaaff = 5;
 		}
-		if (x.getFigure()==Figure.Dame){
-			vaaff=6;
+		if (x.getFigure() == Figure.Dame){
+			vaaff = 6;
 		}
-		if (x.getFigure()==Figure.Roi){
-			vaaff=7;
+		if (x.getFigure() == Figure.Roi){
+			vaaff = 7;
 		}
-		if (x.getFigure()==Figure.As){
-			vaaff=8;
+		if (x.getFigure() == Figure.As){
+			vaaff = 8;
 		}
 		return vaaff;
 	}
