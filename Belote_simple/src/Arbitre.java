@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * @class Arbitre
  * @author lacertus, Nathan
@@ -208,11 +210,13 @@ public class Arbitre {
 	}
 
 	/**
-	 * @param
-	 * @return
+	 * @name testcartejouee
+	 * @param Carte[] main représente la main du joueur
+	 * @param CouleurEnum y représente la couleur ...
+	 * @return boolean 
 	 * @resume test carte jouer
 	 * */
-	public static boolean testcartejouee(final Carte[] main,
+	public static boolean testcartejouee(final List<Carte> main,
 			final CouleurEnum y, final Carte uv, final CouleurEnum couleurAtout) {
 		boolean v = false;
 
@@ -227,7 +231,7 @@ public class Arbitre {
 			} else {
 				// test si une des cartes est de la couleur du jeux
 				for (int i = 0; i < 8; i++) {
-					if (main[i].getCouleur().equals(y)) {
+					if (main.get(i).getCouleur().equals(y)) {
 						v = false;
 						Terminal.ecrireStringln("Jouer une carte de la couleur demander "
 								+ y);
@@ -241,7 +245,7 @@ public class Arbitre {
 				} else {
 					// test si au moins une carte est de la couleur de l'atout
 					for (int i = 0; i < 8; i++) {
-						if (main[i].getCouleur().equals(couleurAtout)) {
+						if (main.get(i).getCouleur().equals(couleurAtout)) {
 							v = false;
 							Terminal.ecrireStringln("Jouer une carte d'atout  " + couleurAtout);
 							break testc;
@@ -256,13 +260,11 @@ public class Arbitre {
 	}
 
 	/**
-	 * @param une
-	 *            main de type Carte[], la carte retournee en string, la couleur
-	 *            d'atout en string
+	 * @param une main de type Carte[] la carte retournee en string la couleur d'atout en string
 	 * @return un int => la position de la carte a jouer dans la main
 	 * @resume test pour jeux nieme
 	 * */
-	public static int testcartejouee2(final Carte[] main, final CouleurEnum carteret, final CouleurEnum couleurAtout) {
+	public static int testcartejouee2(final List<Carte> main, final CouleurEnum carteret, final CouleurEnum couleurAtout) {
 		int indiceCarteAJouer = 0;
 		Terminal.ecrireStringln("Carte demandee : " + carteret);
 
@@ -276,13 +278,13 @@ public class Arbitre {
 
 		testc: if (!carteret.equals(CouleurEnum.NotInitialized)) {
 			for (int i = 0; i < 8; i++) {
-				if (main[i].getCouleur().equals(carteret.toString())) {
+				if (main.get(i).getCouleur().equals(carteret.toString())) {
 					indiceCarteAJouer = i;
 					break testc;
 				}
 			}
 			for (int i = 0; i < 8; i++) {
-				if (main[i].getCouleur().equals(couleurAtout)) {
+				if (main.get(i).getCouleur().equals(couleurAtout)) {
 					indiceCarteAJouer = i;
 					break testc;
 				}

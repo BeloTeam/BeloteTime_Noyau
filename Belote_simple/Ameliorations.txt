@@ -4,10 +4,8 @@ APPLICATIONS DES BONNE PRATIQUES CAR CODE  :
 - Rajouter des constructeurs
 - utiliser des collections (arraylist) plutot que des tableaux basiques
 - Enlever les attributs declarés en static et les methodes statiques dans certains cas
-- Pour la classe couleur utiliser un enum plutot que des attributs static - fait
-- Pour la classe Figure utiliser un enum plutot que des attributs static
 - Faire un encadré de commentaire pour expliquer les methodes, utiliser javadoc (param entree, sortie ...)
-
+- Pour la main dans JoueurIntelligence remplacer tout les set par add ou suppr (demander explications)
 
 Quand on aura fait tout ça :
 

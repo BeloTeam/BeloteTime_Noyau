@@ -96,7 +96,7 @@ public class JeuxBelote {
 			// jeux.affiche();
 			// affiche sur l'interface graphique le jeux du joueur 0
 			
-			tapis.affichejeux(joueur[0].getMonPaquet());
+			tapis.affichejeux(joueur[0].getMain());
 			// prend premier tour
 			n = 2;
 			n1 = donne;
@@ -143,7 +143,7 @@ public class JeuxBelote {
 				// remet les cartes dans le paquet
 				for (int i = 0; i < 4; i++) {
 					tapis.nbcartej[i] = jeux.remetjeux(
-							joueur[i].getMonPaquet(), tapis.nbcartej[i]);
+							joueur[i].getMain(), tapis.nbcartej[i]);
 				}
 				jeux.getJeuxdist()[jeux.getLongJeuxdist()] = retourne;
 				retourne = jeux.getBlanc();
@@ -166,7 +166,7 @@ public class JeuxBelote {
 									jeux.getJeuxdist(), tapis.nbcartej[n1],
 									jeux.getBlanc());
 						}
-						joueur[n1].getMonPaquet()[7] = retourne;
+						joueur[n1].getMain().set(7,retourne);
 						retourne = jeux.getBlanc();
 						jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 2);
 						tapis.nbcartej[n1] = tapis.nbcartej[n1] + 1;
@@ -185,7 +185,7 @@ public class JeuxBelote {
 				}
 				tapis.affichecarter(retourne, jeuxAtout);
 				joueur[0].trijeux(jeuxAtout);	
-				tapis.affichejeux(joueur[0].getMonPaquet());
+				tapis.affichejeux(joueur[0].getMain() );
 				tapis.effacecarteplis();
 
 				// joue
@@ -209,7 +209,7 @@ public class JeuxBelote {
 						}
 						tapis.nbcartej[n1] = tapis.nbcartej[n1] - 1;
 						tapis.affichej(jeux.getTapisjeux()[n1], n1);
-						tapis.affichejeux(joueur[0].getMonPaquet());
+						tapis.affichejeux(joueur[0].getMain());
 						n2++;
 						n1++;
 					}
@@ -254,7 +254,7 @@ public class JeuxBelote {
 				jeux.remetjeux2();
 				jeuxAtout = CouleurEnum.NotInitialized;
 				tapis.affichecarter(retourne, jeuxAtout);
-				tapis.affichejeux(joueur[0].getMonPaquet());
+				tapis.affichejeux(joueur[0].getMain());
 			}
 			// on coupe
 			jeux.coupe(donne);

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @class JoueurProgramme
  * @author lacertus, Nathan
@@ -7,10 +10,19 @@
 
 public class JoueurIntelligence {
 
-	private Carte monPaquet[] = new Carte[8];
-	private int recoitVal = 0;
+	//private Carte monPaquet[] = new Carte[8];
+	private List<Carte> main;
+	
+	private int recoitVal;
 	private CouleurEnum choixAtout;
-
+	
+	public JoueurIntelligence(){
+		main = new ArrayList<Carte>(8);
+		for (int i = 0; i < 8; i++) {
+			main.add(new Carte(CouleurEnum.NotInitialized,FigureEnum.NotInitialized));
+		}
+		recoitVal = 0;
+	}
 
 	/**
 	 * @param
@@ -19,7 +31,7 @@ public class JoueurIntelligence {
 	 * */
 	public void affichejoueur(int x) {
 		for (int i = 0; i < Fenetre.nbcartej[x]; i++) {
-			Terminal.ecrireStringln("valeur jeux joueur " + x + " carte n " + i + " valeur " + this.monPaquet[i].getFigure() + " " + this.monPaquet[i].getCouleur());
+			Terminal.ecrireStringln("valeur jeux joueur " + x + " carte n " + i + " valeur " + this.main.get(i).getFigure() + " " + this.main.get(i).getCouleur());
 		}
 		Terminal.ecrireStringln("-----------------------");
 	}
@@ -31,7 +43,8 @@ public class JoueurIntelligence {
 	 * */
 	// recoit la carte sur le paquet
 	public int recoit(Carte[] tabCards, int y, Carte u) {
-		this.monPaquet[y] = tabCards[0];
+		System.out.println("TAILLE : "+this.main.size()+ " Elem "+y);
+		this.main.set(y, tabCards[0]);
 		y++;
 		for (int v = 0; v < 32; v++) {
 			if (v + 1 < 32) {
@@ -71,16 +84,16 @@ public class JoueurIntelligence {
 				 * on regarde le nombre d'atout qu'il possede et s'il a le valet
 				 * et 9
 				 */
-				if (this.monPaquet[i].getCouleur().equals(carteRetournee.getCouleur())) {
-					if (this.monPaquet[i].getFigure().equals(FigureEnum.Valet) || carteRetournee.getFigure().equals(FigureEnum.Valet)) {
+				if (this.main.get(i).getCouleur().equals(carteRetournee.getCouleur())) {
+					if (this.main.get(i).getFigure().equals(FigureEnum.Valet) || carteRetournee.getFigure().equals(FigureEnum.Valet)) {
 						hasValet = true;
 					}
-					if (this.monPaquet[i].getFigure().equals(FigureEnum.Neuf) || carteRetournee.getFigure().equals(FigureEnum.Neuf)) {
+					if (this.main.get(i).getFigure().equals(FigureEnum.Neuf) || carteRetournee.getFigure().equals(FigureEnum.Neuf)) {
 						hasNeuf = true;
 					}
 					nbAtout++;
 				}
-				totalpoint += Arbitre.Points(this.monPaquet[i], carteRetournee.getCouleur());
+				totalpoint += Arbitre.Points(this.main.get(i), carteRetournee.getCouleur());
 			}
 
 			// ajout des points de la carte du milieu
@@ -97,7 +110,7 @@ public class JoueurIntelligence {
 			if (totalpoint >= 40 && ((nbAtout < 4 && hasValet && hasNeuf) || (nbAtout > 3 && nbAtout < 5 && hasValet) || (nbAtout >= 5))) {
 				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur + " qui a pris : ");
 				for (int i = 0; i < 7; i++) {
-					Terminal.ecrireStringln("carte : " + monPaquet[i]);
+					Terminal.ecrireStringln("carte : " + main.get(i));
 				}
 				this.recoitVal = 1;
 			} else {
@@ -171,16 +184,16 @@ public class JoueurIntelligence {
 
 				for (int j = 0; j < nbcarte; j++) {
 					// on regarde les atouts
-					if (this.monPaquet[j].getCouleur().equals(((CouleurEnum) coulAtout[i]))) {
-						if (this.monPaquet[j].getFigure().equals(FigureEnum.Valet)) {
+					if (this.main.get(j).getCouleur().equals(((CouleurEnum) coulAtout[i]))) {
+						if (this.main.get(j).getFigure().equals(FigureEnum.Valet)) {
 							hasValetCouleurCourante = true;
 						}
-						if (this.monPaquet[j].getFigure().equals(FigureEnum.Neuf)) {
+						if (this.main.get(j).getFigure().equals(FigureEnum.Neuf)) {
 							hasNeufCouleurCourante = true;
 						}
 						nbAtoutCouleurCourante++;
 					}
-					totalpoint += Arbitre.Points(this.monPaquet[j], (CouleurEnum) coulAtout[i]);
+					totalpoint += Arbitre.Points(this.main.get(j), (CouleurEnum) coulAtout[i]);
 				}
 				// ajout des points de la carte du milieu
 				totalpoint += Arbitre.Points(carteRetournee, (CouleurEnum) coulAtout[i]);
@@ -204,7 +217,7 @@ public class JoueurIntelligence {
 				this.recoitVal = 1;
 				this.choixAtout = atoutret;
 				for (int i = 0; i < 7; i++) {
-					System.out.println("carte : " + monPaquet[i]);
+					System.out.println("carte : " + this.main.get(i));
 				}
 
 				Terminal.ecrireStringln("Le joueur N" + numeroJoueur + " a pris a la couleur " + atoutret);
@@ -228,14 +241,14 @@ public class JoueurIntelligence {
 		String[] couleurtri = { "Coeur", "Trefle", "Carreau", "Pique" };
 		for (int x = 0; x < 4; x++) {
 			for (int y = 0; y < 8; y++) {
-				if (couleurtri[x].equals(this.monPaquet[y].getCouleur().toString())) {
-					Paquettampon1[pos] = this.monPaquet[y];
+				if (couleurtri[x].equals(this.main.get(y).getCouleur().toString())) {
+					Paquettampon1[pos] = this.main.get(y);
 					pos++;
 				}
 			}
 		}
 		for (int y = 0; y < 8; y++) {
-			this.monPaquet[y] = Paquettampon1[y];
+			this.main.set(y, Paquettampon1[y]);
 		}
 	}
 
@@ -251,12 +264,12 @@ public class JoueurIntelligence {
 		System.out.println("Methode jouepremier : \nParametres :");
 		System.out.println(" carte : " + card + ", couleur demandee : " + carteret + ", couleur atout : " + coulatout);
 		System.out.println("Affichage de la main du joueur " + numeroJoueur);
-		for (int i = 0; i < monPaquet.length; i++) {
-			System.out.println(monPaquet[i]);
+		for (int i = 0; i < this.main.size(); i++) {
+			System.out.println(this.main.get(i));
 		}
 		/* FIN AFFICHAGE */
 
-		Carte renvoijouee = this.monPaquet[0];
+		Carte renvoijouee = this.main.get(0);
 		int rep;
 		switch (numeroJoueur) {
 		case 0:
@@ -267,13 +280,14 @@ public class JoueurIntelligence {
 					rep = Terminal.lireInt();
 					rep--;
 					if (rep >= 0 && rep <= 7) {
-						renvoijouee = this.monPaquet[rep];
-						if (Arbitre.testcartejouee(this.monPaquet, carteret, renvoijouee, coulatout)) {
+						renvoijouee = this.main.get(rep);
+						if (Arbitre.testcartejouee(this.main, carteret, renvoijouee, coulatout)) {
 							for (int v = rep; v < 8; v++) {
 								if (v + 1 < 8) {
-									this.monPaquet[v] = this.monPaquet[v + 1];
+									//TODO risque de lecture/ecriture sur la meme liste
+									this.main.set(v, this.main.get(v+1));
 								} else {
-									this.monPaquet[v] = card;
+									this.main.set(v, card);
 								}
 							}
 							n = 0;
@@ -285,16 +299,17 @@ public class JoueurIntelligence {
 			}
 			break;
 		default:
-			rep = Arbitre.testcartejouee2(this.monPaquet, carteret, coulatout);
+			rep = Arbitre.testcartejouee2(this.main, carteret, coulatout);
 			Terminal.ecrireStringln("Le joueur choisi de jouer la carte n°"
-					+ rep + " : " + this.monPaquet[rep]);
-			renvoijouee = this.monPaquet[rep];
+					+ rep + " : " + this.main.get(rep));
+			renvoijouee = this.main.get(rep);
 
 			for (int i = rep; i < 8; i++) {
 				if (i + 1 < 8) {
-					this.monPaquet[i] = this.monPaquet[i + 1];
+					//TODO risque de lecture/ecriture sur la meme liste
+					this.main.set(i, this.main.get(i+1));
 				} else {
-					this.monPaquet[i] = card;
+					this.main.set(i,card);
 				}
 
 			}
@@ -310,20 +325,24 @@ public class JoueurIntelligence {
 	 * */
 	public void afficherMain() {
 		Terminal.ecrireStringln("Affichage main : ");
-		for (int i = 0; i < monPaquet.length; i++) {
-			Terminal.ecrireStringln(monPaquet[i].toString());
+		for (int i = 0; i < this.main.size(); i++) {
+			Terminal.ecrireStringln(this.main.get(i).toString());
 		}
 	}
 
-	public Carte[] getMonPaquet() {
-		return monPaquet;
-	}
+	/*public Carte[] getMonPaquet() {
+		return this.monPaquet;
+	}*/
 
 	public int getRecoitval() {
-		return recoitVal;
+		return this.recoitVal;
 	}
 
 	public CouleurEnum getChoixatout() {
 		return choixAtout;
+	}
+
+	public List<Carte> getMain() {
+		return main;
 	}
 }

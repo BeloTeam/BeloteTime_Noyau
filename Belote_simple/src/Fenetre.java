@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -69,10 +71,10 @@ public class Fenetre extends JFrame implements ActionListener {
 	}
 
 	// affiche le jeux du joueur 0
-	public void affichejeux(Carte[] valpq) {
+	public void affichejeux(List<Carte> valpq) {
 		int x = Fenetre.nbcartej[0];
 		for (int v = 0; v < x; v++) {
-			Fenetre.cartej0[v] = new ImageIcon("image/" + valpq[v].getFigure() + valpq[v].getCouleur() + ".gif");
+			Fenetre.cartej0[v] = new ImageIcon("image/" + valpq.get(v).getFigure() + valpq.get(v).getCouleur() + ".gif");
 		}
 		paneau.repaint();
 	}

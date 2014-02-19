@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * @class Paquet
  * @author lacertus, Nathan
@@ -161,14 +163,14 @@ public class Paquet {
 	 * @resume
 	 * */
 	// remet les cartes
-	public int remetjeux(Carte[] x, int y) {
+	public int remetjeux(List<Carte> x, int y) {
 		for (int u = 0; u < y; u++) {
-			this.jeuxdist[this.longJeuxdist] = x[0];
+			this.jeuxdist[this.longJeuxdist] = x.get(0);
 			for (int v = 0; v < y; v++) {
 				if (v + 1 < y) {
-					x[v] = x[v + 1];
+					x.set(v,x.get(v+1)) ;
 				} else {
-					x[v] = this.blanc;
+					x.set(v,this.blanc);
 				}
 			}
 			this.longJeuxdist++;
