@@ -26,4 +26,17 @@ public class Carte {
 	public String toString() {
 		return this.figure + " de " + this.couleur;
 	}
+	
+	public boolean equals(Carte carte)
+	{
+		return this.couleur == carte.couleur && this.figure == carte.figure;
+	}
+
+	public void setCouleur(CouleurEnum couleur) {
+		this.couleur = couleur;
+	}
+
+	public void setFigure(FigureEnum figure) {
+		this.figure = figure;
+	}
 }
