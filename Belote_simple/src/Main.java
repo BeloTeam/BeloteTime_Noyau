@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Main {
@@ -31,26 +30,24 @@ public class Main {
 		}
 	}
 
-	/*
-	 * TODO methodes a realiser
-	 * 
-	 * Ajouter carte à la main - fait 
-	 * Modifier un carte de la main - fait
-	 * Enlever un carte a la main - fait 
-	 * mettre a jour directement tte les listes - fait
-	 */
-
-	public void addCarte(Carte c) {
+	public void add(Carte c) {
 		this.main.add(c);
 		this.synchronizeMain();
 	}
 
-	public void removeCarte(Carte c) {
-		this.main.remove(trouverCarte(c));
+	public void remove(Carte c) {
+		this.main.remove(find(c));
 		synchronizeMain();
 	}
 
-	private int trouverCarte(Carte carte) {
+	/**
+	 * Permet de trouver une carte dans la main
+	 * 
+	 * @param Carte
+	 *            une carte que l'on veut trouver
+	 * @return retourne l'indice de la carte dans la main
+	 * */
+	public int find(Carte carte) {
 		for (Carte c : this.main) {
 			if (c.equals(carte)) {
 				return this.main.indexOf(carte);
@@ -59,17 +56,24 @@ public class Main {
 		return -1;
 	}
 
+	/**
+	 * Permet de sychroniser la mains de couleur avec la main principale qui
+	 * contient toutes les cartes
+	 * 
+	 * @param void
+	 * @return void
+	 * */
 	private void synchronizeMain() {
 		/*
 		 * TODO il faut trouver mieux, pas du tout optimisé
-		 * */
-		//on supprime toutes les cartes
+		 */
+		// on supprime toutes les cartes
 		this.mainCarreau.removeAll(this.mainCarreau);
 		this.mainCoeur.removeAll(this.mainCoeur);
 		this.mainPique.removeAll(this.mainPique);
 		this.mainTrefle.removeAll(this.mainTrefle);
-		
-		//on remet les nouvelles cartes
+
+		// on remet les nouvelles cartes
 		for (Carte c : main) {
 			switch (c.getCouleur()) {
 			case Carreau:
@@ -85,25 +89,37 @@ public class Main {
 				this.mainTrefle.add(c);
 				break;
 			default:
-				//cas de carte en NotInitialized
+				// cas de carte en NotInitialized
 				break;
 			}
 		}
 	}
 
-	public void modifCarte(Carte carte, FigureEnum f, CouleurEnum c) {
-		this.main.get(trouverCarte(carte)).setCouleur(c);
-		this.main.get(trouverCarte(carte)).setFigure(f);
+	/**
+	 * Permet de modifier la couleur ou la figure d'une carte qui se trouve dans
+	 * la main
+	 * 
+	 * @param carte
+	 *            carte que l'on veut modifier
+	 * @param figure
+	 *            nouvelle figure
+	 * @param couleur
+	 *            nouvelle couleur
+	 * @return void
+	 * */
+	public void modifCarte(Carte carte, FigureEnum figure, CouleurEnum couleur) {
+		this.main.get(find(carte)).setCouleur(couleur);
+		this.main.get(find(carte)).setFigure(figure);
 		this.synchronizeMain();
 	}
 
 	public void modifCarte(Carte carte, CouleurEnum c) {
-		this.main.get(trouverCarte(carte)).setCouleur(c);
+		this.main.get(find(carte)).setCouleur(c);
 		this.synchronizeMain();
 	}
 
 	public void modifCarte(Carte carte, FigureEnum f) {
-		this.main.get(trouverCarte(carte)).setFigure(f);
+		this.main.get(find(carte)).setFigure(f);
 		this.synchronizeMain();
 	}
 
