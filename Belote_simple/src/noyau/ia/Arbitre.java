@@ -1,11 +1,11 @@
-package ia;
+package noyau.ia;
 
 import java.util.List;
 
-import noyau.Carte;
-import noyau.CouleurEnum;
-import noyau.Main;
-import noyau.Terminal;
+import noyau.classesMetier.Carte;
+import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.Main;
+import noyau.classesMetier.Terminal;
 
 
 /**

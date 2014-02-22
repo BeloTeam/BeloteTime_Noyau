@@ -1,4 +1,4 @@
-package noyau;
+package noyau.classesMetier;
 /**
  *  @class Terminal
  *  @author lacertus, Nathan
@@ -10,7 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import exception.TerminalException;
+import noyau.exception.TerminalException;
+
 
 public class Terminal {
 

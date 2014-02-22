@@ -1,4 +1,4 @@
-package exception;
+package noyau.exception;
 
 public class TerminalException extends RuntimeException {
 	Exception ex;

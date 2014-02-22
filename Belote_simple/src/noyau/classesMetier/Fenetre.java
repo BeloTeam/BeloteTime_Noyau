@@ -1,4 +1,4 @@
-package noyau;
+package noyau.classesMetier;
 /**
  *  @class fenetre
  *  @author lacertus, Nathan

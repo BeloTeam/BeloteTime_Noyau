@@ -1,10 +1,10 @@
-package ia;
+package noyau.ia;
 
-import noyau.Carte;
-import noyau.CouleurEnum;
-import noyau.Fenetre;
-import noyau.Paquet;
-import noyau.Terminal;
+import noyau.classesMetier.Carte;
+import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.Fenetre;
+import noyau.classesMetier.Paquet;
+import noyau.classesMetier.Terminal;
 
 
 /**

@@ -1,4 +1,4 @@
-package noyau;
+package noyau.classesMetier;
 
 import java.util.ArrayList;
 import java.util.List;

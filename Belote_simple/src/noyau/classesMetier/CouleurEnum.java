@@ -1,4 +1,4 @@
-package noyau;
+package noyau.classesMetier;
 /**
  * @class Couleur
  * @author Nathan

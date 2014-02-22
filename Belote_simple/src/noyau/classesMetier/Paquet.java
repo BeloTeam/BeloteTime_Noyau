@@ -1,10 +1,11 @@
-package noyau;
+package noyau.classesMetier;
 
-import ia.Arbitre;
 
 import java.util.List;
 
-import exception.TerminalException;
+import noyau.exception.TerminalException;
+import noyau.ia.Arbitre;
+
 
 
 /**

@@ -1,17 +1,17 @@
-package ia;
+package noyau.ia;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import exception.TerminalException;
 
-import ia.Arbitre;
-import noyau.Carte;
-import noyau.CouleurEnum;
-import noyau.Fenetre;
-import noyau.FigureEnum;
-import noyau.Main;
-import noyau.Terminal;
+import noyau.classesMetier.Carte;
+import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.Fenetre;
+import noyau.classesMetier.FigureEnum;
+import noyau.classesMetier.Main;
+import noyau.classesMetier.Terminal;
+import noyau.exception.TerminalException;
+import noyau.ia.Arbitre;
 
 
 
