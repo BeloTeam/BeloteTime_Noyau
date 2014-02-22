@@ -1,3 +1,4 @@
+package noyau;
 /**
  * @class Couleur
  * @author Nathan

@@ -1,3 +1,12 @@
+package ia;
+
+import noyau.Carte;
+import noyau.CouleurEnum;
+import noyau.Fenetre;
+import noyau.Paquet;
+import noyau.Terminal;
+
+
 /**
  * @class JeuxBelote
  * @author lacertus, Nathan,Loic

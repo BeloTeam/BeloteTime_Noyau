@@ -1,3 +1,5 @@
+package noyau;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +104,7 @@ public class Main {
 		System.out.println("-------------------------------------------------------------------");
 	}
 
-	boolean hasValet(CouleurEnum c) {
+	public boolean hasValet(CouleurEnum c) {
 		for (Carte carte : this.getListCouleur(c)) {
 			if(carte.getFigure() == FigureEnum.Valet)
 				return true;

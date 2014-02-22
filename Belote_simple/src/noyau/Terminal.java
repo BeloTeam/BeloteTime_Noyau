@@ -1,3 +1,4 @@
+package noyau;
 /**
  *  @class Terminal
  *  @author lacertus, Nathan
@@ -8,6 +9,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import exception.TerminalException;
 
 public class Terminal {
 
@@ -233,10 +236,4 @@ public class Terminal {
 	}
 }
 
-class TerminalException extends RuntimeException {
-	Exception ex;
 
-	TerminalException(Exception e) {
-		ex = e;
-	}
-}

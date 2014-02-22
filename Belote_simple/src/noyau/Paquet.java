@@ -1,4 +1,11 @@
+package noyau;
+
+import ia.Arbitre;
+
 import java.util.List;
+
+import exception.TerminalException;
+
 
 /**
  * @class Paquet

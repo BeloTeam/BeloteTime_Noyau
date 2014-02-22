@@ -1,4 +1,12 @@
+package ia;
+
 import java.util.List;
+
+import noyau.Carte;
+import noyau.CouleurEnum;
+import noyau.Main;
+import noyau.Terminal;
+
 
 /**
  * @class Arbitre

@@ -1,3 +1,4 @@
+package noyau;
 /**
  *  @class fenetre
  *  @author lacertus, Nathan
@@ -18,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+
 // la classe formulaire
 public class Fenetre extends JFrame implements ActionListener {
 	/**
@@ -25,14 +27,14 @@ public class Fenetre extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	// le constructeur
-	static int[] nbcartej = { 0, 0, 0, 0 };
-	static int pointj1j3 = 0;
-	static int pointj0j2 = 0;
-	static String gagnant = new String("");
-	static String joueurpris = new String("");
-	static ImageIcon carter, cartepl, atout;
-	static ImageIcon[] cartej0 = new ImageIcon[8];
-	static ImageIcon[] cartej = new ImageIcon[4];
+	public static int[] nbcartej = { 0, 0, 0, 0 };
+	public static int pointj1j3 = 0;
+	public static int pointj0j2 = 0;
+	public static String gagnant = new String("");
+	public static String joueurpris = new String("");
+	public static ImageIcon carter, cartepl, atout;
+	public static ImageIcon[] cartej0 = new ImageIcon[8];
+	public static ImageIcon[] cartej = new ImageIcon[4];
 	JPanel paneau;
 
 	public void initFenetre() {

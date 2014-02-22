@@ -1,5 +1,19 @@
+package ia;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import exception.TerminalException;
+
+import ia.Arbitre;
+import noyau.Carte;
+import noyau.CouleurEnum;
+import noyau.Fenetre;
+import noyau.FigureEnum;
+import noyau.Main;
+import noyau.Terminal;
+
+
 
 /**
  * @class JoueurProgramme
@@ -172,7 +186,7 @@ public class JoueurIntelligence {
 			}
 			break;
 		default:
-			// boucle de teste sur les 4 getCouleur()s pour l'ordinateur
+			// boucle de test sur les 4 getCouleur()s pour l'ordinateur
 			for (int i = 0; i < 4; i++) {
 				totalpoint = 0;
 				nbAtoutCouleurPrecedente = nbAtoutCouleurCourante;
