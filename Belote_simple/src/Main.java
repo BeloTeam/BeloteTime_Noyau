@@ -16,9 +16,9 @@ public class Main {
 		mainTrefle = new ArrayList<Carte>(8);
 		mainCarreau = new ArrayList<Carte>(8);
 
-		for (int i = 0; i < 8; i++) {
-			main.add(new Carte(CouleurEnum.NotInitialized,
-					FigureEnum.NotInitialized));
+		/*for (int i = 0; i < 8; i++) {
+			main.add(new Carte(CouleurEnum.Carreau,
+					FigureEnum.As));
 			mainPique.add(new Carte(CouleurEnum.NotInitialized,
 					FigureEnum.NotInitialized));
 			mainCoeur.add(new Carte(CouleurEnum.NotInitialized,
@@ -27,17 +27,95 @@ public class Main {
 					FigureEnum.NotInitialized));
 			mainCarreau.add(new Carte(CouleurEnum.NotInitialized,
 					FigureEnum.NotInitialized));
-		}
+		}*/
 	}
 
 	public void add(Carte c) {
-		this.main.add(c);
-		this.synchronizeMain();
+		if(this.main.size() < 9){
+			this.main.add(c);
+			this.synchronizeMain();
+		}		
 	}
 
 	public void remove(Carte c) {
 		this.main.remove(find(c));
 		synchronizeMain();
+	}
+
+	private List<Carte> getListCouleur(CouleurEnum c) {
+		switch (c) {
+		case Carreau:
+			return mainCarreau;
+		case Coeur:
+			return mainCoeur;
+		case Pique:
+			return mainPique;
+		case Trefle:
+			return mainTrefle;
+		default:
+			//lever un exception
+			return null;
+		}
+	}
+
+	public List<Carte> getListAtout(CouleurEnum c) {
+		return this.getListAtout(c);
+	}
+
+	public int getNbAtout(CouleurEnum c) {
+		return this.getListCouleur(c).size();
+	}
+
+	public boolean hasNeuf(CouleurEnum c) {
+		for (Carte carte : this.getListCouleur(c)) {
+			if(carte.getFigure() == FigureEnum.Neuf)
+				return true;
+		}
+		return false;
+	}
+	
+	public void afficher() {
+		System.out.println("-------------------------------------------------------------------");
+		System.out.println("-----Main principale");
+		for (Carte c : this.main) {
+			System.out.println(c.toString());
+		}
+		
+		System.out.println("\n-----Main carreau");
+		for (Carte c : this.mainCarreau) {
+			System.out.println(c.toString());
+		}
+		
+		System.out.println("\n-----Main coeur");
+		for (Carte c : this.mainCoeur) {
+			System.out.println(c.toString());
+		}
+		
+		System.out.println("\n-----Main pique");
+		for (Carte c : this.mainPique) {
+			System.out.println(c.toString());
+		}
+		System.out.println("\n-----Main trefle");
+		for (Carte c : this.mainTrefle) {
+			System.out.println(c.toString());
+		}
+		System.out.println("-------------------------------------------------------------------");
+	}
+
+	boolean hasValet(CouleurEnum c) {
+		for (Carte carte : this.getListCouleur(c)) {
+			if(carte.getFigure() == FigureEnum.Valet)
+				return true;
+		}
+		return false;
+	} 
+
+	public Carte get(int i) {
+		return this.main.get(i);
+	}
+
+	public int size() {
+		return this.main.size();
 	}
 
 	/**
@@ -107,19 +185,24 @@ public class Main {
 	 *            nouvelle couleur
 	 * @return void
 	 * */
-	public void modifCarte(Carte carte, FigureEnum figure, CouleurEnum couleur) {
+	public void set(Carte carte, FigureEnum figure, CouleurEnum couleur) {
 		this.main.get(find(carte)).setCouleur(couleur);
 		this.main.get(find(carte)).setFigure(figure);
 		this.synchronizeMain();
 	}
 
-	public void modifCarte(Carte carte, CouleurEnum c) {
+	public void set(Carte carte, CouleurEnum c) {
 		this.main.get(find(carte)).setCouleur(c);
 		this.synchronizeMain();
 	}
 
-	public void modifCarte(Carte carte, FigureEnum f) {
+	public void set(Carte carte, FigureEnum f) {
 		this.main.get(find(carte)).setFigure(f);
+		this.synchronizeMain();
+	}
+
+	public void set(int indice, Carte carte) {
+		this.main.set(indice, carte);
 		this.synchronizeMain();
 	}
 

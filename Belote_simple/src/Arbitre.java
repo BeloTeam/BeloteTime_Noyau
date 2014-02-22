@@ -28,7 +28,7 @@ public class Arbitre {
 	 * @resume
 	 * */
 	// renvois la valeur d'une carte
-	public static int Points(final Carte carte, final CouleurEnum couleurAtout) {
+	public static int points(final Carte carte, final CouleurEnum couleurAtout) {
 		int point = 0;
 		
 		switch (carte.getFigure()) {
@@ -67,6 +67,23 @@ public class Arbitre {
 		}
 		return point;
 	}
+	
+	
+	/**
+	 * compte les points d'une main
+	 * @param
+	 * @return
+	 * */
+	public static int pointsMain(final Main main, final CouleurEnum couleurAtout)
+	{
+		int pointTotal=0;
+		for (Carte carte : main.getMain()) {
+			pointTotal += points(carte, couleurAtout);
+		}
+		
+		return pointTotal;
+	}
+	
 
 	/**
 	 * @param
@@ -74,7 +91,7 @@ public class Arbitre {
 	 * @resume
 	 * */
 	// points sur une manche
-	public static int Pointsjeu(final Carte carte, final CouleurEnum couleurJoueur1, final CouleurEnum couleurJoueur2) {
+	public static int pointsjeu(final Carte carte, final CouleurEnum couleurJoueur1, final CouleurEnum couleurJoueur2) {
 		int point = 0;
 		if (couleurJoueur1.equals(carte.getCouleur())) {
 			switch (carte.getFigure()) {
@@ -176,7 +193,7 @@ public class Arbitre {
 	 * @return
 	 * @resume
 	 * */
-	public static boolean Gagnemanche(final int[] x, final int y) {
+	public static boolean gagneManche(final int[] x, final int y) {
 		boolean v = false;
 		if (y == 1 || y == 3) {
 			if (x[0] < x[1]) {
@@ -216,7 +233,7 @@ public class Arbitre {
 	 * @return boolean 
 	 * @resume test carte jouer
 	 * */
-	public static boolean testcartejouee(final List<Carte> main,
+	public static boolean testcartejouee(final /*List<Carte>*/Main main,
 			final CouleurEnum y, final Carte uv, final CouleurEnum couleurAtout) {
 		boolean v = false;
 
@@ -264,7 +281,7 @@ public class Arbitre {
 	 * @return un int => la position de la carte a jouer dans la main
 	 * @resume test pour jeux nieme
 	 * */
-	public static int testcartejouee2(final List<Carte> main, final CouleurEnum carteret, final CouleurEnum couleurAtout) {
+	public static int testcartejouee2(final /*List<Carte>*/Main main, final CouleurEnum carteret, final CouleurEnum couleurAtout) {
 		int indiceCarteAJouer = 0;
 		Terminal.ecrireStringln("Carte demandee : " + carteret);
 

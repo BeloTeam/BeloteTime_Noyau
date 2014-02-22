@@ -1,6 +1,6 @@
 /**
  * @class JeuxBelote
- * @author lacertus, Nathan
+ * @author lacertus, Nathan,Loic
  * @resume classe principale permettant de lancer la partie
  * 
  * */
@@ -237,7 +237,7 @@ public class JeuxBelote {
 						tapis.pointj0j2 = tapis.pointj0j2 + 250;
 					}
 				} else {
-					if (Arbitre.Gagnemanche(jeux.getPointplis(), prend)) {
+					if (Arbitre.gagneManche(jeux.getPointplis(), prend)) {
 						tapis.pointj1j3 = tapis.pointj1j3
 								+ jeux.getPointplis()[1];
 						tapis.pointj0j2 = tapis.pointj0j2

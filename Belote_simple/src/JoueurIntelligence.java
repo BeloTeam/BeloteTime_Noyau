@@ -3,7 +3,7 @@ import java.util.List;
 
 /**
  * @class JoueurProgramme
- * @author lacertus, Nathan
+ * @author lacertus, Nathan,Loic
  * @resume represente l'IA d'un joueur de belote
  * 
  * */
@@ -11,13 +11,15 @@ import java.util.List;
 public class JoueurIntelligence {
 
 	//private Carte monPaquet[] = new Carte[8];
-	private List<Carte> main;
+	//private List<Carte> main;
+	private Main main;
 	
 	private int recoitVal;
 	private CouleurEnum choixAtout;
 	
 	public JoueurIntelligence(){
-		main = new ArrayList<Carte>(8);
+		//main = new ArrayList<Carte>(8);
+		main = new Main();
 		for (int i = 0; i < 8; i++) {
 			main.add(new Carte(CouleurEnum.NotInitialized,FigureEnum.NotInitialized));
 		}
@@ -64,8 +66,9 @@ public class JoueurIntelligence {
 	// prend premier tour
 	public void prendpremier(int numeroJoueur, Carte carteRetournee, int nbcarte) {
 		String rep = new String();
-		boolean hasValet = false, hasNeuf = false;
-		int totalpoint = 0, nbAtout = 0;
+		boolean hasValet = this.main.hasValet(carteRetournee.getCouleur());
+		boolean hasNeuf = this.main.hasNeuf(carteRetournee.getCouleur());
+		int totalpoint,nbAtout;
 
 		switch (numeroJoueur) {
 		case 0:
@@ -78,28 +81,16 @@ public class JoueurIntelligence {
 			}
 			break;
 		default:
-			for (int i = 0; i < nbcarte; i++) {
-
-				/*
-				 * on regarde le nombre d'atout qu'il possede et s'il a le valet
-				 * et 9
-				 */
-				if (this.main.get(i).getCouleur().equals(carteRetournee.getCouleur())) {
-					if (this.main.get(i).getFigure().equals(FigureEnum.Valet) || carteRetournee.getFigure().equals(FigureEnum.Valet)) {
-						hasValet = true;
-					}
-					if (this.main.get(i).getFigure().equals(FigureEnum.Neuf) || carteRetournee.getFigure().equals(FigureEnum.Neuf)) {
-						hasNeuf = true;
-					}
-					nbAtout++;
-				}
-				totalpoint += Arbitre.Points(this.main.get(i), carteRetournee.getCouleur());
-			}
-
+			// on compte le nombre d'atout et on ajoute la carte retournee
+			nbAtout = this.main.getNbAtout(carteRetournee.getCouleur())+1;
+			
+			//on compte le nombre de points de la main du joueur
+			totalpoint = Arbitre.pointsMain(main, carteRetournee.getCouleur());
+			
 			// ajout des points de la carte du milieu
-			totalpoint += Arbitre.Points(carteRetournee, carteRetournee.getCouleur());
-			// on ajoute la carte retournee a notre nombre d'atouts
-			nbAtout++;
+			totalpoint += Arbitre.points(carteRetournee, carteRetournee.getCouleur());
+			
+			
 			/*
 			 * on prend si : - on a 40 pts et moins de 4 atouts avec le valet et
 			 * le neuf - on a 40pts et plus de 3 atouts avec le valet - on a
@@ -107,7 +98,8 @@ public class JoueurIntelligence {
 			 */
 			Terminal.ecrireStringln("Joueur " + numeroJoueur + " : ");
 			Terminal.ecrireStringln("Nombre d'atouts : " + nbAtout + ", Valet : " + hasValet + " Neuf : " + hasNeuf + ", points : " + totalpoint);
-			if (totalpoint >= 40 && ((nbAtout < 4 && hasValet && hasNeuf) || (nbAtout > 3 && nbAtout < 5 && hasValet) || (nbAtout >= 5))) {
+			
+			if (prendrePremierTour(hasValet, hasNeuf, totalpoint, nbAtout)) {
 				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur + " qui a pris : ");
 				for (int i = 0; i < 7; i++) {
 					Terminal.ecrireStringln("carte : " + main.get(i));
@@ -123,6 +115,11 @@ public class JoueurIntelligence {
 
 	}
 
+	private boolean prendrePremierTour(boolean hasValet, boolean hasNeuf,
+			int totalpoint, int nbAtout) {
+		return totalpoint >= 40 && ((nbAtout < 4 && hasValet && hasNeuf) || (nbAtout > 3 && nbAtout < 5 && hasValet) || (nbAtout >= 5));
+	}
+
 	/**
 	 * @param
 	 * @return
@@ -133,7 +130,10 @@ public class JoueurIntelligence {
 		String rep = new String();
 		CouleurEnum atoutret = CouleurEnum.NotInitialized;
 		
-		Object[] coulAtout = new Object[4];
+		System.out.println("===============DEUXIEME TOUR ===============" );
+		System.out.println(carteRetournee);
+		
+		CouleurEnum[] coulAtout = new CouleurEnum[4];
 		coulAtout[0] = CouleurEnum.Coeur;
 		coulAtout[1] = CouleurEnum.Pique;
 		coulAtout[2] = CouleurEnum.Trefle;
@@ -179,29 +179,23 @@ public class JoueurIntelligence {
 				nbAtoutCouleurCourante = 0;
 				hasValetCouleurPrecedente = hasValetCouleurCourante;
 				hasNeufCouleurPrecedente = hasNeufCouleurCourante;
-				hasValetCouleurCourante = false;
-				hasNeufCouleurCourante = false;
+				hasValetCouleurCourante = this.main.hasValet(coulAtout[i]);
+				hasNeufCouleurCourante = this.main.hasNeuf(coulAtout[i]);
 
-				for (int j = 0; j < nbcarte; j++) {
-					// on regarde les atouts
-					if (this.main.get(j).getCouleur().equals(((CouleurEnum) coulAtout[i]))) {
-						if (this.main.get(j).getFigure().equals(FigureEnum.Valet)) {
-							hasValetCouleurCourante = true;
-						}
-						if (this.main.get(j).getFigure().equals(FigureEnum.Neuf)) {
-							hasNeufCouleurCourante = true;
-						}
-						nbAtoutCouleurCourante++;
-					}
-					totalpoint += Arbitre.Points(this.main.get(j), (CouleurEnum) coulAtout[i]);
-				}
+				
+				// on compte le nombre d'atout et on ajoute la carte retournee
+				nbAtoutCouleurCourante = this.main.getNbAtout(coulAtout[i])+1;
+				
+				//on compte le nombre de points de la main du joueur
+				totalpoint = Arbitre.pointsMain(main, coulAtout[i]);
+				
 				// ajout des points de la carte du milieu
-				totalpoint += Arbitre.Points(carteRetournee, (CouleurEnum) coulAtout[i]);
+				totalpoint += Arbitre.points(carteRetournee, carteRetournee.getCouleur());
+				
+				// ajout des points de la carte du milieu
+				totalpoint += Arbitre.points(carteRetournee, carteRetournee.getCouleur());
 
-				if (pointInt < totalpoint 
-						&& ((nbAtoutCouleurCourante < 4 && hasValetCouleurCourante && hasNeufCouleurCourante)
-								|| (nbAtoutCouleurCourante > 3 && nbAtoutCouleurCourante < 5 && hasValetCouleurCourante) 
-								|| (nbAtoutCouleurCourante >= 5))) {
+				if (prendreDeuxiemeTour(hasValetCouleurCourante, hasNeufCouleurCourante,totalpoint, pointInt, nbAtoutCouleurCourante)) {
 					pointInt = totalpoint;
 					atoutret = (CouleurEnum) coulAtout[i];
 				}
@@ -212,6 +206,8 @@ public class JoueurIntelligence {
 						+ hasValetCouleurCourante + " Neuf : "
 						+ hasNeufCouleurCourante + ", points : " + totalpoint);
 			}
+			
+			
 			// test pour la prise
 			if (pointInt >= 40) {
 				this.recoitVal = 1;
@@ -226,6 +222,15 @@ public class JoueurIntelligence {
 			}
 			break;
 		}
+	}
+
+	private boolean prendreDeuxiemeTour(boolean hasValetCouleurCourante,
+			boolean hasNeufCouleurCourante, int totalpoint, int pointInt,
+			int nbAtoutCouleurCourante) {
+		return pointInt < totalpoint 
+				&& ((nbAtoutCouleurCourante < 4 && hasValetCouleurCourante && hasNeufCouleurCourante)
+						|| (nbAtoutCouleurCourante > 3 && nbAtoutCouleurCourante < 5 && hasValetCouleurCourante) 
+						|| (nbAtoutCouleurCourante >= 5));
 	}
 
 	/**
@@ -330,9 +335,6 @@ public class JoueurIntelligence {
 		}
 	}
 
-	/*public Carte[] getMonPaquet() {
-		return this.monPaquet;
-	}*/
 
 	public int getRecoitval() {
 		return this.recoitVal;
@@ -343,6 +345,7 @@ public class JoueurIntelligence {
 	}
 
 	public List<Carte> getMain() {
-		return main;
+		//return main;
+		return main.getMain();
 	}
 }

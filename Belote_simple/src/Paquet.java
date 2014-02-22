@@ -283,7 +283,7 @@ public class Paquet {
 		int val2 = 0;
 		int points;
 		for (int x = 0; x < 4; x++) {
-			val = Arbitre.Pointsjeu(this.tapisjeux[x], y, this.carteJoue);
+			val = Arbitre.pointsjeu(this.tapisjeux[x], y, this.carteJoue);
 			if (val > val2) {
 				val2 = val;
 				pos = x;
@@ -293,7 +293,7 @@ public class Paquet {
 
 			for (int x = 0; x < 4; x++) {
 				this.plisJ1J3[this.posplis[1]] = this.tapisjeux[x];
-				points = Arbitre.Points(this.tapisjeux[x], y);
+				points = Arbitre.points(this.tapisjeux[x], y);
 				this.pointplis[1] = this.pointplis[1] + points;
 				this.tapisjeux[x] = this.blanc;
 				this.posplis[1] = this.posplis[1] + 1;
@@ -304,7 +304,7 @@ public class Paquet {
 		} else {
 			for (int x = 0; x < 4; x++) {
 				this.plisJ0J2[this.posplis[0]] = this.tapisjeux[x];
-				points = Arbitre.Points(this.tapisjeux[x], y);
+				points = Arbitre.points(this.tapisjeux[x], y);
 				this.pointplis[0] = this.pointplis[0] + points;
 				this.tapisjeux[x] = this.blanc;
 				this.posplis[0] = this.posplis[0] + 1;
