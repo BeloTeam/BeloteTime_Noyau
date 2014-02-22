@@ -40,14 +40,16 @@ public class JoueurIntelligence {
 		recoitVal = 0;
 	}
 
+
 	/**
-	 * @param
-	 * @return
-	 * @resume
+	 * Permet d'afficher la main d'un joueur
+	 * @param int numJoueur numero du joueur
+	 * @return void
+	 * 
 	 * */
-	public void affichejoueur(int x) {
-		for (int i = 0; i < Fenetre.nbcartej[x]; i++) {
-			Terminal.ecrireStringln("valeur jeux joueur " + x + " carte n " + i + " valeur " + this.main.get(i).getFigure() + " " + this.main.get(i).getCouleur());
+	public void affichejoueur(int numJoueur) {
+		for (int i = 0; i < Fenetre.nbcartej[numJoueur]; i++) {
+			Terminal.ecrireStringln("valeur jeux joueur " + numJoueur + " carte n " + i + " valeur " + this.main.get(i).getFigure() + " " + this.main.get(i).getCouleur());
 		}
 		Terminal.ecrireStringln("-----------------------");
 	}
@@ -59,7 +61,7 @@ public class JoueurIntelligence {
 	 * */
 	// recoit la carte sur le paquet
 	public int recoit(Carte[] tabCards, int y, Carte u) {
-		System.out.println("TAILLE : "+this.main.size()+ " Elem "+y);
+		//System.out.println("TAILLE : "+this.main.size()+ " Elem "+y);
 		this.main.set(y, tabCards[0]);
 		y++;
 		for (int v = 0; v < 32; v++) {
@@ -95,29 +97,26 @@ public class JoueurIntelligence {
 			}
 			break;
 		default:
+			//cas des joueur controle par l'IA
+			
 			// on compte le nombre d'atout et on ajoute la carte retournee
 			nbAtout = this.main.getNbAtout(carteRetournee.getCouleur())+1;
-			
 			//on compte le nombre de points de la main du joueur
 			totalpoint = Arbitre.pointsMain(main, carteRetournee.getCouleur());
-			
 			// ajout des points de la carte du milieu
 			totalpoint += Arbitre.points(carteRetournee, carteRetournee.getCouleur());
 			
+			Terminal.ecrireStringln("Joueur " + numeroJoueur + " : ");
+			Terminal.ecrireStringln("Nombre d'atouts : " + nbAtout + ", Valet : " + hasValet + " Neuf : " + hasNeuf + ", points : " + totalpoint);
 			
 			/*
 			 * on prend si : - on a 40 pts et moins de 4 atouts avec le valet et
 			 * le neuf - on a 40pts et plus de 3 atouts avec le valet - on a
 			 * 40pts et plus de 5 atouts
 			 */
-			Terminal.ecrireStringln("Joueur " + numeroJoueur + " : ");
-			Terminal.ecrireStringln("Nombre d'atouts : " + nbAtout + ", Valet : " + hasValet + " Neuf : " + hasNeuf + ", points : " + totalpoint);
-			
 			if (prendrePremierTour(hasValet, hasNeuf, totalpoint, nbAtout)) {
-				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur + " qui a pris : ");
-				for (int i = 0; i < 7; i++) {
-					Terminal.ecrireStringln("carte : " + main.get(i));
-				}
+				Terminal.ecrireStringln("Jeu du joueur " + numeroJoueur + " qui a pris : "+ this.main);
+				
 				this.recoitVal = 1;
 			} else {
 				this.recoitVal = 0;
@@ -143,10 +142,6 @@ public class JoueurIntelligence {
 	public void prenddeuxieme(int numeroJoueur, Carte carteRetournee, int nbcarte) {
 		String rep = new String();
 		CouleurEnum atoutret = CouleurEnum.NotInitialized;
-		
-		System.out.println("===============DEUXIEME TOUR ===============" );
-		System.out.println(carteRetournee);
-		
 		CouleurEnum[] coulAtout = new CouleurEnum[4];
 		coulAtout[0] = CouleurEnum.Coeur;
 		coulAtout[1] = CouleurEnum.Pique;
@@ -337,18 +332,6 @@ public class JoueurIntelligence {
 		return renvoijouee;
 	}
 
-	/**
-	 * @param
-	 * @return
-	 * @resume
-	 * */
-	public void afficherMain() {
-		Terminal.ecrireStringln("Affichage main : ");
-		for (int i = 0; i < this.main.size(); i++) {
-			Terminal.ecrireStringln(this.main.get(i).toString());
-		}
-	}
-
 
 	public int getRecoitval() {
 		return this.recoitVal;
@@ -359,7 +342,6 @@ public class JoueurIntelligence {
 	}
 
 	public List<Carte> getMain() {
-		//return main;
 		return main.getMain();
 	}
 }

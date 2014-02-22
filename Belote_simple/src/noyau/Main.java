@@ -229,4 +229,12 @@ public class Main {
 		return mainCarreau;
 	}
 
+	public String toString(){
+		String main="";
+		for (Carte c : this.main) {
+			main += c.toString();
+			main +="\n";
+		}
+		return main;
+	}
 }
