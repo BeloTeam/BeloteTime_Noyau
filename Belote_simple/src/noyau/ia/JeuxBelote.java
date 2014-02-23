@@ -21,10 +21,10 @@ public class JeuxBelote {
 
 	public static void main(String[] arguments) {
 		Paquet jeux = new Paquet();
-		List<JoueurIntelligence> joueur = new ArrayList<>(4);
+		List<JoueurIntelligence> joueurs = new ArrayList<>(4);
 		Fenetre tapis = new Fenetre();
 		int prend = 4; // variable pour savoir qui prend
-		CouleurEnum jeuxAtout = CouleurEnum.NotInitialized;// variable pour la couleur
+		CouleurEnum couleurAtout = CouleurEnum.NotInitialized;// variable pour la couleur
 													// d'atout
 		// qui donne le jeux
 		int donne = 0;
@@ -35,9 +35,8 @@ public class JeuxBelote {
 		Carte retourne;
 		
 		for (int i = 0; i < 4; i++) {
-			joueur.add(new JoueurIntelligence());
+			joueurs.add(new JoueurIntelligence());
 		}
-		jeux.creelejeux();
 		// affiche le nombre de carte dans le paquet initial
 		Terminal.ecrireStringln("valeur " + jeux.getInitial().size());
 		// melange le jeux
@@ -49,7 +48,7 @@ public class JeuxBelote {
 			// jeux.affiche();
 			// affiche le jeux des joueurs
 			for (int y = 0; y < 4; y++) {
-				joueur.get(y).affichejoueur(y);
+				joueurs.get(y).affichejoueur(y);
 			}
 			// donne premier tour
 			n = 2;
@@ -62,7 +61,7 @@ public class JeuxBelote {
 					numeroJoueur = 0;
 				}
 				for (int i = 0; i < 3; i++) {
-					tapis.nbcartej[numeroJoueur] = joueur.get(numeroJoueur).recoit(jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur], jeux.getBlanc());
+					tapis.nbcartej[numeroJoueur] = joueurs.get(numeroJoueur).recoit(jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur], jeux.getBlanc());
 				}
 				jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 3);
 				indice++;
@@ -80,7 +79,7 @@ public class JeuxBelote {
 					numeroJoueur = 0;
 				}
 				for (int i = 0; i < 2; i++) {
-					tapis.nbcartej[numeroJoueur] = joueur.get(numeroJoueur).recoit(jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur], jeux.getBlanc());
+					tapis.nbcartej[numeroJoueur] = joueurs.get(numeroJoueur).recoit(jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur], jeux.getBlanc());
 				}
 				jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 2);
 				indice++;
@@ -98,18 +97,18 @@ public class JeuxBelote {
 				}
 			}
 			jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 1);
-			jeuxAtout = retourne.getCouleur();
+			couleurAtout = retourne.getCouleur();
 			tapis.affiche();
 			
 			// affiche le jeux des joueurs
 			for (int y = 0; y < 4; y++) {
-				joueur.get(y).affichejoueur(y);
+				joueurs.get(y).affichejoueur(y);
 			}
-			tapis.affichecarter(retourne, jeuxAtout);
+			tapis.affichecarter(retourne, couleurAtout);
 			// affiche sur le terminal le jeux du paquet
 			// jeux.affiche();
 			// affiche sur l'interface graphique le jeux du joueur 0
-			tapis.affichejeux(joueur.get(0).getMain());
+			tapis.affichejeux(joueurs.get(0).getMain());
 			
 			// prend premier tour
 			n = 2;
@@ -120,8 +119,8 @@ public class JeuxBelote {
 				if (numeroJoueur > 3) {
 					numeroJoueur = 0;
 				}
-				joueur.get(numeroJoueur).prendpremier(numeroJoueur, retourne, tapis.nbcartej[numeroJoueur]);
-				if (joueur.get(numeroJoueur).getRecoitval() == 1) {
+				joueurs.get(numeroJoueur).prendpremier(numeroJoueur, retourne, tapis.nbcartej[numeroJoueur]);
+				if (joueurs.get(numeroJoueur).getRecoitval() == 1) {
 					prend = numeroJoueur;
 					jeux.modifiemaitre(retourne, 0);
 					n = 0;
@@ -142,10 +141,10 @@ public class JeuxBelote {
 					if (numeroJoueur > 3) {
 						numeroJoueur = 0;
 					}
-					joueur.get(numeroJoueur).prenddeuxieme(numeroJoueur, retourne, tapis.nbcartej[numeroJoueur]);
-					if (joueur.get(numeroJoueur).getRecoitval() == 1) {
+					joueurs.get(numeroJoueur).prenddeuxieme(numeroJoueur, retourne, tapis.nbcartej[numeroJoueur]);
+					if (joueurs.get(numeroJoueur).getRecoitval() == 1) {
 						prend = numeroJoueur;
-						jeuxAtout = joueur.get(numeroJoueur).getChoixatout();
+						couleurAtout = joueurs.get(numeroJoueur).getChoixatout();
 						n = 0;
 					}
 					indice++;
@@ -159,14 +158,14 @@ public class JeuxBelote {
 				// remet les cartes dans le paquet
 				for (int i = 0; i < 4; i++) {
 					tapis.nbcartej[i] = jeux.remetjeux(
-							joueur.get(i).getMain(), tapis.nbcartej[i]);
+							joueurs.get(i).getMain(), tapis.nbcartej[i]);
 				}
 				jeux.getJeuxdist().set(jeux.getLongJeuxdist(), retourne);
 				retourne = jeux.getBlanc();
 				jeux.setLongJeuxdist(jeux.getLongJeuxdist() + 1);
 			} else {
 				tapis.joueurpris = ("Joueur " + prend);
-				tapis.affichecarter(retourne, jeuxAtout);
+				tapis.affichecarter(retourne, couleurAtout);
 				// distribution du reste des cartes
 				n = 2;
 				numeroJoueur = donne;
@@ -178,17 +177,17 @@ public class JeuxBelote {
 					}
 					if (prend == numeroJoueur) {
 						for (int i = 0; i < 2; i++) {
-							tapis.nbcartej[numeroJoueur] = joueur.get(numeroJoueur).recoit(
+							tapis.nbcartej[numeroJoueur] = joueurs.get(numeroJoueur).recoit(
 									jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur],
 									jeux.getBlanc());
 						}
-						joueur.get(numeroJoueur).getMain().set(7, retourne);
+						joueurs.get(numeroJoueur).getMain().set(7, retourne);
 						retourne = jeux.getBlanc();
 						jeux.setLongJeuxdist(jeux.getLongJeuxdist() - 2);
 						tapis.nbcartej[numeroJoueur] = tapis.nbcartej[numeroJoueur] + 1;
 					} else {
 						for (int i = 0; i < 3; i++) {
-							tapis.nbcartej[numeroJoueur] = joueur.get(numeroJoueur).recoit(
+							tapis.nbcartej[numeroJoueur] = joueurs.get(numeroJoueur).recoit(
 									jeux.getJeuxdist(), tapis.nbcartej[numeroJoueur],
 									jeux.getBlanc());
 						}
@@ -199,9 +198,9 @@ public class JeuxBelote {
 						n = 0;
 					}
 				}
-				tapis.affichecarter(retourne, jeuxAtout);
-				joueur.get(0).trijeux(jeuxAtout);	
-				tapis.affichejeux(joueur.get(0).getMain() );
+				tapis.affichecarter(retourne, couleurAtout);
+				joueurs.get(0).trijeux(couleurAtout);	
+				tapis.affichejeux(joueurs.get(0).getMain() );
 				tapis.effacecarteplis();
 
 				// joue
@@ -226,7 +225,7 @@ public class JeuxBelote {
 						System.out.println("JeuxBelote FIN---------------------------------------------");
 						
 
-						jeux.getTapisjeux().set(numeroJoueur, joueur.get(numeroJoueur).jouepremier(numeroJoueur, jeux.getBlanc(), jeux.getCarteJoue(), jeuxAtout));
+						jeux.getTapisjeux().set(numeroJoueur, joueurs.get(numeroJoueur).jouepremier(numeroJoueur, jeux.getBlanc(), jeux.getCarteJoue(), couleurAtout));
 						
 						System.out.println("JeuxBelote après-----------------------------------------------");
 						System.out.println("getTapisJEux : " + jeux.getTapisjeux() + "Joueur : " + numeroJoueur);
@@ -237,14 +236,14 @@ public class JeuxBelote {
 						}
 						tapis.nbcartej[numeroJoueur] = tapis.nbcartej[numeroJoueur] - 1;
 						tapis.affichej(jeux.getTapisjeux().get(numeroJoueur), numeroJoueur);
-						tapis.affichejeux(joueur.get(0).getMain());
+						tapis.affichejeux(joueurs.get(0).getMain());
 						indice++;
 						numeroJoueur++;
 					}
 					
 					Terminal.ecrireStringln("Pause appuyer sur la touche entrer pour continuer");
 					Terminal.lireString();
-					gagne = jeux.remportemanche(jeuxAtout, y);
+					gagne = jeux.remportemanche(couleurAtout, y);
 					// affiche la joue sur l'interface graphique
 					for (int yy = 0; yy < 4; yy++) {
 						tapis.affichej(jeux.getTapisjeux().get(yy), yy);
@@ -256,7 +255,7 @@ public class JeuxBelote {
 				}
 				// affiche le jeux des joueur
 				for (int y = 0; y < 4; y++) {
-					joueur.get(y).affichejoueur(y);
+					joueurs.get(y).affichejoueur(y);
 				}
 				// Qui gagne la manche
 				if (jeux.getPosplis()[0] == 0 || jeux.getPosplis()[1] == 0) {
@@ -281,9 +280,9 @@ public class JeuxBelote {
 				}
 				// remet les cartes dans le paquet
 				jeux.remetjeux2();
-				jeuxAtout = CouleurEnum.NotInitialized;
-				tapis.affichecarter(retourne, jeuxAtout);
-				tapis.affichejeux(joueur.get(0).getMain());
+				couleurAtout = CouleurEnum.NotInitialized;
+				tapis.affichecarter(retourne, couleurAtout);
+				tapis.affichejeux(joueurs.get(0).getMain());
 			}
 			// on coupe
 			jeux.coupe(donne);

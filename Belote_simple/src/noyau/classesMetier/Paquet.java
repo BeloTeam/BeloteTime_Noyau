@@ -40,6 +40,7 @@ public class Paquet {
 
 	public Paquet() {
 		initial = new ArrayList<>(32);
+		this.initialiserPaquet();
 		jeuxdistribue = new ArrayList<>(32);
 		plisJ1J3 = new ArrayList<>(32);
 		plisJ0J2 = new ArrayList<>(32);
@@ -66,7 +67,7 @@ public class Paquet {
 	 * @resume
 	 * */
 	// cree le jeux de cartes
-	public void creelejeux() {
+	public void initialiserPaquet() {
 		Carte c1 = new Carte(CouleurEnum.Pique, FigureEnum.As);
 		Carte c2 = new Carte(CouleurEnum.Pique, FigureEnum.Roi);
 		Carte c3 = new Carte(CouleurEnum.Pique, FigureEnum.Dame);
@@ -179,6 +180,18 @@ public class Paquet {
 			indice++;
 			nbCartePaquet--;
 		}
+		/* Melange plus logique mais qui entraine une erreur par la suite
+		int nbCartePaquet = this.initial.size();
+		int i;
+		Carte carteCourante;
+		for(int j=nbCartePaquet; j > 0; j--){
+			i = (int) (Math.random() * (j));
+			carteCourante = this.initial.get(i);
+			this.initial.remove(i);
+			this.jeuxdistribue.add(carteCourante);
+		}
+		*/
+		
 		this.longJeuxdist = indice;
 	}
 
