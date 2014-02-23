@@ -24,15 +24,13 @@ import noyau.ia.Arbitre;
 
 public class JoueurIntelligence {
 
-	//private Carte monPaquet[] = new Carte[8];
-	//private List<Carte> main;
+
 	private Main main;
 	
 	private int recoitVal;
 	private CouleurEnum choixAtout;
 	
 	public JoueurIntelligence(){
-		//main = new ArrayList<Carte>(8);
 		main = new Main();
 		for (int i = 0; i < 8; i++) {
 			main.add(new Carte(CouleurEnum.NotInitialized,FigureEnum.NotInitialized));
@@ -60,18 +58,20 @@ public class JoueurIntelligence {
 	 * @resume
 	 * */
 	// recoit la carte sur le paquet
-	public int recoit(Carte[] tabCards, int y, Carte u) {
-		//System.out.println("TAILLE : "+this.main.size()+ " Elem "+y);
-		this.main.set(y, tabCards[0]);
-		y++;
+	public int recoit(List<Carte> tabCards, int indice, Carte u) {
+		System.out.println("RECOIT -------------------------------------------------");
+		System.out.println("Carte : "+u+ " Indice "+indice+"\n Liste : \n"+tabCards);
+		System.out.println("FIN RECOIT -------------------------------------------------");
+		this.main.set(indice, tabCards.get(0));
+		indice++;
 		for (int v = 0; v < 32; v++) {
 			if (v + 1 < 32) {
-				tabCards[v] = tabCards[v + 1];
+				tabCards.set(v,tabCards.get(v+1)) ;
 			} else {
-				tabCards[v] = u;
+				tabCards.set(v,u);
 			}
 		}
-		return y;
+		return indice;
 	}
 
 	/**

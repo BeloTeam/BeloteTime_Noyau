@@ -6,6 +6,8 @@ APPLICATIONS DES BONNE PRATIQUES CAR CODE  :
 - Enlever les attributs declarés en static et les methodes statiques dans certains cas
 - Faire un encadré de commentaire pour expliquer les methodes, utiliser javadoc (param entree, sortie ...)
 - Pour la main dans JoueurIntelligence remplacer tout les set par add ou suppr (demander explications)
+- class arbitre n'a que des methodes static elle ne necessite donc pas de constructeurs (a voir par la suite)
+
 
 Quand on aura fait tout ça :
 
