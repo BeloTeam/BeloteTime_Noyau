@@ -45,6 +45,16 @@ public class Paquet {
 		plisJ0J2 = new ArrayList<>(32);
 		maitre = new ArrayList<>(4);
 		tapisjeux = new ArrayList<>(4);
+		for (int i = 0; i < 4 ; i++) {
+			tapisjeux.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+		}
+		for (int i = 0; i < 32 ; i++) {
+			plisJ1J3.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+			plisJ0J2.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+		}
+
+		
+		
 		blanc = new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized);
 		carteJoue = CouleurEnum.NotInitialized;
 		longJeuxdist = 0;
@@ -90,38 +100,39 @@ public class Paquet {
 		Carte c31 = new Carte(CouleurEnum.Coeur, FigureEnum.Huit);
 		Carte c32 = new Carte(CouleurEnum.Coeur, FigureEnum.Sept);
 
-		this.initial.set(0, c1);
-		this.initial.set(1, c2);
-		this.initial.set(2, c3);
-		this.initial.set(3, c4);
-		this.initial.set(4, c5);
-		this.initial.set(5, c6);
-		this.initial.set(6, c7);
-		this.initial.set(7, c8);
-		this.initial.set(8, c9);
-		this.initial.set(9, c10);
-		this.initial.set(10, c11);
-		this.initial.set(11, c12);
-		this.initial.set(12, c13);
-		this.initial.set(13, c14);
-		this.initial.set(14, c15);
-		this.initial.set(15, c16);
-		this.initial.set(16, c17);
-		this.initial.set(17, c18);
-		this.initial.set(18, c19);
-		this.initial.set(19, c20);
-		this.initial.set(20, c21);
-		this.initial.set(21, c22);
-		this.initial.set(22, c23);
-		this.initial.set(23, c24);
-		this.initial.set(24, c25);
-		this.initial.set(25, c26);
-		this.initial.set(26, c27);
-		this.initial.set(27, c28);
-		this.initial.set(28, c29);
-		this.initial.set(29, c30);
-		this.initial.set(30, c31);
-		this.initial.set(31, c32);
+		this.initial.add(c1);
+		this.initial.add(c2);
+		this.initial.add(c3);
+		this.initial.add(c4);
+		this.initial.add(c5);
+		this.initial.add(c6);
+		this.initial.add(c7);
+		this.initial.add(c8);
+		this.initial.add(c9);
+		this.initial.add(c10);
+		this.initial.add(c11);
+		this.initial.add(c12);
+		this.initial.add(c13);
+		this.initial.add(c14);
+		this.initial.add(c15);
+		this.initial.add(c16);
+		this.initial.add(c17);
+		this.initial.add(c18);
+		this.initial.add(c19);
+		this.initial.add(c20);
+		this.initial.add(c21);
+		this.initial.add(c22);
+		this.initial.add(c23);
+		this.initial.add(c24);
+		this.initial.add(c25);
+		this.initial.add(c26);
+		this.initial.add(c27);
+		this.initial.add(c28);
+		this.initial.add(c29);
+		this.initial.add(c30);
+		this.initial.add(c31);
+		this.initial.add(c32);
+		
 	}
 
 	/**
@@ -150,20 +161,20 @@ public class Paquet {
 		int i;
 		while (nbCartePaquet != 0) {
 			i = (int) (Math.random() * (taillePaquet-1));
-			this.jeuxdistribue.set(indice,this.initial.get(i));
+			this.jeuxdistribue.add(this.initial.get(i));
 			
 			//rajout a voir si ça fait pas bugguer
-			this.initial.remove(i);
+			//this.initial.remove(i);
 			//
 			
-			/*for (int v = i; v < 32; v++) {
+			for (int v = i; v < 32; v++) {
 				if (i + 1 < 32) {
 					this.initial.set(i,this.initial.get(i+1)) ;
 				} else {
 					this.initial.set(i,this.blanc);
 				}
 				i++;
-			}*/
+			}
 			taillePaquet--;
 			indice++;
 			nbCartePaquet--;
@@ -264,6 +275,7 @@ public class Paquet {
 	// coupe le jeux de carte
 	public void melange(int y) {
 		for (int u = 0; u <= y; u++) {
+			
 			this.initial.set(u, this.jeuxdistribue.get(0));
 			for (int v = 0; v < 32; v++) {
 				if (v + 1 < 32) {
@@ -318,10 +330,10 @@ public class Paquet {
 			}
 		} else {
 			for (int x = 0; x < 4; x++) {
-				this.plisJ0J2[this.posplis[0]] = this.tapisjeux[x];
-				points = Arbitre.points(this.tapisjeux[x], y);
+				this.plisJ0J2.set(this.posplis[0], this.tapisjeux.get(x));
+				points = Arbitre.points(this.tapisjeux.get(x), y);
 				this.pointplis[0] = this.pointplis[0] + points;
-				this.tapisjeux[x] = this.blanc;
+				this.tapisjeux.set(x, this.blanc);
 				this.posplis[0] = this.posplis[0] + 1;
 			}
 			if (u == 7) {
@@ -339,12 +351,12 @@ public class Paquet {
 	// affiche les paquet de carte
 	public void affiche2() {
 		for (int i = 0; i < this.posplis[0]; i++) {
-			Terminal.ecrireStringln("valeur plis j0 et j2  carte n" + i + " " + this.plisJ0J2[i].getFigure() + " " + this.plisJ0J2[i].getCouleur());
+			Terminal.ecrireStringln("valeur plis j0 et j2  carte n" + i + " " + this.plisJ0J2.get(i).getFigure() + " " + this.plisJ0J2.get(i).getCouleur());
 		}
 		Terminal.ecrireStringln("un total de point joueur 0 et 2 :" + this.pointplis[0]);
 		Terminal.ecrireStringln("-----------------------");
 		for (int i = 0; i < this.posplis[1]; i++) {
-			Terminal.ecrireStringln("valeur plis j1 et j3 carte n" + i + " " + this.plisJ1J3[i].getFigure() + " " + this.plisJ1J3[i].getCouleur());
+			Terminal.ecrireStringln("valeur plis j1 et j3 carte n" + i + " " + this.plisJ1J3.get(i).getFigure() + " " + this.plisJ1J3.get(i).getCouleur());
 		}
 		Terminal.ecrireStringln("un total de point joueur 1 et 3 :" + this.pointplis[1]);
 		Terminal.ecrireStringln("-----------------------");
@@ -356,20 +368,20 @@ public class Paquet {
 	 * @resume
 	 * */
 	// modifie les cartemaitre
-	public void modifiemaitre(Carte x, int y) {
-		if (y == 0) {
-			switch (x.getCouleur()) {
+	public void modifiemaitre(Carte carte, int option) {
+		if (option == 0) {
+			switch (carte.getCouleur()) {
 			case Coeur:
-				this.maitre[0] = new Carte(CouleurEnum.Coeur, FigureEnum.Valet);
+				this.maitre.add(new Carte(CouleurEnum.Coeur, FigureEnum.Valet));
 				break;
 			case Pique:
-				this.maitre[1] = new Carte(CouleurEnum.Pique, FigureEnum.Valet);
+				this.maitre.add(new Carte(CouleurEnum.Pique, FigureEnum.Valet));
 				break;
 			case Carreau:
-				this.maitre[2] = new Carte(CouleurEnum.Carreau, FigureEnum.Valet);
+				this.maitre.add(new Carte(CouleurEnum.Carreau, FigureEnum.Valet));
 				break;
 			default: // Trefle
-				this.maitre[3] = new Carte(CouleurEnum.Trefle, FigureEnum.Valet);
+				this.maitre.add(new Carte(CouleurEnum.Trefle, FigureEnum.Valet));
 				break;
 			}
 		}
@@ -388,19 +400,19 @@ public class Paquet {
 		this.posplis[1] = 0;
 	}
 
-	public Carte[] getInitial() {
+	public List<Carte> getInitial() {
 		return initial;
 	}
 
-	public Carte[] getJeuxdist() {
+	public List<Carte> getJeuxdist() {
 		return jeuxdistribue;
 	}
 
-	public Carte[] getPlisJ1J3() {
+	public List<Carte> getPlisJ1J3() {
 		return plisJ1J3;
 	}
 
-	public Carte[] getPlisJ0J2() {
+	public List<Carte> getPlisJ0J2() {
 		return plisJ0J2;
 	}
 
@@ -412,11 +424,11 @@ public class Paquet {
 		return pointplis;
 	}
 
-	public Carte[] getMaitre() {
+	public List<Carte> getMaitre() {
 		return maitre;
 	}
 
-	public Carte[] getTapisjeux() {
+	public List<Carte> getTapisjeux() {
 		return tapisjeux;
 	}
 
