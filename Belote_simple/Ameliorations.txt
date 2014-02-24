@@ -1,4 +1,4 @@
-APPLICATIONS DES BONNE PRATIQUES CAR CODE  :
+AMELIORATIONS A APPORTER  :
 
 - Changer tout les noms de variables non explicite ( et y'en a enormement)
 - Rajouter des constructeurs

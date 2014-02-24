@@ -265,11 +265,11 @@ public class JeuxBelote {
 						tapis.pointj0j2 = tapis.pointj0j2 + 250;
 					}
 				} else {
-					if (Arbitre.gagneManche(jeux.getPointplis(), prend)) {
+					if (Arbitre.gagneManche(jeux.getPointEquipe1(),jeux.getPointEquipe2(), prend)) {
 						tapis.pointj1j3 = tapis.pointj1j3
-								+ jeux.getPointplis()[1];
+								+ jeux.getPointEquipe2();
 						tapis.pointj0j2 = tapis.pointj0j2
-								+ jeux.getPointplis()[0];
+								+ jeux.getPointEquipe1();
 					} else {
 						if (prend == 1 || prend == 3) {
 							tapis.pointj0j2 = tapis.pointj0j2 + 162;

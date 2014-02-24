@@ -16,7 +16,6 @@ import noyau.ia.Arbitre;
  * */
 
 public class Paquet {
-
 	private List<Carte> initial;
 	private List<Carte> jeuxdistribue;
 	private List<Carte> plisJ1J3;
@@ -24,9 +23,10 @@ public class Paquet {
 	// 0=>joueur j0 et j2
 	// 1=> joueur j1 et j3 nombre de carte dans le plis
 	private int[] posplis = { 0, 0 };
-
+	
 	// 0=>point j0 et j2 1=> j1 et j3
-	private int[] pointplis = { 0, 0 };
+	private int pointEquipe1 = 0;
+	private int pointEquipe2 = 0;
 
 	// 0=>Coeur,1=>Pique,2=>Carreau,3=>Trefle
 	private List<Carte> maitre;
@@ -39,26 +39,26 @@ public class Paquet {
 	private int longJeuxdist;
 
 	public Paquet() {
-		initial = new ArrayList<>(32);
+		this.initial = new ArrayList<>(32);
 		this.initialiserPaquet();
-		jeuxdistribue = new ArrayList<>(32);
-		plisJ1J3 = new ArrayList<>(32);
-		plisJ0J2 = new ArrayList<>(32);
-		maitre = new ArrayList<>(4);
-		tapisjeux = new ArrayList<>(4);
+		this.jeuxdistribue = new ArrayList<>(32);
+		this.plisJ1J3 = new ArrayList<>(32);
+		this.plisJ0J2 = new ArrayList<>(32);
+		this.maitre = new ArrayList<>(4);
+		this.tapisjeux = new ArrayList<>(4);
 		for (int i = 0; i < 4 ; i++) {
-			tapisjeux.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+			this.tapisjeux.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
 		}
 		for (int i = 0; i < 32 ; i++) {
-			plisJ1J3.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
-			plisJ0J2.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+			this.plisJ1J3.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
+			this.plisJ0J2.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
 		}
 
 		
 		
-		blanc = new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized);
-		carteJoue = CouleurEnum.NotInitialized;
-		longJeuxdist = 0;
+		this.blanc = new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized);
+		this.carteJoue = CouleurEnum.NotInitialized;
+		this.longJeuxdist = 0;
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class Paquet {
 	// affiche les paquet de carte
 	public void affiche() {
 		for (int i = 0; i < 32; i++) {
-			Terminal.ecrireStringln("valeur jeux melange carte n" + i + " " + jeuxdistribue.get(i).getFigure() + " " + jeuxdistribue.get(i).getCouleur());
+			Terminal.ecrireStringln("valeur jeux melange carte n" + i + " " + this.jeuxdistribue.get(i).getFigure() + " " + this.jeuxdistribue.get(i).getCouleur());
 		}
 		Terminal.ecrireStringln("-----------------------");
 	}
@@ -334,23 +334,23 @@ public class Paquet {
 				this.plisJ1J3.set(this.posplis[1],this.tapisjeux.get(x));
 				
 				points = Arbitre.points(this.tapisjeux.get(x), y);
-				this.pointplis[1] = this.pointplis[1] + points;
+				this.pointEquipe2 += points;
 				this.tapisjeux.set(x,this.blanc);
 				this.posplis[1] = this.posplis[1] + 1;
 			}
 			if (u == 7) {
-				this.pointplis[1] = this.pointplis[1] + 10;
+				this.pointEquipe2 += 10;
 			}
 		} else {
 			for (int x = 0; x < 4; x++) {
 				this.plisJ0J2.set(this.posplis[0], this.tapisjeux.get(x));
 				points = Arbitre.points(this.tapisjeux.get(x), y);
-				this.pointplis[0] = this.pointplis[0] + points;
+				this.pointEquipe1 += points;
 				this.tapisjeux.set(x, this.blanc);
 				this.posplis[0] = this.posplis[0] + 1;
 			}
 			if (u == 7) {
-				this.pointplis[0] = this.pointplis[0] + 10;
+				this.pointEquipe1 += 10;
 			}
 		}
 		return pos;
@@ -366,12 +366,12 @@ public class Paquet {
 		for (int i = 0; i < this.posplis[0]; i++) {
 			Terminal.ecrireStringln("valeur plis j0 et j2  carte n" + i + " " + this.plisJ0J2.get(i).getFigure() + " " + this.plisJ0J2.get(i).getCouleur());
 		}
-		Terminal.ecrireStringln("un total de point joueur 0 et 2 :" + this.pointplis[0]);
+		Terminal.ecrireStringln("un total de point joueur 0 et 2 :" + this.pointEquipe1);
 		Terminal.ecrireStringln("-----------------------");
 		for (int i = 0; i < this.posplis[1]; i++) {
 			Terminal.ecrireStringln("valeur plis j1 et j3 carte n" + i + " " + this.plisJ1J3.get(i).getFigure() + " " + this.plisJ1J3.get(i).getCouleur());
 		}
-		Terminal.ecrireStringln("un total de point joueur 1 et 3 :" + this.pointplis[1]);
+		Terminal.ecrireStringln("un total de point joueur 1 et 3 :" + this.pointEquipe2);
 		Terminal.ecrireStringln("-----------------------");
 	}
 
@@ -407,50 +407,47 @@ public class Paquet {
 	 * */
 	// efface les references
 	public void razpaquet() {
-		this.pointplis[0] = 0;
-		this.pointplis[1] = 0;
+		this.pointEquipe1 = 0;
+		this.pointEquipe2 = 0;
 		this.posplis[0] = 0;
 		this.posplis[1] = 0;
 	}
 
 	public List<Carte> getInitial() {
-		return initial;
+		return this.initial;
 	}
 
 	public List<Carte> getJeuxdist() {
-		return jeuxdistribue;
+		return this.jeuxdistribue;
 	}
 
 	public List<Carte> getPlisJ1J3() {
-		return plisJ1J3;
+		return this.plisJ1J3;
 	}
 
 	public List<Carte> getPlisJ0J2() {
-		return plisJ0J2;
+		return this.plisJ0J2;
 	}
 
 	public int[] getPosplis() {
-		return posplis;
+		return this.posplis;
 	}
 
-	public int[] getPointplis() {
-		return pointplis;
-	}
 
 	public List<Carte> getMaitre() {
-		return maitre;
+		return this.maitre;
 	}
 
 	public List<Carte> getTapisjeux() {
-		return tapisjeux;
+		return this.tapisjeux;
 	}
 
 	public Carte getBlanc() {
-		return blanc;
+		return this.blanc;
 	}
 
 	public CouleurEnum getCarteJoue() {
-		return carteJoue;
+		return this.carteJoue;
 	}
 
 	public void setCarteJoue(CouleurEnum carteJoue) {
@@ -458,10 +455,18 @@ public class Paquet {
 	}
 
 	public int getLongJeuxdist() {
-		return longJeuxdist;
+		return this.longJeuxdist;
 	}
 
 	public void setLongJeuxdist(int longJeuxdist) {
 		this.longJeuxdist = longJeuxdist;
+	}
+
+	public int getPointEquipe1() {
+		return pointEquipe1;
+	}
+
+	public int getPointEquipe2() {
+		return pointEquipe2;
 	}
 }

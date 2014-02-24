@@ -12,9 +12,9 @@ public class Main {
 	}
 
 	public void add(Carte newCarte) {
-		if(this.main.size() < 9){
+		if (this.main.size() < 9) {
 			this.main.add(newCarte);
-		}		
+		}
 	}
 
 	public void remove(Carte carte) {
@@ -24,7 +24,7 @@ public class Main {
 	private List<Carte> getListCouleur(CouleurEnum couleurAtout) {
 		List<Carte> liste = new ArrayList<>();
 		for (Carte carte : this.main) {
-			if(carte.getCouleur() == couleurAtout){
+			if (carte.getCouleur() == couleurAtout) {
 				liste.add(carte);
 			}
 		}
@@ -35,9 +35,36 @@ public class Main {
 		return this.getListCouleur(couleurAtout).size();
 	}
 
+	public boolean hasBeloteRebolote(CouleurEnum couleurAtout) {
+		boolean belote = false;
+		boolean rebelote = false;
+
+		for (Carte carte : this.getListCouleur(couleurAtout)) {
+			if (carte.getFigure() == FigureEnum.Dame) {
+				belote = true;
+			}
+			if (carte.getFigure() == FigureEnum.Roi) {
+				rebelote = true;
+			}
+		}
+		return belote && rebelote;
+	}
+	
+	
+	public int nbAsNonAtout(CouleurEnum couleurAtout)
+	{
+		int nbAs = 0;
+		for (Carte carte : this.main) {
+			if(carte.getFigure() == FigureEnum.As && carte.getCouleur() != couleurAtout){
+				nbAs++;
+			}
+		}
+		return nbAs;
+	}
+
 	public boolean hasNeuf(CouleurEnum couleurAtout) {
 		for (Carte carte : this.getListCouleur(couleurAtout)) {
-			if(carte.getFigure() == FigureEnum.Neuf)
+			if (carte.getFigure() == FigureEnum.Neuf)
 				return true;
 		}
 		return false;
@@ -45,11 +72,11 @@ public class Main {
 
 	public boolean hasValet(CouleurEnum couleurAtout) {
 		for (Carte carte : this.getListCouleur(couleurAtout)) {
-			if(carte.getFigure() == FigureEnum.Valet)
+			if (carte.getFigure() == FigureEnum.Valet)
 				return true;
 		}
 		return false;
-	} 
+	}
 
 	public Carte get(int i) {
 		return this.main.get(i);
@@ -74,8 +101,6 @@ public class Main {
 		}
 		return -1;
 	}
-
-	
 
 	/**
 	 * Permet de modifier la couleur ou la figure d'une carte qui se trouve dans
@@ -127,33 +152,33 @@ public class Main {
 		return this.getListCouleur(CouleurEnum.Carreau);
 	}
 
-	public String toString(){
-		String main="";
+	public String toString() {
+		String main = "";
 		for (Carte c : this.main) {
 			main += c.toString();
-			main +="\n";
+			main += "\n";
 		}
 		return main;
 	}
-	
-	
+
 	public void afficherAll() {
-		System.out.println("-------------------------------------------------------------------");
+		System.out
+				.println("-------------------------------------------------------------------");
 		System.out.println("-----Main principale");
 		for (Carte c : this.main) {
 			System.out.println(c.toString());
 		}
-		
+
 		System.out.println("\n-----Main carreau");
 		for (Carte c : this.getMainCarreau()) {
 			System.out.println(c.toString());
 		}
-		
+
 		System.out.println("\n-----Main coeur");
 		for (Carte c : this.getMainCoeur()) {
 			System.out.println(c.toString());
 		}
-		
+
 		System.out.println("\n-----Main pique");
 		for (Carte c : this.getMainPique()) {
 			System.out.println(c.toString());
@@ -162,6 +187,7 @@ public class Main {
 		for (Carte c : this.getMainTrefle()) {
 			System.out.println(c.toString());
 		}
-		System.out.println("-------------------------------------------------------------------");
+		System.out
+				.println("-------------------------------------------------------------------");
 	}
 }

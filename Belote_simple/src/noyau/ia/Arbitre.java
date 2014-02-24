@@ -201,22 +201,22 @@ public class Arbitre {
 	 * @return
 	 * @resume
 	 * */
-	public static boolean gagneManche(final int[] x, final int y) {
-		boolean v = false;
-		if (y == 1 || y == 3) {
-			if (x[0] < x[1]) {
-				v = true;
+	public static boolean gagneManche(final int pointEquipe1,final int pointEquipe2, final int numeroJoueur) {
+		boolean mancheGagnee = false;
+		if (numeroJoueur == 1 || numeroJoueur == 3) {
+			if (pointEquipe1 < pointEquipe2) {
+				mancheGagnee = true;
 			} else {
-				v = false;
+				mancheGagnee = false;
 			}
 		} else {
-			if (x[0] > x[1]) {
-				v = true;
+			if (pointEquipe1 > pointEquipe2) {
+				mancheGagnee = true;
 			} else {
-				v = false;
+				mancheGagnee = false;
 			}
 		}
-		return v;
+		return mancheGagnee;
 	}
 
 	/**
