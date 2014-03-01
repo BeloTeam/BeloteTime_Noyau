@@ -40,7 +40,11 @@ public class Paquet {
 
 	public Paquet() {
 		this.initial = new ArrayList<>(32);
-		this.initialiserPaquet();
+		for (CouleurEnum c : CouleurEnum.values()) {
+			for (FigureEnum f : FigureEnum.values()) {
+				this.initial.add(new Carte(c, f));
+			}
+		}
 		this.jeuxdistribue = new ArrayList<>(32);
 		this.plisJ1J3 = new ArrayList<>(32);
 		this.plisJ0J2 = new ArrayList<>(32);
@@ -54,86 +58,9 @@ public class Paquet {
 			this.plisJ0J2.add(new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized));
 		}
 
-		
-		
 		this.blanc = new Carte(CouleurEnum.NotInitialized, FigureEnum.NotInitialized);
 		this.carteJoue = CouleurEnum.NotInitialized;
 		this.longJeuxdist = 0;
-	}
-
-	/**
-	 * @param
-	 * @return
-	 * @resume
-	 * */
-	// cree le jeux de cartes
-	public void initialiserPaquet() {
-		Carte c1 = new Carte(CouleurEnum.Pique, FigureEnum.As);
-		Carte c2 = new Carte(CouleurEnum.Pique, FigureEnum.Roi);
-		Carte c3 = new Carte(CouleurEnum.Pique, FigureEnum.Dame);
-		Carte c4 = new Carte(CouleurEnum.Pique, FigureEnum.Valet);
-		Carte c5 = new Carte(CouleurEnum.Pique, FigureEnum.Dix);
-		Carte c6 = new Carte(CouleurEnum.Pique, FigureEnum.Neuf);
-		Carte c7 = new Carte(CouleurEnum.Pique, FigureEnum.Huit);
-		Carte c8 = new Carte(CouleurEnum.Pique, FigureEnum.Sept);
-		Carte c9 = new Carte(CouleurEnum.Carreau, FigureEnum.As);
-		Carte c10 = new Carte(CouleurEnum.Carreau, FigureEnum.Roi);
-		Carte c11 = new Carte(CouleurEnum.Carreau, FigureEnum.Dame);
-		Carte c12 = new Carte(CouleurEnum.Carreau, FigureEnum.Valet);
-		Carte c13 = new Carte(CouleurEnum.Carreau, FigureEnum.Dix);
-		Carte c14 = new Carte(CouleurEnum.Carreau, FigureEnum.Neuf);
-		Carte c15 = new Carte(CouleurEnum.Carreau, FigureEnum.Huit);
-		Carte c16 = new Carte(CouleurEnum.Carreau, FigureEnum.Sept);
-		Carte c17 = new Carte(CouleurEnum.Trefle, FigureEnum.As);
-		Carte c18 = new Carte(CouleurEnum.Trefle, FigureEnum.Roi);
-		Carte c19 = new Carte(CouleurEnum.Trefle, FigureEnum.Dame);
-		Carte c20 = new Carte(CouleurEnum.Trefle, FigureEnum.Valet);
-		Carte c21 = new Carte(CouleurEnum.Trefle, FigureEnum.Dix);
-		Carte c22 = new Carte(CouleurEnum.Trefle, FigureEnum.Neuf);
-		Carte c23 = new Carte(CouleurEnum.Trefle, FigureEnum.Huit);
-		Carte c24 = new Carte(CouleurEnum.Trefle, FigureEnum.Sept);
-		Carte c25 = new Carte(CouleurEnum.Coeur, FigureEnum.As);
-		Carte c26 = new Carte(CouleurEnum.Coeur, FigureEnum.Roi);
-		Carte c27 = new Carte(CouleurEnum.Coeur, FigureEnum.Dame);
-		Carte c28 = new Carte(CouleurEnum.Coeur, FigureEnum.Valet);
-		Carte c29 = new Carte(CouleurEnum.Coeur, FigureEnum.Dix);
-		Carte c30 = new Carte(CouleurEnum.Coeur, FigureEnum.Neuf);
-		Carte c31 = new Carte(CouleurEnum.Coeur, FigureEnum.Huit);
-		Carte c32 = new Carte(CouleurEnum.Coeur, FigureEnum.Sept);
-
-		this.initial.add(c1);
-		this.initial.add(c2);
-		this.initial.add(c3);
-		this.initial.add(c4);
-		this.initial.add(c5);
-		this.initial.add(c6);
-		this.initial.add(c7);
-		this.initial.add(c8);
-		this.initial.add(c9);
-		this.initial.add(c10);
-		this.initial.add(c11);
-		this.initial.add(c12);
-		this.initial.add(c13);
-		this.initial.add(c14);
-		this.initial.add(c15);
-		this.initial.add(c16);
-		this.initial.add(c17);
-		this.initial.add(c18);
-		this.initial.add(c19);
-		this.initial.add(c20);
-		this.initial.add(c21);
-		this.initial.add(c22);
-		this.initial.add(c23);
-		this.initial.add(c24);
-		this.initial.add(c25);
-		this.initial.add(c26);
-		this.initial.add(c27);
-		this.initial.add(c28);
-		this.initial.add(c29);
-		this.initial.add(c30);
-		this.initial.add(c31);
-		this.initial.add(c32);
-		
 	}
 
 	/**
