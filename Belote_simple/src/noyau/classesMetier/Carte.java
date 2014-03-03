@@ -18,13 +18,6 @@ public class Carte implements Comparable<Carte>{
 		this.figure = figure;
 	}
 
-<<<<<<< HEAD
-	public Carte getCarte(){
-		return this;
-	}
-	
-=======
->>>>>>> origin/LoicRefactoring
 	public CouleurEnum getCouleur() {
 		return couleur;
 	}
@@ -43,10 +36,6 @@ public class Carte implements Comparable<Carte>{
 
 	@Override
 	public int compareTo(Carte c) {
-<<<<<<< HEAD
-		//TODO est-ce que ça a du sens d'avoir une couleur plus forte qu'une autre ?
-=======
->>>>>>> origin/LoicRefactoring
 		return this.getCouleur().compareTo(c.getCouleur()) + this.getFigure().compareTo(c.getFigure());
 	}
 	

@@ -13,10 +13,6 @@ public abstract class AbstractPaquetNonTrier {
 		this.paquet = new ArrayList<>(TAILLEMAX);
 		this.nbCarte = 0;
 		this.TAILLEMAX = TAILLEMAX;
-<<<<<<< HEAD
-	
-=======
->>>>>>> origin/LoicRefactoring
 	}
 
 	public List<Carte> getCartes() {
@@ -56,8 +52,4 @@ public abstract class AbstractPaquetNonTrier {
 	public String toString(){
 		return paquet.toString();
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/LoicRefactoring
 }
