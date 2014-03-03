@@ -1,13 +1,15 @@
+//<<<<<<< HEAD:Belote_simple/src/noyau/classesMetier/Carte.java
 package noyau.classesMetier;
+
 /**
  * @class Carte
- * @author lacertus, Nathan,Loic
+ * @author lacertus, Nathan, Loic
  * @resume classe représentant une carte de belote composée d'une figure, d'une
- *         couleur, et d'une valeur.
- * 
- * */
+**/
 
-public class Carte {
+
+
+public class Carte implements Comparable<Carte>{
 	private CouleurEnum couleur;
 	private FigureEnum figure;
 
@@ -16,6 +18,13 @@ public class Carte {
 		this.figure = figure;
 	}
 
+<<<<<<< HEAD
+	public Carte getCarte(){
+		return this;
+	}
+	
+=======
+>>>>>>> origin/LoicRefactoring
 	public CouleurEnum getCouleur() {
 		return couleur;
 	}
@@ -25,20 +34,55 @@ public class Carte {
 	}
 
 	public String toString() {
-		return this.figure + " de " + this.couleur;
+		return "(" + this.figure + " de " + this.couleur + ")";
 	}
 	
-	public boolean equals(Carte carte)
-	{
-		return this.couleur == carte.couleur && this.figure == carte.figure;
+	public boolean equals(Carte carte) {
+		return (this.couleur.equals(carte.couleur) && this.figure.equals(carte.figure));
 	}
 
-	public void setCouleur(CouleurEnum couleur) {
-		this.couleur = couleur;
-	}
-
-	public void setFigure(FigureEnum figure) {
-		this.figure = figure;
+	@Override
+	public int compareTo(Carte c) {
+<<<<<<< HEAD
+		//TODO est-ce que ça a du sens d'avoir une couleur plus forte qu'une autre ?
+=======
+>>>>>>> origin/LoicRefactoring
+		return this.getCouleur().compareTo(c.getCouleur()) + this.getFigure().compareTo(c.getFigure());
 	}
 	
+	public int calculerValeurCarte(CouleurEnum atout){
+		int point = 0;
+		switch (this.figure) {
+		case Neuf:
+			if(atout.equals(this.getCouleur())) {
+				point = 14;
+			}else{
+				point = 0;
+			}
+			break;
+		case Dix:
+			point = 10;
+			break;
+		case Valet:
+			if(atout.equals(this.getCouleur())) {
+				point = 20;
+			}else{
+				point = 2;
+			}
+			break;
+		case Dame:
+			point = 3;
+			break;
+		case Roi:
+			point = 4;
+			break;
+		case As:
+			point = 11;
+			break;
+		default: // Sept  et huit
+			point = 0;
+			break;
+		}
+		return point;
+	}
 }

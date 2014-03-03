@@ -1,193 +1,165 @@
 package noyau.classesMetier;
 
+
+
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 
 public class Main {
+	private Map<CouleurEnum, SortedSet<Carte>> main;
+	private int nbCarte;
+	private final int TAILLEMAX;
 
-	private List<Carte> main;
-
+	public Main(final int TAILLEMAX) {
+		this.main = new HashMap<>();
+		this.nbCarte = 0;
+		this.TAILLEMAX = TAILLEMAX;
+	}
 	public Main() {
-		main = new ArrayList<Carte>(8);
+		this.main = new HashMap<>();
+		this.nbCarte = 0;
+		this.TAILLEMAX = 8;
 	}
 
-	public void add(Carte newCarte) {
-		if (this.main.size() < 9) {
-			this.main.add(newCarte);
-		}
-	}
-
-	public void remove(Carte carte) {
-		this.main.remove(find(carte));
-	}
-
-	private List<Carte> getListCouleur(CouleurEnum couleurAtout) {
-		List<Carte> liste = new ArrayList<>();
-		for (Carte carte : this.main) {
-			if (carte.getCouleur() == couleurAtout) {
-				liste.add(carte);
-			}
-		}
-		return liste;
-	}
-
-	public int getNbAtout(CouleurEnum couleurAtout) {
-		return this.getListCouleur(couleurAtout).size();
-	}
-
-	public boolean hasBeloteRebolote(CouleurEnum couleurAtout) {
-		boolean belote = false;
-		boolean rebelote = false;
-
-		for (Carte carte : this.getListCouleur(couleurAtout)) {
-			if (carte.getFigure() == FigureEnum.Dame) {
-				belote = true;
-			}
-			if (carte.getFigure() == FigureEnum.Roi) {
-				rebelote = true;
-			}
-		}
-		return belote && rebelote;
-	}
-	
-	
-	public int nbAsNonAtout(CouleurEnum couleurAtout)
-	{
-		int nbAs = 0;
-		for (Carte carte : this.main) {
-			if(carte.getFigure() == FigureEnum.As && carte.getCouleur() != couleurAtout){
-				nbAs++;
-			}
-		}
-		return nbAs;
-	}
-
-	public boolean hasNeuf(CouleurEnum couleurAtout) {
-		for (Carte carte : this.getListCouleur(couleurAtout)) {
-			if (carte.getFigure() == FigureEnum.Neuf)
-				return true;
-		}
-		return false;
-	}
-
-	public boolean hasValet(CouleurEnum couleurAtout) {
-		for (Carte carte : this.getListCouleur(couleurAtout)) {
-			if (carte.getFigure() == FigureEnum.Valet)
-				return true;
-		}
-		return false;
-	}
-
-	public Carte get(int i) {
-		return this.main.get(i);
-	}
-
-	public int size() {
-		return this.main.size();
-	}
-
-	/**
-	 * Permet de trouver une carte dans la main
-	 * 
-	 * @param carte
-	 *            une carte que l'on veut trouver
-	 * @return retourne l'indice de la carte dans la main
-	 * */
-	private int find(Carte carte) {
-		for (Carte c : this.main) {
-			if (c.equals(carte)) {
-				return this.main.indexOf(carte);
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Permet de modifier la couleur ou la figure d'une carte qui se trouve dans
-	 * la main
-	 * 
-	 * @param carte
-	 *            carte que l'on veut modifier
-	 * @param figure
-	 *            nouvelle figure
-	 * @param couleur
-	 *            nouvelle couleur
-	 * @return void
-	 * */
-	public void set(Carte carte, FigureEnum figure, CouleurEnum couleur) {
-		this.main.get(find(carte)).setCouleur(couleur);
-		this.main.get(find(carte)).setFigure(figure);
-	}
-
-	public void set(Carte carte, CouleurEnum c) {
-		this.main.get(find(carte)).setCouleur(c);
-	}
-
-	public void set(Carte carte, FigureEnum f) {
-		this.main.get(find(carte)).setFigure(f);
-	}
-
-	public void set(int indice, Carte carte) {
-		this.main.set(indice, carte);
-	}
-
-	/* Accesseurs */
-	public List<Carte> getMain() {
+	public Map<CouleurEnum, SortedSet<Carte>> getMain() {
 		return main;
 	}
 
-	public List<Carte> getMainPique() {
-		return this.getListCouleur(CouleurEnum.Pique);
+	public int calculerValeurPaquet(CouleurEnum atout) {
+		int valeur = 0;
+		Set<CouleurEnum> keys = this.main.keySet();
+		for (Iterator<CouleurEnum> itPaquet = keys.iterator(); itPaquet.hasNext();) {
+			SortedSet<Carte> paquetCouleur = new TreeSet<Carte>(main.get(itPaquet.next()));
+			for (Iterator<Carte> itPaquetCouleur = paquetCouleur.iterator(); itPaquetCouleur.hasNext();) {
+				valeur += itPaquetCouleur.next().calculerValeurCarte(atout);
+			}
+		}
+		return valeur;
 	}
 
-	public List<Carte> getMainCoeur() {
-		return this.getListCouleur(CouleurEnum.Coeur);
+	public boolean ajouter(Carte c, final CouleurEnum atout) {
+		boolean estAjoute = false;
+		if (this.nbCarte < this.TAILLEMAX) {
+			SortedSet<Carte> paquetCouleur;
+			if (this.main.get(c.getCouleur()) != null) {
+				paquetCouleur = new TreeSet<>(this.main.remove(c.getCouleur()));
+			} else {
+				if(c.getCouleur().equals(atout)){
+					Comparator<Carte> compAtout = new Comparator<Carte>() {
+						@Override
+						public int compare(Carte o1, Carte o2) {
+							int res = 0;
+							if(o1.calculerValeurCarte(atout) > o2.calculerValeurCarte(atout)){
+								res = 1;
+							} else {
+								if(o1.calculerValeurCarte(atout) < o2.calculerValeurCarte(atout)){
+									res = -1;
+								} else {
+									res = o1.compareTo(o2);
+								}
+							}
+							return res;
+						}
+					};
+					paquetCouleur = new TreeSet<>(compAtout);
+				} else {
+					paquetCouleur = new TreeSet<>();
+				}
+			}
+			estAjoute = paquetCouleur.add(c);
+			if (estAjoute) {
+				this.nbCarte++;
+			}
+			this.main.put(c.getCouleur(), paquetCouleur);
+		}
+		return estAjoute;
 	}
 
-	public List<Carte> getMainTrefle() {
-		return this.getListCouleur(CouleurEnum.Trefle);
+	public boolean supprimer(Carte c) {
+		boolean estSupprimer = false;
+		if (this.nbCarte > 0) {
+			SortedSet<Carte> paquetCouleur = new TreeSet<>(this.main.remove(c.getCouleur()));
+			estSupprimer = paquetCouleur.remove(c);
+			if (estSupprimer) {
+				this.nbCarte--;
+			}
+			this.main.put(c.getCouleur(), paquetCouleur);
+		}
+		return estSupprimer;
 	}
-
-	public List<Carte> getMainCarreau() {
-		return this.getListCouleur(CouleurEnum.Carreau);
+	
+	public int getTaillePaquet() {
+		return this.nbCarte;
 	}
-
-	public String toString() {
-		String main = "";
-		for (Carte c : this.main) {
-			main += c.toString();
-			main += "\n";
-		}
-		return main;
+	
+	public Carte getPlusForteCarteNormale(CouleurEnum c) {
+		return this.main.get(c).first();
 	}
-
-	public void afficherAll() {
-		System.out
-				.println("-------------------------------------------------------------------");
-		System.out.println("-----Main principale");
-		for (Carte c : this.main) {
-			System.out.println(c.toString());
+	
+	public Carte getPlusFaibleCarteNormale(CouleurEnum c) {
+		return this.main.get(c).last();
+	}
+	
+	public int getNbCarteCouleur(CouleurEnum couleur){
+		return this.main.get(couleur).size();
+	}
+	
+	public boolean hasValet(CouleurEnum couleur){
+		return this.main.get(couleur).contains(new Carte(couleur, FigureEnum.Valet));
+	}
+	
+	public boolean hasNeuf(CouleurEnum couleur){
+		return this.main.get(couleur).contains(new Carte(couleur, FigureEnum.Neuf));
+	}
+	
+	public boolean hasCarte(CouleurEnum couleur, FigureEnum figure){
+		return this.main.get(couleur).contains(new Carte(couleur, figure));
+	}
+	
+	public boolean hasBeloteRebolote(CouleurEnum couleurAtout){
+		return this.hasCarte(couleurAtout, FigureEnum.Dame) 
+				&& this.hasCarte(couleurAtout, FigureEnum.Roi);
+	}
+	public String toString(){
+		int numCarte = 0;
+		String res = "(";
+		Set<CouleurEnum> keys = this.main.keySet();
+		for (Iterator<CouleurEnum> it = keys.iterator(); it.hasNext();) {
+			CouleurEnum key = (CouleurEnum) it.next();
+			for (Iterator<Carte> it2 = this.main.get(key).iterator(); it2.hasNext();) {
+				Carte carte = (Carte) it2.next();
+				res += "\t"+ numCarte + " - " + carte + "\n";
+				numCarte++;
+			}
 		}
-
-		System.out.println("\n-----Main carreau");
-		for (Carte c : this.getMainCarreau()) {
-			System.out.println(c.toString());
+		return res + ")";
+	}
+	public SortedSet<Carte> get(CouleurEnum c){
+		return this.main.get(c);
+	}
+	public List<Carte> getList(CouleurEnum c){
+		List<Carte> l = new ArrayList<>(this.main.get(c));
+		return l;
+	}
+	
+	public List<Carte> hashtableToList(){
+		List<Carte> newMain = new ArrayList<>();
+		Set<CouleurEnum> keys = this.main.keySet();
+		for (Iterator<CouleurEnum> it = keys.iterator(); it.hasNext();) {
+			CouleurEnum key = (CouleurEnum) it.next();
+			for (Iterator<Carte> it2 = this.main.get(key).iterator(); it2.hasNext();) {
+				Carte carte = (Carte) it2.next();
+				newMain.add(carte);
+			}
 		}
-
-		System.out.println("\n-----Main coeur");
-		for (Carte c : this.getMainCoeur()) {
-			System.out.println(c.toString());
-		}
-
-		System.out.println("\n-----Main pique");
-		for (Carte c : this.getMainPique()) {
-			System.out.println(c.toString());
-		}
-		System.out.println("\n-----Main trefle");
-		for (Carte c : this.getMainTrefle()) {
-			System.out.println(c.toString());
-		}
-		System.out
-				.println("-------------------------------------------------------------------");
+		return newMain;
 	}
 }

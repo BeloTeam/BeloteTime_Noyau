@@ -1,9 +1,10 @@
 package noyau.classesMetier;
+
 /**
  * @class Couleur
  * @author Nathan
- * @resume classe représentant une couleur de carte
+ * @resume classe reprï¿½sentant une couleur de carte
  * */
 public enum CouleurEnum {
-	Coeur, Pique, Carreau, Trefle, NotInitialized;
+	Coeur, Pique, Carreau, Trefle;
 }

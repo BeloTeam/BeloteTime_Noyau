@@ -1,4 +1,4 @@
-package noyau.classesMetier;
+package gui;
 /**
  *  @class Terminal
  *  @author lacertus, Nathan
@@ -9,8 +9,6 @@ package noyau.classesMetier;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import noyau.exception.TerminalException;
 
 
 public class Terminal {
@@ -25,7 +23,7 @@ public class Terminal {
 	public static String lireString() // Lire un String
 	{
 		String tmp = "";
-		char C = '\0';
+		//char C = '\0';
 		try {
 			tmp = in.readLine();
 		} catch (IOException e) {

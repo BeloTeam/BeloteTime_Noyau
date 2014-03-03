@@ -1,12 +1,20 @@
-package noyau.classesMetier;
+package gui;
+<<<<<<< HEAD
+
+/** *  @class fenetre
+ *  @author lacertus, Nathan
+ *  @resume classe d'IHM
+ * */
+/*
+=======
 /**
  *  @class fenetre
  *  @author lacertus, Nathan
  *  @resume classe d'IHM
  * */
 
+>>>>>>> origin/LoicRefactoring
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -19,12 +27,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import noyau.classesMetier.Carte;
+import noyau.classesMetier.CouleurEnum;
+
 
 // la classe formulaire
 public class Fenetre extends JFrame implements ActionListener {
+<<<<<<< HEAD
+=======
 	/**
 	 * 
 	 */
+>>>>>>> origin/LoicRefactoring
 	private static final long serialVersionUID = 1L;
 	// le constructeur
 	public static int[] nbcartej = { 0, 0, 0, 0 };
@@ -189,4 +203,8 @@ class Superpanel extends JPanel {
 	}
 
 	private ImageIcon cartel, carteh, tapiscarte;
+<<<<<<< HEAD
+}*/
+=======
 }
+>>>>>>> origin/LoicRefactoring
