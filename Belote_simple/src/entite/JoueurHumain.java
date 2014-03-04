@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.Pli;
 import noyau.classesMetier.PositionEnum;
+import noyau.classesMetier.TableDeJeu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,14 +15,14 @@ public class JoueurHumain extends Joueur {
 	static BufferedReader in = new BufferedReader(new InputStreamReader(
 			System.in));
 
-	public JoueurHumain(PositionEnum position, String nom) {
-		super(position, nom);
+	public JoueurHumain(PositionEnum position, String nom, TableDeJeu table) {
+		super(position, nom, table);
 
 	}
 
-	public boolean prendPremiereDonne(Carte atout) {
+	public boolean prendPremiereDonne() {
 		System.out.println("Votre main :\n" + this.getMain()
-				+ "\nPrenez vous pour l'atout : " + atout.toString()
+				+ "\nPrenez vous pour l'atout : " + this.getTable().getCarteDonne().toString()
 				+ " (1-oui/0-non)");
 		int rep = 0;
 		try {
@@ -64,7 +64,7 @@ public class JoueurHumain extends Joueur {
 	}
 
 	@Override
-	public Carte jouerPli(Pli pliCourant) {
+	public Carte jouerPli() {
 		Carte carteJouer = null;
 		int tailleEnsembleCartePropose = 0;
 		boolean peutJouerCouleurDuPli = true;
@@ -72,15 +72,15 @@ public class JoueurHumain extends Joueur {
 		System.out
 				.println("-------------JEU--------------\n" + this.toString());
 		while (carteJouer == null) {
-			if (pliCourant.getTaillePaquet() != 0) {
-				System.out.println("Pli actuel :" + pliCourant);
-				System.out.println("Couleur demande : " + pliCourant.getCouleurDemandee());
+			if (this.getTable().getPliCourant().getTaillePaquet() != 0) {
+				System.out.println("Pli actuel :" + this.getTable().getPliCourant());
+				System.out.println("Couleur demande : " + this.getTable().getPliCourant().getCouleurDemandee());
 				System.out.println("Votre main :\n" + this.getMain().toString());
-				if (this.getMain().get(pliCourant.getCouleurDemandee()) != null && !this.getMain().get(pliCourant.getCouleurDemandee()).isEmpty()) {
+				if (this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()) != null && !this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()).isEmpty()) {
 					tailleEnsembleCartePropose = this.getMain()
-							.get(pliCourant.getCouleurDemandee()).size();
+							.get(this.getTable().getPliCourant().getCouleurDemandee()).size();
 					System.out.println("\nVous avez le choix entre : "
-							+ this.getMain().get(pliCourant.getCouleurDemandee()));
+							+ this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()));
 
 				} else {
 					tailleEnsembleCartePropose = this.getMain()
@@ -118,7 +118,7 @@ public class JoueurHumain extends Joueur {
 					carteJouer = this.getMain().hashtableToList().get(rep);
 					this.getMain().supprimer(carteJouer);
 				} else {
-					carteJouer = this.getMain().getList(pliCourant.getCouleurDemandee()).get(rep);
+					carteJouer = this.getMain().getList(this.getTable().getPliCourant().getCouleurDemandee()).get(rep);
 					this.getMain().supprimer(carteJouer);
 				}
 				this.getMain().supprimer(carteJouer);

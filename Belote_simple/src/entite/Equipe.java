@@ -11,6 +11,8 @@ public class Equipe {
 	private ArrayList<Integer> pointsDesManches;
 	private ArrayList<Pli> plisRemportee;
 	private int score;
+	private boolean hasBelote;
+	private boolean hasRebelote;//TODO prendre en compte belote / rebelote
 	
 	public Equipe(Joueur joueur1, Joueur joueur2) {
 		this.joueurs = new ArrayList<>();

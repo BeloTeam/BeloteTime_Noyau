@@ -3,22 +3,24 @@ package entite;
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
 import noyau.classesMetier.Main;
-import noyau.classesMetier.Pli;
 import noyau.classesMetier.PositionEnum;
+import noyau.classesMetier.TableDeJeu;
 
 public abstract class Joueur {
 	private Main main;
 	private PositionEnum position;
 	private String nom;
+	private TableDeJeu table;
 
 	public Main getMain() {
 		return main;
 	}
 
-	public Joueur(PositionEnum position, String nom) {
+	public Joueur(PositionEnum position, String nom, TableDeJeu table) {
 		this.main = new Main();
 		this.position = position;
 		this.nom = nom;
+		this.table = table;
 	}
 
 	public PositionEnum getPosition() {
@@ -29,11 +31,15 @@ public abstract class Joueur {
 		return "Joueur : " + this.nom;
 	}
 
-	public abstract boolean prendPremiereDonne(Carte atout);
+	public TableDeJeu getTable() {
+		return table;
+	}
+
+	public abstract boolean prendPremiereDonne();
 
 	public abstract CouleurEnum prendDeuxiemeDonne();
 
-	public abstract Carte jouerPli(Pli carteDuPliCourant);
+	public abstract Carte jouerPli();
 
 	public boolean equals(Object joueur) {
 		if (joueur instanceof Joueur) {

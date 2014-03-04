@@ -3,8 +3,7 @@ package entite;
 import java.util.ArrayList;
 
 import noyau.classesMetier.Carte;
-import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.Pli;
+import noyau.classesMetier.EtatPartieEnum;
 import noyau.classesMetier.TableDeJeu;
 
 public class GameMaster {
@@ -12,94 +11,114 @@ public class GameMaster {
 	private TableDeJeu table;
 	private Joueur joueurCourant;
 	private Joueur joueurDonneur;
-	private Pli cartesDuPLiCourant;
-	private CouleurEnum couleurAtout;
+	private Joueur joueurPrend;
+	private EtatPartieEnum etat;
 
 	public GameMaster(Joueur joueurs[], TableDeJeu table) {
 		this.equipes = new ArrayList<>();
 		equipes.add(new Equipe(joueurs[0], joueurs[1]));
 		equipes.add(new Equipe(joueurs[2], joueurs[3]));
 		this.table = table;
+		this.joueurDonneur = getDonneurRandom();
+		etat = EtatPartieEnum.PremiereDistribution;
 	}
 
 	public void debuterPartie() {
-		int indiceJoueurDonneur = ((int) (Math.random() * 4));
-		this.joueurDonneur = equipes.get(indiceJoueurDonneur % 2).getJoueurs().get(indiceJoueurDonneur / 2);
-		Joueur joueurPrend = null;
+		joueurPrend = null;
 		while (equipes.get(0).getScore() < 1000 && equipes.get(1).getScore() < 1000) {
-			Carte carteRetournee = null;
-			// PHASE DE DONNE
-			while (joueurPrend == null) {
-				joueurPrend=null; // TODO redondance utile ?
+			switch (etat) {
+			case PremiereDistribution:
 				System.out.println("Donneur : " + this.joueurDonneur);
 				this.joueurCourant = table.joueurSuivant(this.joueurDonneur);
 				distribuer(3);
 				distribuer(2);
-				carteRetournee = table.getTas().retirerCarteDessusPaquet();
-				// PremiereDonne
-				joueurPrend = quiPrendPremiereDonne(carteRetournee);
+				this.table.montrerCarteDonne();
+				etat = EtatPartieEnum.PremierTourDonne;
+				break;
+			case PremierTourDonne:
+				joueurPrend = quiPrendPremiereDonne();
 				if (joueurPrend == null) {
-					// DeuxiemeDonne
-					joueurPrend = quiPrendDeuxiemeDonne();
+					etat = EtatPartieEnum.DeuxiemeTourDonne;
+				} else {
+					this.table.attribuerCarteDonneA(joueurPrend);
+					etat = EtatPartieEnum.DeuxiemeDistribution;
 				}
-				// si personne n'a pris
+				break;
+			case DeuxiemeTourDonne:
+				joueurPrend = quiPrendDeuxiemeDonne();
 				if (joueurPrend == null) {
-
-					System.out.println("-----PERSONNE N'A PRIS-----\nAvant recuperation : "
-									+ table.getTas().getTaillePaquet()
-									+ " cartes dans le tas");
 					// Personne n'a pris, on re-distribue les cartes
 					// on récupère les cartes
 					recupererCartesMain();
-					this.table.getTas().ajouter(carteRetournee);
+					this.table.remettreCarteDonneDansLeTas();
 					// on mélange
 					this.table.getTas().melanger(50);
-					System.out.println("Apres recuperation : "
-							+ table.getTas().getTaillePaquet()
-							+ " cartes dans le tas");
-				}
-			}
-
-			System.out.println("----FIN DE LA DONNE-----\n"
-					+ joueurPrend.toString() + " a pris à : "
-					+ this.couleurAtout);
-			joueurPrend.getMain().ajouter(carteRetournee, carteRetournee.getCouleur());
-			
-			/*this.joueurCourant = joueurPrend;
-			joueurPrend = null;
-			distribuerDeuxiemeTour();*/
-			
-			distribuerDeuxiemeTour(joueurPrend);
-			this.joueurCourant = table.joueurSuivant(joueurDonneur);
-			joueurPrend = null;
-
-			// PHASE DES PLIS
-			while (this.joueurCourant.getMain().getTaillePaquet() > 0) {
-				if(this.joueurCourant.getMain().getTaillePaquet() == 1){
-					this.cartesDuPLiCourant = new Pli(true, false, false);
+					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
-					this.cartesDuPLiCourant = new Pli();
+					this.table.attribuerCarteDonneA(joueurPrend);
+					System.out.println("----FIN DE LA DONNE-----\n"
+							+ joueurPrend.toString() + " a pris à : "
+							+ this.table.getCouleurAtout());
+					etat = EtatPartieEnum.DeuxiemeDistribution;
 				}
-				Carte carteJouer = null;
-				while (this.cartesDuPLiCourant.getTaillePaquet() < 4) {
-					carteJouer = joueurCourant.jouerPli(this.cartesDuPLiCourant);
-					this.cartesDuPLiCourant.ajouter(carteJouer,joueurCourant, couleurAtout);
-					joueurCourant = table.joueurSuivant(joueurCourant);
+				break;
+			case DeuxiemeDistribution:
+				distribuerDeuxiemeTour(joueurPrend);
+				this.joueurCourant = table.joueurSuivant(joueurDonneur);//TODO est ce que c'est pas le joueur qui prend qui commence ?
+				joueurPrend = null;
+				etat = EtatPartieEnum.PhaseDePli;
+				break;
+			case PhaseDePli:
+				jouerUnPli();
+				if(this.joueurCourant.getMain().getTaillePaquet() == 0){
+					calculerScoreDeLaManche();
+					remettreLesPlisDansLeTas();
+					this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
+					etat = EtatPartieEnum.PremiereDistribution;
+				} else {
+					etat = EtatPartieEnum.PhaseDePli;
 				}
-				System.out.println("-------PLI FINI------\nJoueurMaitre : " + this.cartesDuPLiCourant.getJoueurMaitre());
-				getEquipe(this.cartesDuPLiCourant.getJoueurMaitre()).ajouterUnpliRemportee(this.cartesDuPLiCourant);
-				joueurCourant = this.cartesDuPLiCourant.getJoueurMaitre();
+				break;
 			}
-			//MancheFini
-			System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
-			for(Equipe equipe : this.equipes){
-				equipe.calculerScoreFinDeManche(couleurAtout);
-				System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
-				table.getTas().reposerDesCartes(equipe.rendreLesCartesDesPlisRemporter());
-			}
-			this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
 		}
 	}
+	
+	private void calculerScoreDeLaManche(){
+		System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
+		for(Equipe equipe : this.equipes){
+			equipe.calculerScoreFinDeManche(this.table.getCouleurAtout());
+			System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
+		}
+	}
+	
+	private void remettreLesPlisDansLeTas(){
+		for(Equipe equipe : this.equipes){
+			table.getTas().reposerDesCartes(equipe.rendreLesCartesDesPlisRemporter());
+		}
+	}
+	
+	private Joueur getDonneurRandom(){
+		int indiceJoueurDonneur = ((int) (Math.random() * 4));
+		return equipes.get(indiceJoueurDonneur % 2).getJoueurs().get(indiceJoueurDonneur / 2);
+	}
+	
+	private void jouerUnPli(){
+		if(this.joueurCourant.getMain().getTaillePaquet() == 1){
+			this.table.nouveauPliCourant(true);
+		} else {
+			this.table.nouveauPliCourant(false);
+		}
+		Carte carteJouer = null;
+		while (this.table.getPliCourant().getTaillePaquet() < 4) {
+			carteJouer = joueurCourant.jouerPli();
+			this.table.jouerCarte(carteJouer,joueurCourant);
+			joueurCourant = table.joueurSuivant(joueurCourant);
+		}
+		System.out.println("-------PLI FINI------\nJoueurMaitre : " + this.table.getPliCourant().getJoueurMaitre());
+		getEquipe(this.table.getPliCourant().getJoueurMaitre()).ajouterUnpliRemportee(this.table.getPliCourant());
+		joueurCourant = this.table.getPliCourant().getJoueurMaitre();
+	}
+	
 	private void recupererCartesMain() {
 		Joueur premierJoueur = this.joueurCourant;
 		do {
@@ -111,17 +130,17 @@ public class GameMaster {
 		} while (this.joueurCourant != premierJoueur);
 	}
 
-	private Joueur quiPrendPremiereDonne(Carte carteRetournee) {
+	private Joueur quiPrendPremiereDonne() {
 		Joueur joueurPrend = null;
 		int i = 0;
 		// tend que personne n'a pris ET que tout le monde n'as pas Ã©tÃ©
 		// interroger
 		while (joueurPrend == null && i < 4) {
 			System.out.println("---------PREMIERE DONNE----------\n"
-					+ joueurCourant + "\nAtout:" + carteRetournee);
-			if (joueurCourant.prendPremiereDonne(carteRetournee)) {
+					+ this.joueurCourant + "\nAtout:" + this.table.getCarteDonne());
+			if (joueurCourant.prendPremiereDonne()) {
 				joueurPrend = joueurCourant;
-				this.couleurAtout = carteRetournee.getCouleur();
+				this.table.setCouleurAtout(this.table.getCarteDonne().getCouleur());
 				System.out.println(joueurPrend + " PREND");
 			} else {
 				System.out.println(joueurPrend + " PASSE");
@@ -133,15 +152,15 @@ public class GameMaster {
 	}
 
 	private Joueur quiPrendDeuxiemeDonne() {
-		couleurAtout = null;
+		this.table.setCouleurAtout(null);
 		Joueur joueurPrend = null;
 		int i = 0;
-		while (couleurAtout == null && i < 4) {
+		while (this.table.getCouleurAtout() == null && i < 4) {
 			System.out.println("---------DEUXIEME DONNE----------\n"
 					+ joueurCourant);
-			couleurAtout = joueurCourant.prendDeuxiemeDonne();
-			System.out.println("\ncouleur Choisie :" + couleurAtout);
-			if (couleurAtout == null) {
+			this.table.setCouleurAtout(joueurCourant.prendDeuxiemeDonne());
+			System.out.println("\ncouleur Choisie :" + this.table.getCouleurAtout());
+			if (this.table.getCouleurAtout() == null) {
 				joueurCourant = table.joueurSuivant(joueurCourant);
 			} else {
 				joueurPrend = joueurCourant;
@@ -166,7 +185,7 @@ public class GameMaster {
 			for (int i = 0; i < nbCarte; i++) {
 				this.joueurCourant.getMain().ajouter(
 						table.getTas().retirerCarteDessusPaquet(),
-						this.couleurAtout);
+						this.table.getCouleurAtout());
 			}
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);
@@ -181,10 +200,10 @@ public class GameMaster {
 			for (int i = 0; i < nbCarte; i++) {
 				this.joueurCourant.getMain().ajouter(
 						table.getTas().retirerCarteDessusPaquet(),
-						this.couleurAtout);
+						this.table.getCouleurAtout());
 			}
-			if (!this.joueurCourant.equals(joueurPrend)) { // voir ==
-				this.joueurCourant.getMain().ajouter(table.getTas().retirerCarteDessusPaquet(), this.couleurAtout);
+			if (this.joueurCourant != joueurPrend) { // voir .equals()
+				this.joueurCourant.getMain().ajouter(table.getTas().retirerCarteDessusPaquet(), this.table.getCouleurAtout());
 			}
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);

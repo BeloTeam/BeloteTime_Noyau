@@ -6,26 +6,13 @@ import entite.Joueur;
 
 public class Pli extends AbstractPaquetNonTrier {
 	private boolean hasDixDeDer;
-	private boolean hasBelote;
-	private boolean hasRebelote;
 	private boolean hasCoupe;
 	private CarteJouee carteMaitre;
 	private CouleurEnum couleurDemandee;
 	
-	public Pli() { 
-		super(4); 
-		this.hasDixDeDer = false;
-		this.hasBelote =false;
-		this.hasRebelote=false;
-		this.carteMaitre =null;
-		this.couleurDemandee =null;
-	}
-	
-	public Pli(boolean hasDixDeDer, boolean hasBelote, boolean hasRebelote) { 
+	public Pli(boolean hasDixDeDer) { 
 		super(4); 
 		this.hasDixDeDer = hasDixDeDer;
-		this.hasBelote = hasBelote;
-		this.hasRebelote = hasRebelote;
 		this.carteMaitre=null;
 		this.couleurDemandee =null;
 	}
@@ -85,12 +72,6 @@ public class Pli extends AbstractPaquetNonTrier {
 	public int calculerValeurPli(CouleurEnum atout){
 		int points = super.calculerValeurPaquet(atout);
 		if(this.hasDixDeDer){
-			points += 10;
-		}
-		if(this.hasBelote){
-			points += 10;
-		}
-		if(this.hasRebelote){
 			points += 10;
 		}
 		return points;

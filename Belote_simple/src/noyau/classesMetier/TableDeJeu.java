@@ -9,20 +9,62 @@ public class TableDeJeu {
 	private GameMaster gm;
 	private Tas tas;
 	private boolean sensDesAiguilleDuneMontre;
-	
+	private Pli pliCourant;
+	private CouleurEnum couleurAtout;
+	private Carte carteDonne;
+
 	public TableDeJeu() {
 		sensDesAiguilleDuneMontre = true;
 		joueurs = new Joueur[4];
-		joueurs[0] = new JoueurHumain(PositionEnum.Sud,"Humain");
-		joueurs[1] = new JoueurHumain(PositionEnum.Nord,"Joueur Nord");
-		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Joueur Est");
-		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Joueur Ouest");
+		joueurs[0] = new JoueurHumain(PositionEnum.Sud,"Humain",this);
+		joueurs[1] = new JoueurHumain(PositionEnum.Nord,"Joueur Nord",this);
+		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Joueur Est",this);
+		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Joueur Ouest",this);
 		gm = new GameMaster(joueurs,this);
 		tas = new Tas();
 		tas.melanger(50);
 	}
 	public Tas getTas() {
 		return tas;
+	}
+	
+	public Pli getPliCourant(){
+		return this.pliCourant;
+	}
+	
+	public void nouveauPliCourant(boolean dixDeDer){
+		this.pliCourant = new Pli(dixDeDer);
+	}
+	
+	public void jouerCarte(Carte carte, Joueur joueur){
+		if(this.pliCourant != null && this.couleurAtout != null){
+			this.pliCourant.ajouter(carte, joueur, this.couleurAtout);
+		}
+	}
+
+	public CouleurEnum getCouleurAtout() {
+		return couleurAtout;
+	}
+	public void setCouleurAtout(CouleurEnum couleurAtout) {
+		this.couleurAtout = couleurAtout;
+	}
+	
+	public Carte getCarteDonne() {
+		return this.carteDonne;
+	}
+
+	public void montrerCarteDonne(){
+		this.carteDonne = this.tas.retirerCarteDessusPaquet();
+	}
+	
+	public void attribuerCarteDonneA(Joueur joueur){
+		joueur.getMain().ajouter(this.carteDonne, this.couleurAtout);
+		this.carteDonne = null;
+	}
+	
+	public void remettreCarteDonneDansLeTas(){
+		this.tas.ajouter(carteDonne);
+		this.carteDonne = null;
 	}
 	
 	public Joueur joueurSuivant(Joueur j){

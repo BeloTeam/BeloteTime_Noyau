@@ -2,18 +2,18 @@ package entite;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.Pli;
 import noyau.classesMetier.PositionEnum;
+import noyau.classesMetier.TableDeJeu;
 
 public class JoueurVirtuel extends Joueur{
 	Intelligence ia;
 
-	public JoueurVirtuel(PositionEnum position,String nom) {
-		super(position,nom);
+	public JoueurVirtuel(PositionEnum position,String nom, TableDeJeu table) {
+		super(position,nom, table);
 		ia = new Intelligence();
 	}
 
-	public boolean prendPremiereDonne(Carte atout) {
+	public boolean prendPremiereDonne() {
 		//TODO a faire
 		return false;
 	}
@@ -25,7 +25,7 @@ public class JoueurVirtuel extends Joueur{
 	}
 
 	@Override
-	public Carte jouerPli(Pli carteDuPliCourant) {
+	public Carte jouerPli() {
 		return null;
 	}
 
