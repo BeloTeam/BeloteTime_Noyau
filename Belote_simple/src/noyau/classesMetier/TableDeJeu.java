@@ -33,12 +33,12 @@ public class TableDeJeu {
 	}
 	
 	public void nouveauPliCourant(boolean dixDeDer){
-		this.pliCourant = new Pli(dixDeDer);
+		this.pliCourant = new Pli(this.couleurAtout,dixDeDer);
 	}
 	
 	public void jouerCarte(Carte carte, Joueur joueur){
 		if(this.pliCourant != null && this.couleurAtout != null){
-			this.pliCourant.ajouter(carte, joueur, this.couleurAtout);
+			this.pliCourant.ajouter(carte, joueur);
 		}
 	}
 

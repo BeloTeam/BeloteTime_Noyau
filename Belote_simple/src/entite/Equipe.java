@@ -48,25 +48,10 @@ public class Equipe {
 		return false;
 	}
 	
-	public void calculerScoreFinDeManche(CouleurEnum couleurAtout){
+	public void calculerScoreFinDeManche(){
 		int score = 0;
 		for(Pli pli : this.plisRemportee){
-			score += pli.calculerValeurPli(couleurAtout);
-		}
-		this.score += score;
-		this.pointsDesManches.add(score);
-	}
-	
-
-	public void calculerScoreFinDeManche(CouleurEnum couleurAtout,
-			Equipe dixDeDer) {
-		
-		int score = 0;
-		for(Pli pli : this.plisRemportee){
-			score += pli.calculerValeurPli(couleurAtout);
-		}
-		if(this.equals(dixDeDer)){
-			score+=10;
+			score += pli.calculerValeurPli();
 		}
 		this.score += score;
 		this.pointsDesManches.add(score);

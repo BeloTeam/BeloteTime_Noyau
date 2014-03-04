@@ -86,7 +86,7 @@ public class GameMaster {
 	private void calculerScoreDeLaManche(){
 		System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
 		for(Equipe equipe : this.equipes){
-			equipe.calculerScoreFinDeManche(this.table.getCouleurAtout());
+			equipe.calculerScoreFinDeManche();
 			System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
 		}
 	}
