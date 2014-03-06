@@ -1,0 +1,11 @@
+finir les classes metiers 
+finir l'implementation des regles dans joueur
+ - joueurHumain , methode jouerPli : le joueur peut couper et pisser (nathan loic)
+
+fixer le bug de triage des cartes affichage (voir issue github)
+fixer le bug du mauvais joueur maitre (voir issue github)
+
+
+dossier de conception
+commenter le code 
+

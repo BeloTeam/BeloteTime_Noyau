@@ -86,4 +86,15 @@ public class Equipe {
 	public String toString(){
 		return "Equipe de : "+this.getJoueurs();
 	}
+	
+	public Joueur getPartenaire(Joueur j){
+		if(this.estDansLEquipe(j)){
+			if(this.joueurs.get(0) != j){
+				return this.joueurs.get(0);
+			} else {
+				return this.joueurs.get(1);
+			}
+		}
+		return null;
+	}
 }

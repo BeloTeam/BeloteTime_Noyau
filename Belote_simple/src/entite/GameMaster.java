@@ -143,7 +143,7 @@ public class GameMaster {
 				this.table.setCouleurAtout(this.table.getCarteDonne().getCouleur());
 				System.out.println(joueurPrend + " PREND");
 			} else {
-				System.out.println(joueurPrend + " PASSE");
+				System.out.println(joueurCourant + " PASSE");
 			}
 			i++;
 			joueurCourant = table.joueurSuivant(joueurCourant);
@@ -207,5 +207,9 @@ public class GameMaster {
 			}
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);
+	}
+	
+	public ArrayList<Equipe> getEquipes() {
+		return equipes;
 	}
 }
