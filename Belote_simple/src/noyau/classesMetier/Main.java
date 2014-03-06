@@ -22,11 +22,17 @@ public class Main {
 		this.main = new HashMap<>();
 		this.nbCarte = 0;
 		this.TAILLEMAX = TAILLEMAX;
+		for(CouleurEnum c : CouleurEnum.values()) {
+			this.main.put(c, new TreeSet<Carte>()); 
+		}
 	}
 	public Main() {
 		this.main = new HashMap<>();
 		this.nbCarte = 0;
 		this.TAILLEMAX = 8;
+		for(CouleurEnum c : CouleurEnum.values()) {
+			this.main.put(c, new TreeSet<Carte>()); 
+		}
 	}
 
 	public Map<CouleurEnum, SortedSet<Carte>> getMain() {

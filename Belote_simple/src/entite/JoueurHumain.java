@@ -137,6 +137,9 @@ public class JoueurHumain extends Joueur {
 					this.getMain().supprimer(carteJouer);
 				}
 				this.getMain().supprimer(carteJouer);
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+				System.out.println(this.getMain());
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			} else {
 				System.out.println("ERREUR");
 			}

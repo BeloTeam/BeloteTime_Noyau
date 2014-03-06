@@ -7,5 +7,5 @@ package noyau.classesMetier;
  * @resume classe representant une figure de carte
  * */
 public enum FigureEnum {
-	Sept, Huit, Neuf, Dix, Valet, Dame, Roi, As;
+	Sept, Huit, Neuf, Valet, Dame, Roi, Dix, As;
 }
