@@ -168,4 +168,65 @@ public class Main {
 		}
 		return newMain;
 	}
+	
+	
+	public SortedSet<Carte> getAtoutPlusFort(CarteJouee carteMaitre) {
+		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>();
+
+		for (Carte carte : this.get(carteMaitre.getCouleur())) {
+			if(carte.compareTo(carteMaitre) > 0){
+				setCarteAtoutPlusForte.add(carte);
+			}
+		}
+		
+		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
+		if(setCarteAtoutPlusForte.size() == 0){
+			return this.get(carteMaitre.getCouleur());
+		}
+		else{
+			//affichage temporaire
+			System.out.println("Vous devez monter a l'atout");
+			return setCarteAtoutPlusForte;
+		}
+		
+	}
+	
+	
+	public List<Carte> getAtoutPlusFortList(final CarteJouee carteMaitre) {
+		List<Carte> listCarteAtoutPlusForte = new ArrayList<Carte>();
+		Comparator<Carte> compAtout = new Comparator<Carte>() {
+			@Override
+			public int compare(Carte o1, Carte o2) {
+				int res = 0;
+				if(o1.calculerValeurCarte(carteMaitre.getCouleur()) > o2.calculerValeurCarte(carteMaitre.getCouleur())){
+					res = 1;
+				} else {
+					if(o1.calculerValeurCarte(carteMaitre.getCouleur()) < o2.calculerValeurCarte(carteMaitre.getCouleur())){
+						res = -1;
+					} else {
+						res = o1.compareTo(o2);
+					}
+				}
+				return res;
+			}
+		};
+		
+
+		for (Carte carte : this.get(carteMaitre.getCouleur())) {
+			if(compAtout.compare(carteMaitre, carte)<0){
+				listCarteAtoutPlusForte.add(carte);
+			}
+		}
+		
+		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
+		if(listCarteAtoutPlusForte.size() == 0){
+			return this.getList(carteMaitre.getCouleur());
+		}
+		else{
+			//affichage temporaire
+			System.out.println("Vous devez monter a l'atout");
+			return listCarteAtoutPlusForte;
+		}
+		
+	}
 }

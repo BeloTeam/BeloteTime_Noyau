@@ -37,7 +37,7 @@ public class Carte implements Comparable<Carte>{
 	@Override
 	public int compareTo(Carte c) {
 		int res = this.getCouleur().compareTo(c.getCouleur()) + this.getFigure().compareTo(c.getFigure());
-		System.out.println("Carte " + this + " compareTo carte " + c + " = " + res);
+		//System.out.println("Carte " + this + " compareTo carte " + c + " = " + res);
 		return res;
 	}
 	
