@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.FigureEnum;
 import noyau.classesMetier.Pli;
 
 
@@ -85,6 +86,29 @@ public class Equipe {
 	
 	public String toString(){
 		return "Equipe de : "+this.getJoueurs();
+	}
+	
+	public Joueur hasBeloteRebelote(CouleurEnum couleurAtout){
+		boolean hasBe=false;
+		boolean hasRe=false;
+		
+		for (Joueur j : this.joueurs) {
+			for (Carte c : j.getMain().get(couleurAtout)) {
+				if(c.equals(new Carte(couleurAtout,FigureEnum.Dame))){
+					hasBe=true;
+				}
+				if(c.equals(new Carte(couleurAtout,FigureEnum.Dame))){
+					hasRe=true;
+				}
+				if(hasBe && hasRe){
+					return j;
+				}
+			}
+			hasBe=false;
+			hasRe=false;
+		}
+		
+		return null;
 	}
 	
 	public Joueur getPartenaire(Joueur j){

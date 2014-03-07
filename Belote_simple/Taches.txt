@@ -1,9 +1,19 @@
 finir les classes metiers 
+
 finir l'implementation des regles dans joueur
  - joueurHumain , methode jouerPli : le joueur peut couper et pisser (nathan loic)
 
-fixer le bug de triage des cartes affichage (voir issue github)
+faire l'implementation de la belote / rebelote
+
 fixer le bug du mauvais joueur maitre (voir issue github)
+
+pb d'architecture a regler ==> 
+exemple : 
+dans joueur si on veut savoir si le joueur a la belote/rebelote on doit faire
+	if(this == this.getTable().getGm().getEquipes().get(0).hasBeloteRebelote(CouleurEnum.Carreau))
+	if(this == this.getTable().getGm().getEquipes().get(1).hasBeloteRebelote(CouleurEnum.Carreau))
+
+y'a trop d'intermediaire je pense, à discuter. Et le fait que be/re soit dans equipe complique aussi les choses
 
 
 dossier de conception

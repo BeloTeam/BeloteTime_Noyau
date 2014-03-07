@@ -66,15 +66,12 @@ public class JoueurHumain extends Joueur {
 		while (carteJouer == null) {
 			// S'il y a au moins une carte sur la table
 			if (this.getTable().getPliCourant().getTaillePaquet() != 0) {
-				System.out.println("Pli actuel : "
-						+ this.getTable().getPliCourant());
-				System.out.println("Joueur maitre : "
-						+ this.getTable().getPliCourant().getJoueurMaitre());
-				System.out.println("Couleur demande : "
-						+ this.getTable().getPliCourant().getCouleurDemandee());
-				System.out
-						.println("Votre main :\n" + this.getMain().toString());
-
+				System.out.println("Pli actuel : "+ this.getTable().getPliCourant());
+				System.out.println("Joueur maitre : "+ this.getTable().getPliCourant().getJoueurMaitre());
+				System.out.println("Couleur demande : "+ this.getTable().getPliCourant().getCouleurDemandee());
+				System.out.println("Votre main :\n" + this.getMain().toString());
+				
+				
 				// Si nous avons la couleur demandee
 				if (this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()) != null
 					&& !this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()).isEmpty()) {
