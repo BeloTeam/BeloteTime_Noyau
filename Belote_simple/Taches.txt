@@ -17,7 +17,7 @@ y'a trop d'intermediaire je pense, � discuter.
 Je suis joueur je veux savoir si j'ai be/re je dois passer par la table de jeu 
 puis le game master puis les 2 equipes parce que je sais pas ds laquelle je suis, c'est assez compliqué
 
-
+supprimer les branches qu'on utilise plus
 
 dossier de conception
 commenter le code 
