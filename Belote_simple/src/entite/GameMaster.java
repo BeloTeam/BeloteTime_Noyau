@@ -70,7 +70,7 @@ public class GameMaster {
 				break;
 			case PhaseDePli:
 				jouerUnPli();
-				if(this.joueurCourant.getMain().getTaillePaquet() == 0){
+				if(this.joueurCourant.getMain().getTailleMain() == 0){
 					calculerScoreDeLaManche();
 					remettreLesPlisDansLeTas();
 					this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
@@ -103,7 +103,7 @@ public class GameMaster {
 	}
 	
 	private void jouerUnPli(){
-		if(this.joueurCourant.getMain().getTaillePaquet() == 1){
+		if(this.joueurCourant.getMain().getTailleMain() == 1){
 			this.table.nouveauPliCourant(true);
 		} else {
 			this.table.nouveauPliCourant(false);

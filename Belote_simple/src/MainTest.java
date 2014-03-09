@@ -23,7 +23,7 @@ public class MainTest extends TestCase{
 		main.ajouter(new Carte(CouleurEnum.Carreau, FigureEnum.Dame), CouleurEnum.Pique);
 		main.ajouter(new Carte(CouleurEnum.Coeur, FigureEnum.Valet), CouleurEnum.Pique);
 		
-		Assert.assertEquals(8, main.getTaillePaquet());
+		Assert.assertEquals(8, main.getTailleMain());
 		Assert.assertEquals(4, main.getNbCarteCouleur(CouleurEnum.Pique));
 		Assert.assertEquals(2, main.getNbCarteCouleur(CouleurEnum.Carreau));
 		

@@ -24,7 +24,7 @@ public class Test{
 		m.ajouter(new Carte(CouleurEnum.Carreau, FigureEnum.Huit), atout);
 		m.ajouter(new Carte(CouleurEnum.Carreau, FigureEnum.Sept), atout);
 
-		int valeur = m.calculerValeurPaquet(atout);
+		int valeur = m.calculerValeurMain(atout);
 		
 		System.out.println(m);
 		System.out.println(valeur);

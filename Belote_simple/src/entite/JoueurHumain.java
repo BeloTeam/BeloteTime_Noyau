@@ -78,7 +78,7 @@ public class JoueurHumain extends Joueur {
 
 					//si c'est de l'atout
 					if(this.getTable().getPliCourant().getCouleurDemandee() == this.getTable().getCouleurAtout()){
-						cartesPossibles = this.getMain().getAtoutPlusFortList(this.getTable().getPliCourant().getCarteMaitre());
+						cartesPossibles = this.getMain().getAtoutPlusFortListQue(this.getTable().getPliCourant().getCarteMaitre());
 						tailleEnsembleCartePropose = cartesPossibles.size();
 					}
 					else {
@@ -118,14 +118,14 @@ public class JoueurHumain extends Joueur {
 						
 						//regarder si carte maitre est un atout, si oui on doit monter si possible
 						if(this.getTable().getPliCourant().getCarteMaitre().getCouleur() == this.getTable().getCouleurAtout()){
-							listCarteCouleurAtout = this.getMain().getAtoutPlusFort(this.getTable().getPliCourant().getCarteMaitre());
+							listCarteCouleurAtout = this.getMain().getAtoutPlusFortQue(this.getTable().getPliCourant().getCarteMaitre());
 						}
 						
 						tailleEnsembleCartePropose = listCarteCouleurAtout.size();
 						System.out.println("\nVous devez couper :\nVous avez le choix entre : "+ listCarteCouleurAtout);
 					} 
 					else {
-						tailleEnsembleCartePropose = this.getMain().getTaillePaquet();
+						tailleEnsembleCartePropose = this.getMain().getTailleMain();
 						peutJouerCouleurDuPli = false;
 						System.out.println("Vous pouvez jouer la carte que vous voulez.\n");
 					}
@@ -134,7 +134,7 @@ public class JoueurHumain extends Joueur {
 			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
 			else 
 			{ 
-				tailleEnsembleCartePropose = this.getMain().getTaillePaquet();
+				tailleEnsembleCartePropose = this.getMain().getTailleMain();
 				peutJouerCouleurDuPli = false;
 				System.out.println("Vous commencez, votre main :\n"
 						+ this.getMain());

@@ -2,9 +2,9 @@ package noyau.classesMetier;
 
 
 /**
- * @class Couleur
- * @author Loic
- * @resume classe representant une figure de carte
+ * Classe representant une figure de carte
+ * @author BeloTeam
+ * @version 1.0
  * */
 public enum FigureEnum {
 	Sept, Huit, Neuf, Valet, Dame, Roi, Dix, As;
