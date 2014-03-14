@@ -58,6 +58,7 @@ public class JoueurHumain extends Joueur {
 				+ " (1-Coeur/2-Pique/3-Carreau/4-Trefle/5-passe)");
 		int rep = 0;
 		rep = saisieClavier();
+		//TODO Ne pas proposer la couleur de la carte du paquet qui est retournée!
 		switch (rep) {
 		case 1:
 			return CouleurEnum.Coeur;

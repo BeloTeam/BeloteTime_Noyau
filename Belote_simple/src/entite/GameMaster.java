@@ -25,6 +25,11 @@ import noyau.classesMetier.Carte;
 import noyau.classesMetier.EtatPartieEnum;
 import noyau.classesMetier.TableDeJeu;
 
+/**
+ * Le maître du jeu s'occupe du déroulement de la partie.
+ * @author BeloTeam
+ * @version 1.0
+ **/
 public class GameMaster {
 	private ArrayList<Equipe> equipes;
 	private TableDeJeu table;
@@ -33,6 +38,11 @@ public class GameMaster {
 	private Joueur joueurPrend;
 	private EtatPartieEnum etat;
 
+	/**
+	 * Constructeur de GameMaster.
+	 * @param joueurs Les 4 joueurs de belote
+	 * @param table	La table de jeu	
+	 */
 	public GameMaster(Joueur joueurs[], TableDeJeu table) {
 		this.equipes = new ArrayList<>();
 		equipes.add(new Equipe(joueurs[0], joueurs[1]));
@@ -42,6 +52,9 @@ public class GameMaster {
 		etat = EtatPartieEnum.PremiereDistribution;
 	}
 
+	/**
+	 * Lancement de la partie.
+	 */
 	public void debuterPartie() {
 		joueurPrend = null;
 		while (equipes.get(0).getScore() < 1000 && equipes.get(1).getScore() < 1000) {
@@ -74,7 +87,7 @@ public class GameMaster {
 					this.table.getTas().melanger(50);
 					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
-					this.table.attribuerCarteDonneA(joueurPrend);
+					this.table.attribuerCarteDonneA(joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
 					System.out.println("----FIN DE LA DONNE-----\n"
 							+ joueurPrend.toString() + " a pris à : "
 							+ this.table.getCouleurAtout());
@@ -83,7 +96,7 @@ public class GameMaster {
 				break;
 			case DeuxiemeDistribution:
 				distribuerDeuxiemeTour(joueurPrend);
-				this.joueurCourant = table.joueurSuivant(joueurDonneur);//TODO est ce que c'est pas le joueur qui prend qui commence ?
+				this.joueurCourant = table.joueurSuivant(joueurDonneur);
 				joueurPrend = null;
 				etat = EtatPartieEnum.PhaseDePli;
 				break;
@@ -101,7 +114,10 @@ public class GameMaster {
 			}
 		}
 	}
-	
+
+	/**
+	 * Permet de calculer le score de la manche pour chaque équipe.
+	 */
 	private void calculerScoreDeLaManche(){
 		System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
 		for(Equipe equipe : this.equipes){
@@ -109,18 +125,29 @@ public class GameMaster {
 			System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
 		}
 	}
+
 	
+	/**
+	 * On remet les cartes du plis dans le tas.
+	 */
 	private void remettreLesPlisDansLeTas(){
 		for(Equipe equipe : this.equipes){
 			table.getTas().reposerDesCartes(equipe.rendreLesCartesDesPlisRemporter());
 		}
 	}
-	
+
+	/**
+	 * Selectionne un des joueurs pour être le donneur
+	 * @return Le donneur
+	 */
 	private Joueur getDonneurRandom(){
 		int indiceJoueurDonneur = ((int) (Math.random() * 4));
 		return equipes.get(indiceJoueurDonneur % 2).getJoueurs().get(indiceJoueurDonneur / 2);
 	}
-	
+
+	/**
+	 * Jouer un pli.
+	 */
 	private void jouerUnPli(){
 		if(this.joueurCourant.getMain().getTailleMain() == 1){
 			this.table.nouveauPliCourant(true);
@@ -137,7 +164,10 @@ public class GameMaster {
 		getEquipe(this.table.getPliCourant().getJoueurMaitre()).ajouterUnpliRemportee(this.table.getPliCourant());
 		joueurCourant = this.table.getPliCourant().getJoueurMaitre();
 	}
-	
+
+	/**
+	 * Permet de récupérer les cartes dans la main des joueurs.
+	 */
 	private void recupererCartesMain() {
 		Joueur premierJoueur = this.joueurCourant;
 		do {
@@ -149,18 +179,21 @@ public class GameMaster {
 		} while (this.joueurCourant != premierJoueur);
 	}
 
+	/**
+	 * Premier tour de table pour proposer aux joueurs de prendre à l'atout la carte retournée.
+	 * @return Renvoit le jouer qui a pris, null le cas échéant.
+	 */
 	private Joueur quiPrendPremiereDonne() {
 		Joueur joueurPrend = null;
 		int i = 0;
-		// tend que personne n'a pris ET que tout le monde n'as pas Ã©tÃ©
-		// interroger
+		// tend que personne n'a pris ET que tout le monde n'as pas été interrogé
 		while (joueurPrend == null && i < 4) {
 			System.out.println("---------PREMIERE DONNE----------\n"
 					+ this.joueurCourant + "\nAtout:" + this.table.getCarteDonne());
 			if (joueurCourant.prendPremiereDonne()) {
 				joueurPrend = joueurCourant;
 				this.table.setCouleurAtout(this.table.getCarteDonne().getCouleur());
-				System.out.println(joueurPrend + " PREND");
+				System.out.println(joueurCourant + " PREND");
 			} else {
 				System.out.println(joueurCourant + " PASSE");
 			}
@@ -170,6 +203,10 @@ public class GameMaster {
 		return joueurPrend;
 	}
 
+	/**
+	 * Deuxieme tour de table pour proposer aux joueurs de prendre à l'atout à une autre couleur.
+	 * @return Renvoit le jouer qui a pris, null le cas échéant.
+	 */
 	private Joueur quiPrendDeuxiemeDonne() {
 		this.table.setCouleurAtout(null);
 		Joueur joueurPrend = null;
@@ -189,6 +226,11 @@ public class GameMaster {
 		return joueurPrend;
 	}
 
+	/**
+	 * Retourne l'équipe d'un joueur donné.
+	 * @param joueur
+	 * @return L'équipe du joueur donné
+	 */
 	private Equipe getEquipe(Joueur joueur) {
 		for (Equipe equipe : equipes) {
 			if (equipe.estDansLEquipe(joueur)) {
@@ -198,6 +240,10 @@ public class GameMaster {
 		return null;
 	}
 
+	/** 
+	 * Permet de distribuer les cartes du paquet aux joueurs.
+	 * @param nbCarte nombre de cartes à distribuer
+	 */
 	private void distribuer(int nbCarte) {
 		Joueur premierJoueur = this.joueurCourant;
 		do {
@@ -210,7 +256,10 @@ public class GameMaster {
 		} while (this.joueurCourant != premierJoueur);
 	}
 
-
+	/**
+	 * Distribue le reste des cartes. 2 cartes pour celui qui a pris à l'atout et 3 cartes pour les autres. 
+	 * @param joueurPrend joueur ayant pris a l'atout
+	 */
 	private void distribuerDeuxiemeTour(Joueur joueurPrend) {
 		Joueur premierJoueur = table.joueurSuivant(joueurDonneur);
 		this.joueurCourant = table.joueurSuivant(joueurDonneur);
@@ -227,7 +276,11 @@ public class GameMaster {
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);
 	}
-	
+
+	/**
+	 * Retourne les 2 équipes de la partie.
+	 * @return ArrayList<Equipe>
+	 */
 	public ArrayList<Equipe> getEquipes() {
 		return equipes;
 	}

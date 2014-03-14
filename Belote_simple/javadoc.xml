@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="D:\eclipse\plugins\org.junit_4.10.0.v4_10_0_v20120426-0900\junit.jar;D:\eclipse\plugins\org.hamcrest.core_1.1.0.v20090501071000.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="noyau.classesMetier,entite,gui" source="1.7" sourcefiles="src/Test.java,src/Launcher.java,src/MainTest.java" sourcepath="src" splitindex="true" use="true" version="true">
+            <link href="http://download.oracle.com/javase/7/docs/api/"/>
+        </javadoc>
+    </target>
+</project>

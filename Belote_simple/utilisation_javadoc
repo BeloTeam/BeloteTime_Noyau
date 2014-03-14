@@ -1,0 +1,6 @@
+Pour générer la javadoc : clic droit sur le fichier javadoc.xml -> executer en tant que -> Génération Ant
+
+Si vous avez une erreur CreateProcess error=2 voici comment la résoudre : 
+http://stackoverflow.com/questions/3643319/createprocess-error-2-running-javadoc-from-ant
+
+Astuce : Positionner le curseur dans la méthode à commenter et Alt+Shift+J pour créer automatiquement le commentaire Javadoc de la méthode.
