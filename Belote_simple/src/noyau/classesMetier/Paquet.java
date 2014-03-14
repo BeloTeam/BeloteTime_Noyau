@@ -26,12 +26,12 @@ import java.util.ArrayList;
  * @author BeloTeam
  * @version 1.0
 **/
-public class Tas extends AbstractPaquetNonTrier{
+public class Paquet extends AbstractPaquetNonTrier{
 	
 	/**
-	 * Constructeur par defaut de Tas
+	 * Constructeur par defaut de Paquet
 	 * */
-	public Tas() { 
+	public Paquet() { 
 		super(32); 
 		//initialisation du tas
 		for(CouleurEnum c : CouleurEnum.values()){

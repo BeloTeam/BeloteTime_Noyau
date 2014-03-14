@@ -23,15 +23,26 @@ import entite.GameMaster;
 import entite.Joueur;
 import entite.JoueurHumain;
 
+/**
+ * La table de jeu contient toutes les informations nécessaire pour réaliser une partie de belote.
+ * @author BeloTeam
+ * @version 1.0
+ *
+ */
 public class TableDeJeu {
+	//TODO Tous les joueurs doivent pouvoir savoir qui est le donneur, qui a pris et quel est le joueur courant. Déplacer ces attributs de GameMaster ici?
+	// (ce serait utilisé dans le todo suivant, cf attribuerCarteRetourneeA(Joueur) )
 	private Joueur[] joueurs;
 	private GameMaster gm;
-	private Tas tas;
+	private Paquet paquet;
 	private boolean sensDesAiguilleDuneMontre;
 	private Pli pliCourant;
 	private CouleurEnum couleurAtout;
-	private Carte carteDonne;
+	private Carte carteRetournee;
 
+	/**
+	 * Constructeur de la table de jeu.
+	 */
 	public TableDeJeu() {
 		sensDesAiguilleDuneMontre = true;
 		joueurs = new Joueur[4];
@@ -40,52 +51,100 @@ public class TableDeJeu {
 		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Joueur Est",this);
 		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Joueur Ouest",this);
 		gm = new GameMaster(joueurs,this);
-		tas = new Tas();
-		tas.melanger(50);
-	}
-	public Tas getTas() {
-		return tas;
+		paquet = new Paquet();
+		paquet.melanger(50);
 	}
 	
+	/**
+	 * Retourne le tas de cartes.
+	 * @return Paquet
+	 */
+	public Paquet getTas() {
+		return paquet;
+	}
+	
+	/**
+	 * Retourne le pli courant.
+	 * @return Pli
+	 */
 	public Pli getPliCourant(){
 		return this.pliCourant;
 	}
 	
+	/**
+	 * Créé le nouveau pli courant.
+	 * @param dixDeDer le dernier pli vaut 10 points supplémentaires
+	 */
 	public void nouveauPliCourant(boolean dixDeDer){
 		this.pliCourant = new Pli(this.couleurAtout,dixDeDer);
 	}
 	
+	/**
+	 * Permet à un joueur de jouer une carte.
+	 * @param carte
+	 * @param joueur
+	 */
 	public void jouerCarte(Carte carte, Joueur joueur){
 		if(this.pliCourant != null && this.couleurAtout != null){
 			this.pliCourant.ajouter(carte, joueur);
 		}
 	}
 
+	/**
+	 * Retourne la couleur de l'atout.
+	 * @return CouleurEnum
+	 */
 	public CouleurEnum getCouleurAtout() {
 		return couleurAtout;
 	}
+	
+	/**
+	 * Défini la couleur à l'atout.
+	 * @param couleurAtout
+	 */
 	public void setCouleurAtout(CouleurEnum couleurAtout) {
 		this.couleurAtout = couleurAtout;
 	}
-	
-	public Carte getCarteDonne() {
-		return this.carteDonne;
-	}
 
-	public void montrerCarteDonne(){
-		this.carteDonne = this.tas.retirerCarteDessusPaquet();
+	/**
+	 * Retourne la carte du dessus du paquet.
+	 */
+	public void retournerUneCarte(){
+		this.carteRetournee = this.paquet.retirerCarteDessusPaquet();
 	}
 	
-	public void attribuerCarteDonneA(Joueur joueur){
-		joueur.getMain().ajouter(this.carteDonne, this.couleurAtout);
-		this.carteDonne = null;
+	/**
+	 * Renvoit la carte retournée.
+	 * @return Carte
+	 */
+	public Carte getCarteRetournee() {
+		return this.carteRetournee;
 	}
 	
-	public void remettreCarteDonneDansLeTas(){
-		this.tas.ajouter(carteDonne);
-		this.carteDonne = null;
+	
+	/**
+	 * Ajouter la carte retournée au joueur qui a choisi l'atout.
+	 * @param joueur
+	 */
+	public void attribuerCarteRetourneeA(Joueur joueur){
+		//TODO En suivant le todo en haut de la page pas besoin d'indiquer le joueur qui récupère la carte retournée en paramètre
+		joueur.getMain().ajouter(this.carteRetournee, this.couleurAtout);
+		this.carteRetournee = null;
 	}
 	
+	/**
+	 * Remet la carte retournée dans le paquet.
+	 */
+	public void remettreCarteRetourneeDansLePaquet(){
+		this.paquet.ajouter(carteRetournee);
+		this.carteRetournee = null;
+	}
+	
+	/**
+	 * Indique le joueur suivant en fonction du sens de parcours
+	 * @param j le joueur de référence
+	 * @return le joueur suivant
+	 */
 	public Joueur joueurSuivant(Joueur j){
 		if(sensDesAiguilleDuneMontre){
 			return aGaucheDe(j);
@@ -94,6 +153,11 @@ public class TableDeJeu {
 		}
 	}
 	
+	/**
+	 * Indique le joueur se trouvant à gauche du joueur donné.
+	 * @param j le joueur de référence
+	 * @return le joueur à sa gauche
+	 */
 	public Joueur aGaucheDe(Joueur j){
 		PositionEnum aGauche = null;
 		switch(j.getPosition()){
@@ -118,6 +182,11 @@ public class TableDeJeu {
 		return null;
 	}
 	
+	/**
+	 * Indique le joueur se trouvant à droite du joueur donné.
+	 * @param j le joueur de référence
+	 * @return le joueur à sa droite
+	 */
 	public Joueur aDroiteDe(Joueur j){
 		PositionEnum aGauche = null;
 		switch(j.getPosition()){
@@ -142,7 +211,14 @@ public class TableDeJeu {
 		return null;
 	}
 	
+	/**
+	 * Indique le nombre de cartes dans la main d'un joueur donné.
+	 * @param joueur
+	 * @return le nombre de cartes
+	 */
 	public int nbCartesDe(Joueur joueur){
+		//TODO La méthode ne semble pas utilisée (du moins pas dans GameMaster), c'est dommage! 
+		//PS : méthode à tester avant (double .getMain()) !
 		int nbCartes = 0;
 		for(Joueur j : this.joueurs){
 			if(j == joueur){
@@ -151,6 +227,11 @@ public class TableDeJeu {
 		}
 		return nbCartes;
 	}
+	
+	/**
+	 * Renvoit le maître du jeu de la partie
+	 * @return GameMaster
+	 */
 	public GameMaster getGm() {
 		return gm;
 	}

@@ -64,7 +64,7 @@ public class GameMaster {
 				this.joueurCourant = table.joueurSuivant(this.joueurDonneur);
 				distribuer(3);
 				distribuer(2);
-				this.table.montrerCarteDonne();
+				this.table.retournerUneCarte();
 				etat = EtatPartieEnum.PremierTourDonne;
 				break;
 			case PremierTourDonne:
@@ -72,7 +72,7 @@ public class GameMaster {
 				if (joueurPrend == null) {
 					etat = EtatPartieEnum.DeuxiemeTourDonne;
 				} else {
-					this.table.attribuerCarteDonneA(joueurPrend);
+					this.table.attribuerCarteRetourneeA(joueurPrend);
 					etat = EtatPartieEnum.DeuxiemeDistribution;
 				}
 				break;
@@ -82,12 +82,12 @@ public class GameMaster {
 					// Personne n'a pris, on re-distribue les cartes
 					// on récupère les cartes
 					recupererCartesMain();
-					this.table.remettreCarteDonneDansLeTas();
+					this.table.remettreCarteRetourneeDansLePaquet();
 					// on mélange
 					this.table.getTas().melanger(50);
 					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
-					this.table.attribuerCarteDonneA(joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
+					this.table.attribuerCarteRetourneeA(joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
 					System.out.println("----FIN DE LA DONNE-----\n"
 							+ joueurPrend.toString() + " a pris à : "
 							+ this.table.getCouleurAtout());
@@ -189,10 +189,10 @@ public class GameMaster {
 		// tend que personne n'a pris ET que tout le monde n'as pas été interrogé
 		while (joueurPrend == null && i < 4) {
 			System.out.println("---------PREMIERE DONNE----------\n"
-					+ this.joueurCourant + "\nAtout:" + this.table.getCarteDonne());
+					+ this.joueurCourant + "\nAtout:" + this.table.getCarteRetournee());
 			if (joueurCourant.prendPremiereDonne()) {
 				joueurPrend = joueurCourant;
-				this.table.setCouleurAtout(this.table.getCarteDonne().getCouleur());
+				this.table.setCouleurAtout(this.table.getCarteRetournee().getCouleur());
 				System.out.println(joueurCourant + " PREND");
 			} else {
 				System.out.println(joueurCourant + " PASSE");

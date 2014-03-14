@@ -40,7 +40,7 @@ public class JoueurHumain extends Joueur {
 
 	public boolean prendPremiereDonne() {
 		System.out.println("Votre main :\n" + this.getMain()
-				+ "\nPrenez vous pour l'atout : " + this.getTable().getCarteDonne().toString()
+				+ "\nPrenez vous pour l'atout : " + this.getTable().getCarteRetournee().toString()
 				+ " (1-oui/0-non)");
 		int rep = 0;
 		rep = saisieClavier();
