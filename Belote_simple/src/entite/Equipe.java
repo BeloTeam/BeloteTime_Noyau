@@ -73,7 +73,6 @@ public class Equipe {
 		for(Pli pli : this.plisRemportee){
 			score += pli.calculerValeurPli();
 		}
-		this.score += score;
 		this.pointsDesManches.add(score);
 	}
 	

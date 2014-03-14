@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.EtatPartieEnum;
+import noyau.classesMetier.FigureEnum;
 import noyau.classesMetier.TableDeJeu;
 
 /**
@@ -30,6 +31,14 @@ import noyau.classesMetier.TableDeJeu;
  * @author BeloTeam
  * @version 1.0
  **/
+/**
+ * @author Arthur
+ *
+ */
+/**
+ * @author Arthur
+ *
+ */
 public class GameMaster {
 	private ArrayList<Equipe> equipes;
 	private TableDeJeu table;
@@ -37,7 +46,9 @@ public class GameMaster {
 	private Joueur joueurDonneur;
 	private Joueur joueurPrend;
 	private EtatPartieEnum etat;
-
+	private boolean beloteAnnoncee;
+	private boolean rebeloteAnnoncee;
+	private Joueur joueurPossedeAnnonce;
 	/**
 	 * Constructeur de GameMaster.
 	 * @param joueurs Les 4 joueurs de belote
@@ -50,6 +61,8 @@ public class GameMaster {
 		this.table = table;
 		this.joueurDonneur = getDonneurRandom();
 		etat = EtatPartieEnum.PremiereDistribution;
+		beloteAnnoncee = false;
+		rebeloteAnnoncee = false;
 	}
 
 	/**
@@ -96,6 +109,7 @@ public class GameMaster {
 				break;
 			case DeuxiemeDistribution:
 				distribuerDeuxiemeTour(joueurPrend);
+				joueurPossedeAnnonce = chercherJoueurPossedantAnnonce();
 				this.joueurCourant = table.joueurSuivant(joueurDonneur);
 				joueurPrend = null;
 				etat = EtatPartieEnum.PhaseDePli;
@@ -103,8 +117,10 @@ public class GameMaster {
 			case PhaseDePli:
 				jouerUnPli();
 				if(this.joueurCourant.getMain().getTailleMain() == 0){
+					/***************** FIN DE LA MANCHE *****************/
 					calculerScoreDeLaManche();
 					remettreLesPlisDansLeTas();
+					reinitialiserLesAnnonces();
 					this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
 					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
@@ -113,6 +129,37 @@ public class GameMaster {
 				break;
 			}
 		}
+	}
+	
+	private Joueur chercherJoueurPossedantAnnonce() {
+		boolean dameAtout = false;
+		boolean roiAtout = false;
+		Joueur JoueurPossedantAnnonce = null;		
+		// Pour chaque joueur
+		for (Joueur j : table.getJoueurs()) {			
+			// on regarde si sa main contient le roi ou la dame à l'atout
+			for (Carte c : j.getMain().get(table.getCouleurAtout())) {
+				if(c.getFigure()== FigureEnum.Dame){
+					dameAtout=true;
+				}
+				if(c.getFigure()== FigureEnum.Dame){
+					roiAtout=true;
+				}
+			}			
+			// si c'est le cas ce joueur possède l'annonce
+			if(dameAtout && roiAtout)
+				JoueurPossedantAnnonce = j;
+		}		
+		return JoueurPossedantAnnonce;
+	}
+
+	/**
+	 * Réinitialise les annonces de belote/rebelote
+	 */
+	private void reinitialiserLesAnnonces() {
+		this.beloteAnnoncee = false;
+		this.rebeloteAnnoncee = false;
+		joueurPossedeAnnonce = null;
 	}
 
 	/**
@@ -123,6 +170,15 @@ public class GameMaster {
 		for(Equipe equipe : this.equipes){
 			equipe.calculerScoreFinDeManche();
 			System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
+			// il faut récupérer les scores de la dernière manche (pas des manches) 
+			// ajouter l'annonce si elle est obtenue
+				if (beloteAnnoncee && rebeloteAnnoncee){
+					// pour l'équipe qui a annoncé la belote : +20 points 					
+				}
+					
+			// voir si le contrat est fait
+			// ajouter les scores dans la table de jeux
+			
 		}
 	}
 
@@ -154,10 +210,20 @@ public class GameMaster {
 		} else {
 			this.table.nouveauPliCourant(false);
 		}
-		Carte carteJouer = null;
+		Carte carteJouee = null;
 		while (this.table.getPliCourant().getTaillePaquet() < 4) {
-			carteJouer = joueurCourant.jouerPli();
-			this.table.jouerCarte(carteJouer,joueurCourant);
+			carteJouee = joueurCourant.jouerPli();
+			this.table.jouerCarte(carteJouee,joueurCourant);
+
+			// Si le joueur possède la dame et le roi à l'atout... 
+			if(joueurCourant.equals(joueurPossedeAnnonce)){
+				// ...alors il annonce la belote/rebelote lorsqu'il joue la dame / le roi.
+				if (carteJouee.getCouleur() == this.table.getCouleurAtout() && carteJouee.getFigure() == FigureEnum.Dame)
+					beloteAnnoncee = true;
+				if (carteJouee.getCouleur() == this.table.getCouleurAtout() && carteJouee.getFigure() == FigureEnum.Roi)
+					rebeloteAnnoncee = true;
+			}
+			
 			joueurCourant = table.joueurSuivant(joueurCourant);
 		}
 		System.out.println("-------PLI FINI------\nJoueurMaitre : " + this.table.getPliCourant().getJoueurMaitre());

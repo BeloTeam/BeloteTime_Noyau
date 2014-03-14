@@ -235,4 +235,12 @@ public class TableDeJeu {
 	public GameMaster getGm() {
 		return gm;
 	}
+	
+	/**
+	 * Renvoit les 4 joueurs de belote
+	 * @return
+	 */
+	public Joueur[] getJoueurs() {
+		return joueurs;
+	}
 }

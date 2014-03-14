@@ -7,16 +7,6 @@ faire l'implementation de la belote / rebelote
 
 fixer le bug du mauvais joueur maitre (voir issue github)
 
-pb d'architecture a regler ==> 
-exemple : 
-dans joueur si on veut savoir si le joueur a la belote/rebelote on doit faire
-	if(this == this.getTable().getGm().getEquipes().get(0).hasBeloteRebelote(CouleurEnum.Carreau))
-	if(this == this.getTable().getGm().getEquipes().get(1).hasBeloteRebelote(CouleurEnum.Carreau))
-
-y'a trop d'intermediaire je pense, � discuter. 
-Je suis joueur je veux savoir si j'ai be/re je dois passer par la table de jeu 
-puis le game master puis les 2 equipes parce que je sais pas ds laquelle je suis, c'est assez compliqué
-
 supprimer les branches qu'on utilise plus
 
 dossier de conception
