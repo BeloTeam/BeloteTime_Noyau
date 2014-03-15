@@ -72,6 +72,14 @@ public class Main {
 	public Map<CouleurEnum, SortedSet<Carte>> getMain() {
 		return main;
 	}
+	
+	/**
+	 * Permet de redéfinir le nombre de carte dans la main lorsque l'on ajoute une liste de cartes
+	 * @param nbCartesAjoutes
+	 */
+	public void setSize(int nbCartesAjoutes){
+		nbCarte = nbCartesAjoutes;
+	}
 
 	/**
 	 * Permet de calculer le total de points d'une couleur donnee de la main
@@ -288,16 +296,18 @@ public class Main {
 	 * @return les atouts en main, avec seulement ceux permettant de surcouper si cela est réalisable
 	 * */
 	public SortedSet<Carte> filtrerAtoutsPourSurcoupe(CarteJouee carteMaitre) {
-		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>();
+		CompAtout comparateur = new CompAtout(carteMaitre.getCouleur());
+		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>(comparateur);
 
 		for (Carte carte : this.get(carteMaitre.getCouleur())) {
-			if(carte.compareTo(carteMaitre) > 0){
+			if(carte.calculerValeurCarte(carteMaitre.getCouleur()) > carteMaitre.calculerValeurCarte(carteMaitre.getCouleur())){
 				setCarteAtoutPlusForte.add(carte);
 			}
 		}
 		
 		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
 		if(setCarteAtoutPlusForte.size() == 0){
+			System.out.println("Vous ne pouvez pas monter à l'atout.");
 			return this.get(carteMaitre.getCouleur());
 		}
 		else{
@@ -308,11 +318,14 @@ public class Main {
 		
 	}
 	
+	
+	
 	/**
 	 * Retourne les atouts plus fort que la carte donnee
 	 * @param carteMaitre CarteJouee
 	 * @return List<Carte>
 	 * */
+	/*
 	public List<Carte> getAtoutPlusFortListQue(final CarteJouee carteMaitre) {
 		List<Carte> listCarteAtoutPlusForte = new ArrayList<Carte>();
 		Comparator<Carte> compAtout = new Comparator<Carte>() {
@@ -347,7 +360,7 @@ public class Main {
 			//affichage temporaire
 			System.out.println("Vous devez monter a l'atout");
 			return listCarteAtoutPlusForte;
-		}
-		
+		}		
 	}
+	*/
 }

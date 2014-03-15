@@ -218,11 +218,10 @@ public class TableDeJeu {
 	 */
 	public int nbCartesDe(Joueur joueur){
 		//TODO La méthode ne semble pas utilisée (du moins pas dans GameMaster), c'est dommage! 
-		//PS : méthode à tester avant (double .getMain()) !
 		int nbCartes = 0;
 		for(Joueur j : this.joueurs){
 			if(j == joueur){
-				nbCartes = joueur.getMain().getMain().size();
+				nbCartes = joueur.getMain().getTailleMain();
 			}
 		}
 		return nbCartes;

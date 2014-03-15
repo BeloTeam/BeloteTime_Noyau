@@ -31,14 +31,6 @@ import noyau.classesMetier.TableDeJeu;
  * @author BeloTeam
  * @version 1.0
  **/
-/**
- * @author Arthur
- *
- */
-/**
- * @author Arthur
- *
- */
 public class GameMaster {
 	private ArrayList<Equipe> equipes;
 	private TableDeJeu table;
