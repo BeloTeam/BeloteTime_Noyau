@@ -282,11 +282,12 @@ public class Main {
 	}
 	
 	/**
-	 * Retourne les atouts plus fort que la carte donnee
+	 * Filtre les atouts. Si la main contient un/des atout(s) plus fort que la carte maître on retourne 
+	 * uniquement les atouts plus fort que la carte donnee pour surcouper.
 	 * @param carteMaitre CarteJouee
-	 * @return SortedSet<Carte>
+	 * @return les atouts en main, avec seulement ceux permettant de surcouper si cela est réalisable
 	 * */
-	public SortedSet<Carte> getAtoutPlusFortQue(CarteJouee carteMaitre) {
+	public SortedSet<Carte> filtrerAtoutsPourSurcoupe(CarteJouee carteMaitre) {
 		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>();
 
 		for (Carte carte : this.get(carteMaitre.getCouleur())) {
