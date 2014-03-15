@@ -34,12 +34,12 @@ import java.util.TreeSet;
  * @version 1.0
  * */
 public class Main {
-	
+
 	private Map<CouleurEnum, SortedSet<Carte>> main;
 	private int nbCarte;
 	private final int TAILLEMAX;
-	
-	
+
+
 	/**
 	 * Constructeur surcharge de Main
 	 * @param int TAILLEMAX
@@ -52,7 +52,7 @@ public class Main {
 			this.main.put(c, new TreeSet<Carte>()); 
 		}
 	}
-	
+
 	/**
 	 * Constructeur par defaut de Main
 	 * */
@@ -64,13 +64,21 @@ public class Main {
 			this.main.put(c, new TreeSet<Carte>()); 
 		}
 	}
-	
+
 	/**
 	 * Permet de recuperer la main triee
 	 * @return Map<CouleurEnum, SortedSet<Carte>>
 	 * */
 	public Map<CouleurEnum, SortedSet<Carte>> getMain() {
 		return main;
+	}
+
+	/**
+	 * Permet de redéfinir le nombre de carte dans la main lorsque l'on ajoute une liste de cartes
+	 * @param nbCartesAjoutes
+	 */
+	public void setSize(int nbCartesAjoutes){
+		nbCarte = nbCartesAjoutes;
 	}
 
 	/**
@@ -89,53 +97,35 @@ public class Main {
 		}
 		return valeur;
 	}
-	
-	
+
+
+
 	/**
 	 * Permet d'ajouter une carte a la main
 	 * @param c Carte
-	 * @param atout CouleurEnum 
+	 * @param couleurAtout CouleurEnum 
 	 * @return boolean succes ou echec de l'ajout
 	 * */
-	public boolean ajouter(Carte c, final CouleurEnum atout) {
+	public boolean ajouter(Carte c, final CouleurEnum couleurAtout) {
 		boolean estAjoute = false;
 		if (this.nbCarte < this.TAILLEMAX) {
-			SortedSet<Carte> paquetCouleur;
-			if (this.main.get(c.getCouleur()) != null) {
-				paquetCouleur = new TreeSet<>(this.main.remove(c.getCouleur()));
-			} else {
-				if(c.getCouleur().equals(atout)){
-					Comparator<Carte> compAtout = new Comparator<Carte>() {
-						@Override
-						public int compare(Carte o1, Carte o2) {
-							int res = 0;
-							if(o1.calculerValeurCarte(atout) > o2.calculerValeurCarte(atout)){
-								res = 1;
-							} else {
-								if(o1.calculerValeurCarte(atout) < o2.calculerValeurCarte(atout)){
-									res = -1;
-								} else {
-									res = o1.compareTo(o2);
-								}
-							}
-							return res;
-						}
-					};
-					paquetCouleur = new TreeSet<>(compAtout);
-				} else {
-					paquetCouleur = new TreeSet<>();
-				}
+			// Si la carte est un atout 
+			// on redefinit le TreeSet d'atout dans la HashMap avec un comparator adéquat
+			if(c.getCouleur().equals(couleurAtout)){
+				CompAtout comparator = new CompAtout(couleurAtout);
+				SortedSet<Carte> paquetCouleur = new TreeSet<>(comparator);
+				paquetCouleur.addAll(this.main.get(couleurAtout));
+				this.main.remove(couleurAtout);
+				this.main.put(couleurAtout, paquetCouleur);
 			}
-			estAjoute = paquetCouleur.add(c);
+			estAjoute = this.main.get(c.getCouleur()).add(c);
 			if (estAjoute) {
 				this.nbCarte++;
 			}
-			this.main.put(c.getCouleur(), paquetCouleur);
 		}
 		return estAjoute;
 	}
 
-	
 	/**
 	 * Permet de supprimer une carte a la main
 	 * @param c Carte
@@ -144,17 +134,15 @@ public class Main {
 	public boolean supprimer(Carte c) {
 		boolean estSupprimer = false;
 		if (this.nbCarte > 0) {
-			SortedSet<Carte> paquetCouleur = new TreeSet<>(this.main.remove(c.getCouleur()));
-			estSupprimer = paquetCouleur.remove(c);
+			estSupprimer = this.main.get(c.getCouleur()).remove(c);
 			if (estSupprimer) {
 				this.nbCarte--;
 			}
-			this.main.put(c.getCouleur(), paquetCouleur);
 		}
 		return estSupprimer;
 	}
-	
-	
+
+
 	/**
 	 * Getter sur la taille de la main
 	 * @return int taille de la main
@@ -162,8 +150,8 @@ public class Main {
 	public int getTailleMain() {
 		return this.nbCarte;
 	}
-	
-	
+
+
 	/**
 	 * Retourne la carte la plus forte en valeur d'une couleur donnee
 	 * @param c CouleurEnum
@@ -172,7 +160,7 @@ public class Main {
 	public Carte getPlusForteCarteNormale(CouleurEnum c) {
 		return this.main.get(c).first();
 	}
-	
+
 	/**
 	 * Retourne la carte la plus faible en valeur d'une couleur donnee
 	 * @param c CouleurEnum
@@ -181,7 +169,7 @@ public class Main {
 	public Carte getPlusFaibleCarteNormale(CouleurEnum c) {
 		return this.main.get(c).last();
 	}
-	
+
 	/**
 	 * Retourne le nombre de carte d'une couleur donnee
 	 * @param couleur CouleurEnum
@@ -190,7 +178,7 @@ public class Main {
 	public int getNbCarteCouleur(CouleurEnum couleur){
 		return this.main.get(couleur).size();
 	}
-	
+
 	/**
 	 * Permet de savoir si la main possede le 9 a l'atout
 	 * @param couleur CouleurEnum
@@ -207,7 +195,7 @@ public class Main {
 	public boolean hasNeuf(CouleurEnum couleur){
 		return this.main.get(couleur).contains(new Carte(couleur, FigureEnum.Neuf));
 	}
-	
+
 	/**
 	 * Permet de savoir si la main possede une carte donnee
 	 * @param couleur CouleurEnum
@@ -217,7 +205,7 @@ public class Main {
 	public boolean hasCarte(CouleurEnum couleur, FigureEnum figure){
 		return this.main.get(couleur).contains(new Carte(couleur, figure));
 	}
-	
+
 	/**
 	 * Permet de savoir si la main possede la dame et le roi a l'atout
 	 * @param couleurAtout CouleurEnum
@@ -227,7 +215,7 @@ public class Main {
 		return this.hasCarte(couleurAtout, FigureEnum.Dame) 
 				&& this.hasCarte(couleurAtout, FigureEnum.Roi);
 	}
-	
+
 	/**
 	 * Surcharge de la methode toString() d'Object
 	 * @return String 
@@ -246,7 +234,7 @@ public class Main {
 		}
 		return res + ")";
 	}
-	
+
 	/**
 	 * Permet de savoir si la main possede la dame et le roi a l'atout
 	 * @param c CouleurEnum
@@ -280,23 +268,26 @@ public class Main {
 		}
 		return newMain;
 	}
-	
+
 	/**
-	 * Retourne les atouts plus fort que la carte donnee
+	 * Filtre les atouts. Si la main contient un/des atout(s) plus fort que la carte maître on retourne 
+	 * uniquement les atouts plus fort que la carte donnee pour surcouper.
 	 * @param carteMaitre CarteJouee
-	 * @return SortedSet<Carte>
+	 * @return les atouts en main, avec seulement ceux permettant de surcouper si cela est réalisable
 	 * */
-	public SortedSet<Carte> getAtoutPlusFortQue(CarteJouee carteMaitre) {
-		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>();
+	public SortedSet<Carte> filtrerAtoutsPourSurcoupe(CarteJouee carteMaitre) {
+		CompAtout comparateur = new CompAtout(carteMaitre.getCouleur());
+		SortedSet<Carte> setCarteAtoutPlusForte = new TreeSet<Carte>(comparateur);
 
 		for (Carte carte : this.get(carteMaitre.getCouleur())) {
-			if(carte.compareTo(carteMaitre) > 0){
+			if(carte.calculerValeurCarte(carteMaitre.getCouleur()) > carteMaitre.calculerValeurCarte(carteMaitre.getCouleur())){
 				setCarteAtoutPlusForte.add(carte);
 			}
 		}
-		
+
 		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
 		if(setCarteAtoutPlusForte.size() == 0){
+			System.out.println("Vous ne pouvez pas monter à l'atout.");
 			return this.get(carteMaitre.getCouleur());
 		}
 		else{
@@ -304,14 +295,17 @@ public class Main {
 			System.out.println("Vous devez monter a l'atout");
 			return setCarteAtoutPlusForte;
 		}
-		
+
 	}
-	
+
+
+
 	/**
 	 * Retourne les atouts plus fort que la carte donnee
 	 * @param carteMaitre CarteJouee
 	 * @return List<Carte>
 	 * */
+	/*
 	public List<Carte> getAtoutPlusFortListQue(final CarteJouee carteMaitre) {
 		List<Carte> listCarteAtoutPlusForte = new ArrayList<Carte>();
 		Comparator<Carte> compAtout = new Comparator<Carte>() {
@@ -330,14 +324,14 @@ public class Main {
 				return res;
 			}
 		};
-		
+
 
 		for (Carte carte : this.get(carteMaitre.getCouleur())) {
 			if(compAtout.compare(carteMaitre, carte)<0){
 				listCarteAtoutPlusForte.add(carte);
 			}
 		}
-		
+
 		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
 		if(listCarteAtoutPlusForte.size() == 0){
 			return this.getList(carteMaitre.getCouleur());
@@ -346,7 +340,7 @@ public class Main {
 			//affichage temporaire
 			System.out.println("Vous devez monter a l'atout");
 			return listCarteAtoutPlusForte;
-		}
-		
+		}		
 	}
+	 */
 }

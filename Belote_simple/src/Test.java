@@ -32,7 +32,7 @@ public class Test{
 	 */
 	public static void main(String[] args) {
 		Main m = new Main(8);
-		CouleurEnum atout = CouleurEnum.Pique;
+		CouleurEnum atout = CouleurEnum.Carreau;
 
 		m.ajouter(new Carte(CouleurEnum.Carreau, FigureEnum.As), atout);
 		m.ajouter(new Carte(CouleurEnum.Carreau, FigureEnum.Dix), atout);

@@ -21,10 +21,13 @@ package entite;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.Main;
+import noyau.classesMetier.Paquet;
 import noyau.classesMetier.PositionEnum;
 import noyau.classesMetier.TableDeJeu;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -76,125 +79,122 @@ public class JoueurHumain extends Joueur {
 
 	@Override
 	public Carte jouerPli() {
-		Carte carteJouer = null;
-		int tailleEnsembleCartePropose = 0;
-		boolean peutJouerCouleurDuPli = true;
-		boolean coupeObligatoirement = false;
-		List<Carte> cartesPossibles = null;
+		Carte carteJouee = null;
+		SortedSet<Carte> cartesPossibles = null;
+		Main mainTemp = new Main();
 		
 		System.out.println("-------------JEU--------------\n" + this.toString());
-		while (carteJouer == null) {
+		while (carteJouee == null) {
+			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
+			if (this.getTable().getPliCourant().getTaillePaquet() == 0) {	
+				mainTemp = this.getMain();
+				System.out.println("Vous commencez.");
+			} 
 			// S'il y a au moins une carte sur la table
-			if (this.getTable().getPliCourant().getTaillePaquet() != 0) {
+			else {				
 				System.out.println("Pli actuel : "+ this.getTable().getPliCourant());
 				System.out.println("Joueur maitre : "+ this.getTable().getPliCourant().getJoueurMaitre());
 				System.out.println("Couleur demande : "+ this.getTable().getPliCourant().getCouleurDemandee());
 				System.out.println("Votre main :\n" + this.getMain().toString());
-				
-				
+
+
 				// Si nous avons la couleur demandee
 				if (this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()) != null
-					&& !this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()).isEmpty()) {
+						&& !this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()).isEmpty()) {
 
 					//si c'est de l'atout
 					if(this.getTable().getPliCourant().getCouleurDemandee() == this.getTable().getCouleurAtout()){
-						cartesPossibles = this.getMain().getAtoutPlusFortListQue(this.getTable().getPliCourant().getCarteMaitre());
-						tailleEnsembleCartePropose = cartesPossibles.size();
+						cartesPossibles = this.getMain().filtrerAtoutsPourSurcoupe(this.getTable().getPliCourant().getCarteMaitre());
+						mainTemp.getMain().put(this.getTable().getCouleurAtout(), cartesPossibles);
+						mainTemp.setSize(cartesPossibles.size());
+						System.out.println("Vous devez jouer de l'atout.");
+						// n'a pas obligé le joueur à surcouper alors qu'il le pouvait ?!
 					}
 					else {
-						tailleEnsembleCartePropose = this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee()).size();
-						cartesPossibles = this.getMain().getList(this.getTable().getPliCourant().getCouleurDemandee());
-					}
-					System.out.println("\nVous avez le choix entre : "+ cartesPossibles);
-					
+						cartesPossibles = this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee());
+						mainTemp.getMain().put(this.getTable().getPliCourant().getCouleurDemandee(), cartesPossibles);
+						mainTemp.setSize(cartesPossibles.size());
+						System.out.println("Vous devez jouer la couleur demandée.");
+					}					
+					//System.out.println("\nVous avez le choix entre : "+ cartesPossibles);
+					//carteJouee = selectionnerUneCarte(cartesPossibles);
 				} 
 				// Sinon le joueur n'a pas la couleur demandee
 				else { 
-					peutJouerCouleurDuPli = false;
-					System.out.println("\nVous n'avez pas la couleur demande! ");
-
-					// on regarde si le partenaire du joueur courant est maitre
-					Joueur joueurMaitre = this.getTable().getPliCourant().getJoueurMaitre();
-					Joueur joueurCoequipier = this.getTable().getGm().getEquipes().get(0).getPartenaire(this);
-					if (joueurCoequipier == null) {
-						joueurCoequipier = this.getTable().getGm().getEquipes().get(1).getPartenaire(this);
-					}
-					if((joueurMaitre == joueurCoequipier)){
-						System.out.println("Votre partenaire est maitre");
-					}
-					else{
-						System.out.println("Votre partenaire n'est pas maitre, vous devez couper si vous avez de l'atout");
-					}
-					boolean peutSeDefausser = false;
-
-					if (joueurMaitre == joueurCoequipier) {
-						peutSeDefausser = true;
-					}
-
-					SortedSet<Carte> listCarteCouleurAtout = this.getMain().get(this.getTable().getCouleurAtout());
-					//si le joueur doit couper
-					if (listCarteCouleurAtout != null && listCarteCouleurAtout.size() > 0 && !peutSeDefausser) {
-						coupeObligatoirement = true;
-						
-						//regarder si carte maitre est un atout, si oui on doit monter si possible
-						if(this.getTable().getPliCourant().getCarteMaitre().getCouleur() == this.getTable().getCouleurAtout()){
-							listCarteCouleurAtout = this.getMain().getAtoutPlusFortQue(this.getTable().getPliCourant().getCarteMaitre());
+					// Si la couleur demandée est l'atout
+					if (this.getTable().getPliCourant().getCouleurDemandee() == this.getTable().getCouleurAtout()){
+						mainTemp = this.getMain();
+						System.out.println("Vous n'avez pas d'atout, jouez une autre couleur.");
+					}	
+					else {
+						System.out.println("\nVous n'avez pas la couleur demandée! ");	
+						/********** on a peut-être le droit de se défausser! **********/
+						// on regarde si le partenaire du joueur courant est maitre
+						Joueur joueurMaitre = this.getTable().getPliCourant().getJoueurMaitre();
+						Joueur joueurCoequipier = this.getTable().getGm().getEquipes().get(0).getPartenaire(this);
+						if (joueurCoequipier == null) {
+							joueurCoequipier = this.getTable().getGm().getEquipes().get(1).getPartenaire(this);
 						}
-						
-						tailleEnsembleCartePropose = listCarteCouleurAtout.size();
-						System.out.println("\nVous devez couper :\nVous avez le choix entre : "+ listCarteCouleurAtout);
-					} 
-					else {
-						tailleEnsembleCartePropose = this.getMain().getTailleMain();
-						peutJouerCouleurDuPli = false;
-						System.out.println("Vous pouvez jouer la carte que vous voulez.\n");
+
+						// si le partenaire est maitre il peut se défausser 
+						if(joueurMaitre == joueurCoequipier){
+							// Il peut jouer la carte qu'il veut
+							mainTemp = this.getMain();	
+							System.out.println("Votre partenaire est maitre, vous avez le droit de vous défausser (pisser)");	
+							//TODO cas de test pas encore atteint : il a le droit de se défausser mais il choisit de prendre la main 
+						} 
+						// le partenaire n'est pas maître donc il ne peut pas se défausser 
+						else{	
+							// si le joueur a de l'atout il doit couper		
+							cartesPossibles = this.getMain().get(this.getTable().getCouleurAtout());
+							if (cartesPossibles != null && cartesPossibles.size() > 0) {
+								// si la carte maitre est un atout il doit surcouper si il le peut
+								if(this.getTable().getPliCourant().getCarteMaitre().getCouleur() == this.getTable().getCouleurAtout()){
+									cartesPossibles = this.getMain().filtrerAtoutsPourSurcoupe(this.getTable().getPliCourant().getCarteMaitre());
+								}									
+								mainTemp.getMain().put(this.getTable().getCouleurAtout(), cartesPossibles);
+								mainTemp.setSize(cartesPossibles.size());
+								System.out.println("\nVous devez jouer à l'atout");
+							} 
+							// sinon il doit jouer une autre carte.
+							else {								
+								mainTemp = this.getMain();								
+								System.out.println("Vous n'avez pas d'atout, vous devez vous défausser.\n");
+							}
+						}
 					}
 				}
 			} 
-			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
-			else 
-			{ 
-				tailleEnsembleCartePropose = this.getMain().getTailleMain();
-				peutJouerCouleurDuPli = false;
-				System.out.println("Vous commencez, votre main :\n"
-						+ this.getMain());
-			}
+			carteJouee = selectionnerUneCarte(mainTemp);
+		}		
+		return carteJouee;
+	}
 
-			System.out.println("\nQuelle carte jouer : [0 a "
-					+ (tailleEnsembleCartePropose - 1) + "]");
-			int rep = saisieClavier();
-
-			if (rep < tailleEnsembleCartePropose) {
-				// TODO Pour le moment la version avec rep est foireuse, ya des
-				// chances que la carte choisie par l'utilisateur
-				// ne corresponde pas, j'ai juste fais une conversion de map
-				// vers list, l'ordre n'est pas assurement respecte.
-				// Le mieux serait de demander a l'utilisateur de rentrer
-				// exactement la couleur et la figure qu'il souhaite,
-				// comme ça on peut directement aller chercher la carte dans la
-				// main par le getteur adequat.
-
-				if (!peutJouerCouleurDuPli) {
-					if (coupeObligatoirement) {
-						carteJouer = this.getMain().getList(this.getTable().getCouleurAtout()).get(rep);
-					} 
-					else {
-						carteJouer = this.getMain().hashtableToList().get(rep);
-					}
-					this.getMain().supprimer(carteJouer);
-				} 
-				// Si on a la couleur demande on recupere parmis la liste des cartes de la couleur demandee
-				else { 
-					carteJouer = cartesPossibles.get(rep);
-					this.getMain().supprimer(carteJouer);
-				}
-				this.getMain().supprimer(carteJouer);
-			} 
-			else {
-				System.out.println("ERREUR");
-			}
-		}
-		return carteJouer;
+	/**
+	 * Afficher et pouvoir selectionner une carte parmis la liste des cartes retenues
+	 * @param cartesPossibles
+	 * @return
+	 */
+	private Carte selectionnerUneCarte(Main cartesPossibles) {
+		int tailleEnsembleCartePropose;
+		Carte carteSelectionnee = null;
+		tailleEnsembleCartePropose = cartesPossibles.getTailleMain();
+		
+		System.out.println("\nVous avez le choix entre : \n"+ cartesPossibles);		
+		System.out.println("\nChoisissez une carte : [entre 0 et "+ (cartesPossibles.getTailleMain() - 1) + "]");
+		int rep = saisieClavier();
+		
+		if (rep < tailleEnsembleCartePropose) {
+			// Sur l'interface le mieux serait de récupérer directement la carte selectionnée 
+			// comme ça on peut directement aller chercher la carte dans la main par le getteur adequat.			
+			carteSelectionnee = cartesPossibles.hashtableToList().get(rep);			
+			this.getMain().supprimer(carteSelectionnee);			 
+		} 
+		else {
+			System.out.println("ERREUR");
+		}	
+		
+		return carteSelectionnee;
 	}
 
 	public int saisieClavier() {

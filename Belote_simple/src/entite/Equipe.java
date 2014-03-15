@@ -68,12 +68,12 @@ public class Equipe {
 		return false;
 	}
 	
-	public void calculerScoreFinDeManche(){
+	public int calculerScoreFinDeManche(){
 		int score = 0;
 		for(Pli pli : this.plisRemportee){
 			score += pli.calculerValeurPli();
 		}
-		this.pointsDesManches.add(score);
+		return score;
 	}
 	
 
