@@ -158,6 +158,7 @@ public class GameMaster {
 	 * Permet de calculer le score de la manche pour chaque équipe.
 	 */
 	private void calculerScoreDeLaManche(){
+		int scoreEquipe1 = 0, scoreEquipe2 = 0;
 		System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
 		for(Equipe equipe : this.equipes){
 			equipe.calculerScoreFinDeManche();
@@ -247,7 +248,7 @@ public class GameMaster {
 		// tend que personne n'a pris ET que tout le monde n'as pas été interrogé
 		while (joueurPrend == null && i < 4) {
 			System.out.println("---------PREMIERE DONNE----------\n"
-					+ this.joueurCourant + "\nAtout:" + this.table.getCarteRetournee());
+					+ this.joueurCourant + "\nCarte retournée:" + this.table.getCarteRetournee());
 			if (joueurCourant.prendPremiereDonne()) {
 				joueurPrend = joueurCourant;
 				this.table.setCouleurAtout(this.table.getCarteRetournee().getCouleur());

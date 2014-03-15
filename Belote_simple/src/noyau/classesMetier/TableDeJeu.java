@@ -53,6 +53,7 @@ public class TableDeJeu {
 		gm = new GameMaster(joueurs,this);
 		paquet = new Paquet();
 		paquet.melanger(50);
+		couleurAtout = null;
 	}
 	
 	/**
