@@ -21,8 +21,9 @@ package entite;
 
 import java.util.ArrayList;
 
-import noyau.classesMetier.Carte;
-import noyau.classesMetier.Pli;
+import classesMetier.Carte;
+import classesMetier.Pli;
+
 
 /**
  * Une equipe est composée de deux joueurs, d'un historique de score de manche
@@ -41,8 +42,8 @@ public class Equipe {
 	
 	/**
 	 * Constructeur d'une equipe
-	 * @param Joueur le joueur 1
-	 * @param Joueur le joueur 2
+	 * @param le joueur 1
+	 * @param le joueur 2
 	 * */
 	public Equipe(Joueur joueur1, Joueur joueur2) {
 		this.joueurs = new ArrayList<>();
@@ -57,6 +58,7 @@ public class Equipe {
 
 	/**
 	 * Surchage de la méthode equals d'Object
+	 * @param equipe 
 	 * @return boolean
 	 */
 	public boolean equals(Object equipe) {
@@ -90,7 +92,7 @@ public class Equipe {
 
 	/**
 	 * Retourne si oui ou non un joueur est membre de l'équipe
-	 * @param Joueur le joueur à tester
+	 * @param le joueur à tester
 	 * @return ArrayList<Joueur>
 	 */
 	public boolean estDansEquipe(Joueur joueur) {
@@ -105,7 +107,7 @@ public class Equipe {
 
 	/**
 	 * Retourne le partenaire d'un joueur de l'equipe
-	 * @return Joueur
+	 * @return j Joueur
 	 */
 	public Joueur getPartenaire(Joueur j) {
 		if (this.estDansEquipe(j)) {
@@ -122,7 +124,7 @@ public class Equipe {
 	/* **** Méthodes manipulant les scores de l'équipe **** **/
 	/**
 	 * Retourne le score de la manche dont le numero est passé en paramètre
-	 * @param int numéro de la manche
+	 * @param numéro de la manche int
 	 * @return int
 	 */
 	 public int getScoreMancheOfHistorique(int numeroManche) {
@@ -148,6 +150,7 @@ public class Equipe {
 	 
 	 /**
 	 * Maj la score courant de la manche
+	 * @param scoreManche int
 	 */
 	 public void setScoreManche(int scoreManche) {
 		 this.scoreManche = scoreManche;
@@ -163,7 +166,7 @@ public class Equipe {
 	
 	/**
 	 * Maj le score de la partie
-	 * @param int nouveau score de la partie
+	 * @param nouveau score de la partie int
 	 */
 	public void setScorePartie(int scorePartie) {
 		this.scorePartie = scorePartie;
@@ -179,7 +182,7 @@ public class Equipe {
 
 	/**
 	 * Maj le numero de la manche courante (ou le nombre de manche effectué)
-	 * @param int nombre de manche
+	 * @param nombre de manche int
 	 */
 	public void setNbManche(int nbManche) {
 		this.nbManche = nbManche;
@@ -200,7 +203,7 @@ public class Equipe {
 	/* ***** Méthodes manipulant les plis de l'équipe ***** **/
 	/**
 	 * Ajoute un nouveau pli remporter à l'historique des plis et maj le score courant de la manche
-	 * @param Pli le pli remporté
+	 * @param le pli remporté Pli
 	 * @return boolean
 	 */
 	public boolean ajouterPliRemporte(Pli pli) {

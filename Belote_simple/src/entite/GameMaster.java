@@ -19,13 +19,15 @@
 
 package entite;
 
-import gui.Terminal;
 
 import java.util.ArrayList;
 
-import noyau.classesMetier.Carte;
-import noyau.classesMetier.EtatPartieEnum;
-import noyau.classesMetier.TableDeJeu;
+import control.Terminal;
+
+import classesMetier.Carte;
+import classesMetier.EtatPartieEnum;
+import classesMetier.TableDeJeu;
+
 
 /**
  * Le maître du jeu s'occupe du déroulement de la partie.

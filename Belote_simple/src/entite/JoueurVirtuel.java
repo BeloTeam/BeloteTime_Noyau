@@ -19,11 +19,11 @@
 
 package entite;
 
-import noyau.classesMetier.Carte;
-import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.Paquet;
-import noyau.classesMetier.PositionEnum;
-import noyau.classesMetier.TableDeJeu;
+import classesMetier.Carte;
+import classesMetier.CouleurEnum;
+import classesMetier.Paquet;
+import classesMetier.PositionEnum;
+import classesMetier.TableDeJeu;
 
 /**
  * JoueurVirtuel représante un joueur non humain, qui possède une intéligence artificielle
@@ -35,9 +35,9 @@ public class JoueurVirtuel extends Joueur {
 
 	/**
 	 * Surcharge du constructeur Joueur, création d'un joueur virtuel.
-	 * @param PositionEnum Position du joueur sur la table
-	 * @param String Nom du joueur virtuel
-	 * @param String Table ou est assie le joueur virtuel
+	 * @param position du joueur sur la table
+	 * @param nom du joueur humain
+	 * @param table ou est assie le joueur humain
 	 * */
 	public JoueurVirtuel(PositionEnum position, String nom, TableDeJeu table) {
 		super(position, nom, table);
@@ -84,7 +84,7 @@ public class JoueurVirtuel extends Joueur {
 
 	/**
 	 * Action permettant d'analyser la main courante (belotes?)
-	 * @return boolean
+	 * @return void
 	 */
 	@Override
 	public void analyserSonJeu() {

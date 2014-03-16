@@ -19,24 +19,26 @@
 
 package entite;
 
-import noyau.classesMetier.Carte;
-import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.FigureEnum;
-import noyau.classesMetier.Main;
-import noyau.classesMetier.Paquet;
-import noyau.classesMetier.PositionEnum;
-import noyau.classesMetier.TableDeJeu;
-import gui.Terminal;
 
 import java.util.SortedSet;
+
+import control.Terminal;
+
+import classesMetier.Carte;
+import classesMetier.CouleurEnum;
+import classesMetier.FigureEnum;
+import classesMetier.Main;
+import classesMetier.Paquet;
+import classesMetier.PositionEnum;
+import classesMetier.TableDeJeu;
 
 public class JoueurHumain extends Joueur {
 
 	/**
 	 * Surcharge du constructeur Joueur, création d'un joueur humain.
-	 * @param PositionEnum Position du joueur sur la table
-	 * @param String Nom du joueur humain
-	 * @param String Table ou est assie le joueur humain
+	 * @param position du joueur sur la table
+	 * @param nom du joueur humain
+	 * @param table ou est assie le joueur humain
 	 * */
 	public JoueurHumain(PositionEnum position, String nom, TableDeJeu table) {
 		super(position, nom, table);
@@ -97,7 +99,8 @@ public class JoueurHumain extends Joueur {
 		SortedSet<Carte> cartesPossibles = null;
 		Main mainTemp = new Main();
 		
-		Terminal.ecrireStringln("-------------JEU--------------\n Joueur courant : " + this.toString());
+		Terminal.ecrireStringln("-------------JEU--------------\n Joueur courant : " + this.toString() 
+				+ "( "+this.getEquipeDuJoueur()+")");
 		while (carteJouee == null) {
 			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
 			if (this.getTable().getPliCourant().size() == 0) {	
@@ -227,6 +230,7 @@ public class JoueurHumain extends Joueur {
 	
 	/**
 	 * Action permettant de couper un tas de cartes
+	 * @param tas Paquet
 	 * @return boolean
 	 */
 	public boolean coupe(Paquet tas) {
@@ -238,7 +242,7 @@ public class JoueurHumain extends Joueur {
 	
 	/**
 	 * Action permettant d'analyser la main courante (belotes?)
-	 * @return boolean
+	 * @return void
 	 */
 	@Override
 	public void analyserSonJeu() {

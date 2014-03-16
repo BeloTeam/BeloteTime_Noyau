@@ -19,12 +19,12 @@
 
 package entite;
 
-import noyau.classesMetier.Carte;
-import noyau.classesMetier.CouleurEnum;
-import noyau.classesMetier.Main;
-import noyau.classesMetier.Paquet;
-import noyau.classesMetier.PositionEnum;
-import noyau.classesMetier.TableDeJeu;
+import classesMetier.Carte;
+import classesMetier.CouleurEnum;
+import classesMetier.Main;
+import classesMetier.Paquet;
+import classesMetier.PositionEnum;
+import classesMetier.TableDeJeu;
 
 public abstract class Joueur {
 	private Main main;
@@ -35,9 +35,9 @@ public abstract class Joueur {
 
 	/**
 	 * Constructeur Joueur, création d'un joueur.
-	 * @param PositionEnum Position du joueur sur la table
-	 * @param String Nom du joueur humain
-	 * @param String Table ou est assie le joueur humain
+	 * @param position du joueur sur la table
+	 * @param nom du joueur humain
+	 * @param table ou est assie le joueur humain
 	 * */
 	public Joueur(PositionEnum position, String nom, TableDeJeu table) {
 		this.main = new Main();
@@ -58,6 +58,7 @@ public abstract class Joueur {
 	
 	/**
 	 * Surcharge de l'opérateur equals d'Object
+	 * @param joueur
 	 * @return boolean
 	 */
 	@Override
@@ -73,7 +74,7 @@ public abstract class Joueur {
 
 	/**
 	 * maj de la variable, vrai si le joueur a la belote et rebelote dans sa main de départ, sinon faux.
-	 * @param boolean
+	 * @param b boolean
 	 */
 	public void setHasBeloteEtRe(boolean b) {
 		this.hasBeloteEtRe = b;
@@ -141,4 +142,18 @@ public abstract class Joueur {
 	 * @return boolean
 	 */
 	public abstract void analyserSonJeu();
+	
+	/**
+	 * Permet de retourner l'equipe dans lequel est le joueur
+	 * @return Equipe
+	 */
+	public Equipe getEquipeDuJoueur(){
+		
+		if( this.table.getGm().getEquipes().get(0).estDansEquipe(this)){
+			return this.table.getGm().getEquipes().get(0);
+		}
+		else{
+			return this.table.getGm().getEquipes().get(1);
+		}
+	}
 }
