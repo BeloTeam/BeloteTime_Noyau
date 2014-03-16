@@ -19,18 +19,19 @@
 
 package entite;
 
+import gui.Terminal;
+
 import java.util.ArrayList;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.EtatPartieEnum;
-import noyau.classesMetier.FigureEnum;
 import noyau.classesMetier.TableDeJeu;
 
 /**
  * Le maître du jeu s'occupe du déroulement de la partie.
  * @author BeloTeam
  * @version 1.0
- **/
+**/
 public class GameMaster {
 	private ArrayList<Equipe> equipes;
 	private TableDeJeu table;
@@ -38,9 +39,7 @@ public class GameMaster {
 	private Joueur joueurDonneur;
 	private Joueur joueurPrend;
 	private EtatPartieEnum etat;
-	private boolean beloteAnnoncee;
-	private boolean rebeloteAnnoncee;
-	private Joueur joueurPossedeAnnonce;
+	
 	/**
 	 * Constructeur de GameMaster.
 	 * @param joueurs Les 4 joueurs de belote
@@ -53,19 +52,17 @@ public class GameMaster {
 		this.table = table;
 		this.joueurDonneur = getDonneurRandom();
 		etat = EtatPartieEnum.PremiereDistribution;
-		beloteAnnoncee = false;
-		rebeloteAnnoncee = false;
 	}
 
 	/**
 	 * Lancement de la partie.
 	 */
 	public void debuterPartie() {
-		joueurPrend = null;
-		while (equipes.get(0).getScore() < 1000 && equipes.get(1).getScore() < 1000) {
+		this.joueurPrend = null;
+		while (equipes.get(0).getScorePartie() < 1000 && equipes.get(1).getScorePartie() < 1000) {
 			switch (etat) {
 			case PremiereDistribution:
-				System.out.println("Donneur : " + this.joueurDonneur);
+				Terminal.ecrireStringln("Donneur : " + this.joueurDonneur);
 				this.joueurCourant = table.joueurSuivant(this.joueurDonneur);
 				distribuer(3);
 				distribuer(2);
@@ -73,17 +70,17 @@ public class GameMaster {
 				etat = EtatPartieEnum.PremierTourDonne;
 				break;
 			case PremierTourDonne:
-				joueurPrend = quiPrendPremiereDonne();
-				if (joueurPrend == null) {
+				this.joueurPrend = quiPrendPremiereDonne();
+				if (this.joueurPrend == null) {
 					etat = EtatPartieEnum.DeuxiemeTourDonne;
 				} else {
-					this.table.attribuerCarteRetourneeA(joueurPrend);
+					this.table.attribuerCarteRetourneeA(this.joueurPrend);
 					etat = EtatPartieEnum.DeuxiemeDistribution;
 				}
 				break;
 			case DeuxiemeTourDonne:
-				joueurPrend = quiPrendDeuxiemeDonne();
-				if (joueurPrend == null) {
+				this.joueurPrend = quiPrendDeuxiemeDonne();
+				if (this.joueurPrend == null) {
 					// Personne n'a pris, on re-distribue les cartes
 					// on récupère les cartes
 					recupererCartesMain();
@@ -92,27 +89,27 @@ public class GameMaster {
 					this.table.getTas().melanger(50);
 					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
-					this.table.attribuerCarteRetourneeA(joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
-					System.out.println("----FIN DE LA DONNE-----\n"
-							+ joueurPrend.toString() + " a pris à : "
+					this.table.attribuerCarteRetourneeA(this.joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
+					Terminal.ecrireStringln("----FIN DE LA DONNE-----\n"
+							+ this.joueurPrend.toString() + " a pris à : "
 							+ this.table.getCouleurAtout());
 					etat = EtatPartieEnum.DeuxiemeDistribution;
 				}
 				break;
 			case DeuxiemeDistribution:
-				distribuerDeuxiemeTour(joueurPrend);
-				joueurPossedeAnnonce = chercherJoueurPossedantAnnonce();
+				distribuerDeuxiemeTour(this.joueurPrend);
 				this.joueurCourant = table.joueurSuivant(joueurDonneur);
-				joueurPrend = null;
 				etat = EtatPartieEnum.PhaseDePli;
 				break;
 			case PhaseDePli:
 				jouerUnPli();
 				if(this.joueurCourant.getMain().getTailleMain() == 0){
 					/***************** FIN DE LA MANCHE *****************/
-					calculerScoreDeLaManche();
+					determinerScoreMancheCourante();
+					this.joueurPrend = null;
 					remettreLesPlisDansLeTas();
-					reinitialiserLesAnnonces();
+					this.table.reinitialiserLesAnnonces();
+					this.joueurDonneur.coupe(this.table.getTas());
 					this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
 					etat = EtatPartieEnum.PremiereDistribution;
 				} else {
@@ -122,57 +119,74 @@ public class GameMaster {
 			}
 		}
 	}
+
 	
-	private Joueur chercherJoueurPossedantAnnonce() {
-		boolean dameAtout = false;
-		boolean roiAtout = false;
-		Joueur JoueurPossedantAnnonce = null;		
-		// Pour chaque joueur
-		for (Joueur j : table.getJoueurs()) {			
-			// on regarde si sa main contient le roi ou la dame à l'atout
-			for (Carte c : j.getMain().get(table.getCouleurAtout())) {
-				if(c.getFigure()== FigureEnum.Dame){
-					dameAtout=true;
-				}
-				if(c.getFigure()== FigureEnum.Dame){
-					roiAtout=true;
-				}
-			}			
-			// si c'est le cas ce joueur possède l'annonce
-			if(dameAtout && roiAtout)
-				JoueurPossedantAnnonce = j;
-		}		
-		return JoueurPossedantAnnonce;
-	}
-
-	/**
-	 * Réinitialise les annonces de belote/rebelote
-	 */
-	private void reinitialiserLesAnnonces() {
-		this.beloteAnnoncee = false;
-		this.rebeloteAnnoncee = false;
-		joueurPossedeAnnonce = null;
-	}
-
 	/**
 	 * Permet de calculer le score de la manche pour chaque équipe.
 	 */
-	private void calculerScoreDeLaManche(){
-		int scoreEquipe1 = 0, scoreEquipe2 = 0;
-		System.out.println("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
-		for(Equipe equipe : this.equipes){
-			equipe.calculerScoreFinDeManche();
-			System.out.println(equipe+ "\n"+equipe.getPointsDesManches());
-			// il faut récupérer les scores de la dernière manche (pas des manches) 
-			// ajouter l'annonce si elle est obtenue
-				if (beloteAnnoncee && rebeloteAnnoncee){
-					// pour l'équipe qui a annoncé la belote : +20 points 					
-				}
-					
-			// voir si le contrat est fait
-			// ajouter les scores dans la table de jeux
+	//TODO gros copier coller, ya moyen d'optimiser ça mais ça marche :)
+	private void determinerScoreMancheCourante(){
+		Terminal.ecrireStringln("-----FIN DE MANCHE-----\nRecapitualtif des scores:");
+		Terminal.ecrireStringln("Joueur prenant: " + this.joueurPrend);
+		Equipe e1 = this.equipes.get(0);
+		Equipe e2 = this.equipes.get(1);
+		
+		for (Joueur joueur : e1.getJoueurs()) {
+			// voir si capo
+			if(e1.getScoreManche() == 0) {
+				e1.setScoreManche(0);
+				e2.setScoreManche(250);
+			}
 			
+			// voir si dedans
+			if(joueur.equals(this.joueurPrend) && e1.getScoreManche() < 81 && e1.getScoreManche() > 0) {
+				e1.setScoreManche(0);
+				e2.setScoreManche(162);
+			}
+			
+			// voir si belote et re et si annoncées
+			if (this.table.isBeloteAnnoncee() && this.table.isRebeloteAnnoncee() && joueur.hasBeloteEtRe()){
+				// pour l'équipe qui a annoncé la belote : +20 points 	
+				e1.setScoreManche(e1.getScoreManche() + 20);		
+			}
 		}
+		for (Joueur joueur : e2.getJoueurs()) {
+			// voir si capo
+			if(e2.getScoreManche() == 0) {
+				e2.setScoreManche(0);
+				e1.setScoreManche(250);
+			}
+						
+			// voir si le contrat est fait
+			if(joueur.equals(this.joueurPrend) && e2.getScoreManche() < 81  && e2.getScoreManche() > 0) {
+				e2.setScoreManche(0);
+				e1.setScoreManche(162);
+			}
+			
+			// voir si belote et re et si annoncées
+			if (this.table.isBeloteAnnoncee() && this.table.isRebeloteAnnoncee() && joueur.hasBeloteEtRe()){
+				// pour l'équipe qui a annoncé la belote : +20 points 	
+				e2.setScoreManche(e2.getScoreManche() + 20);		
+			}
+		}
+		
+		// ajouter le score dans l'historique des score de manches de l'equipe
+		e1.addScoreMancheToHistorique(e1.getScoreManche());
+		e2.addScoreMancheToHistorique(e2.getScoreManche());
+		
+		// maj du score de la partie pour l'equipe
+		e1.setScorePartie(e1.getScorePartie() + e1.getScoreManche());
+		Terminal.ecrireStringln(e1 
+				+ "\n   Score manche: " + e1.getScoreManche() 
+				+ "\n   Score partie: " + e1.getScorePartie());
+		e2.setScorePartie(e2.getScorePartie() + e2.getScoreManche());
+		Terminal.ecrireStringln(e2 
+				+ "\n   Score manche: " + e2.getScoreManche() 
+				+ "\n   Score partie: " + e2.getScorePartie());
+		
+		// reset le score de la manche courante pour l'equipe
+		e1.setScoreManche(0);
+		e2.setScoreManche(0);
 	}
 
 	
@@ -181,7 +195,7 @@ public class GameMaster {
 	 */
 	private void remettreLesPlisDansLeTas(){
 		for(Equipe equipe : this.equipes){
-			table.getTas().reposerDesCartes(equipe.rendreLesCartesDesPlisRemporter());
+			table.getTas().reposerListeCartes(equipe.rendreLesCartesDesPlisRemporter());
 		}
 	}
 
@@ -204,23 +218,16 @@ public class GameMaster {
 			this.table.nouveauPliCourant(false);
 		}
 		Carte carteJouee = null;
-		while (this.table.getPliCourant().getTaillePaquet() < 4) {
+		while (this.table.getPliCourant().size() < 4) {
+			// Au premier tour avant de jouer quoi que ce soit, on analyse son jeu (juste pour voir les annonces belote et re pour le moment)
+			if(this.joueurCourant.getMain().getTailleMain() == 8) this.joueurCourant.analyserSonJeu();
 			carteJouee = joueurCourant.jouerPli();
-			this.table.jouerCarte(carteJouee,joueurCourant);
 
-			// Si le joueur possède la dame et le roi à l'atout... 
-			if(joueurCourant.equals(joueurPossedeAnnonce)){
-				// ...alors il annonce la belote/rebelote lorsqu'il joue la dame / le roi.
-				if (carteJouee.getCouleur() == this.table.getCouleurAtout() && carteJouee.getFigure() == FigureEnum.Dame)
-					beloteAnnoncee = true;
-				if (carteJouee.getCouleur() == this.table.getCouleurAtout() && carteJouee.getFigure() == FigureEnum.Roi)
-					rebeloteAnnoncee = true;
-			}
-			
+			this.table.jouerCarte(carteJouee,joueurCourant);
 			joueurCourant = table.joueurSuivant(joueurCourant);
 		}
-		System.out.println("-------PLI FINI------\nJoueurMaitre : " + this.table.getPliCourant().getJoueurMaitre());
-		getEquipe(this.table.getPliCourant().getJoueurMaitre()).ajouterUnpliRemportee(this.table.getPliCourant());
+		Terminal.ecrireStringln("-------PLI FINI------\nJoueurMaitre : " + this.table.getPliCourant().getJoueurMaitre());
+		getEquipe(this.table.getPliCourant().getJoueurMaitre()).ajouterPliRemporte(this.table.getPliCourant());
 		joueurCourant = this.table.getPliCourant().getJoueurMaitre();
 	}
 
@@ -247,14 +254,14 @@ public class GameMaster {
 		int i = 0;
 		// tend que personne n'a pris ET que tout le monde n'as pas été interrogé
 		while (joueurPrend == null && i < 4) {
-			System.out.println("---------PREMIERE DONNE----------\n"
+			Terminal.ecrireStringln("---------PREMIERE DONNE----------\nJoueur courant : "
 					+ this.joueurCourant + "\nCarte retournée:" + this.table.getCarteRetournee());
 			if (joueurCourant.prendPremiereDonne()) {
 				joueurPrend = joueurCourant;
 				this.table.setCouleurAtout(this.table.getCarteRetournee().getCouleur());
-				System.out.println(joueurCourant + " PREND");
+				Terminal.ecrireStringln(joueurCourant + " PREND");
 			} else {
-				System.out.println(joueurCourant + " PASSE");
+				Terminal.ecrireStringln(joueurCourant + " PASSE");
 			}
 			i++;
 			joueurCourant = table.joueurSuivant(joueurCourant);
@@ -271,10 +278,10 @@ public class GameMaster {
 		Joueur joueurPrend = null;
 		int i = 0;
 		while (this.table.getCouleurAtout() == null && i < 4) {
-			System.out.println("---------DEUXIEME DONNE----------\n"
+			Terminal.ecrireStringln("---------DEUXIEME DONNE----------\nJoueur courant : "
 					+ joueurCourant);
 			this.table.setCouleurAtout(joueurCourant.prendDeuxiemeDonne());
-			System.out.println("\ncouleur Choisie :" + this.table.getCouleurAtout());
+			Terminal.ecrireStringln("\ncouleur Choisie :" + this.table.getCouleurAtout());
 			if (this.table.getCouleurAtout() == null) {
 				joueurCourant = table.joueurSuivant(joueurCourant);
 			} else {
@@ -292,7 +299,7 @@ public class GameMaster {
 	 */
 	private Equipe getEquipe(Joueur joueur) {
 		for (Equipe equipe : equipes) {
-			if (equipe.estDansLEquipe(joueur)) {
+			if (equipe.estDansEquipe(joueur)) {
 				return equipe;
 			}
 		}
@@ -307,9 +314,7 @@ public class GameMaster {
 		Joueur premierJoueur = this.joueurCourant;
 		do {
 			for (int i = 0; i < nbCarte; i++) {
-				this.joueurCourant.getMain().ajouter(
-						table.getTas().retirerCarteDessusPaquet(),
-						this.table.getCouleurAtout());
+				this.joueurCourant.getMain().ajouter(table.getTas().retirerPremiereCarte(), this.table.getCouleurAtout());
 			}
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);
@@ -326,11 +331,11 @@ public class GameMaster {
 		do {
 			for (int i = 0; i < nbCarte; i++) {
 				this.joueurCourant.getMain().ajouter(
-						table.getTas().retirerCarteDessusPaquet(),
+						table.getTas().retirerPremiereCarte(),
 						this.table.getCouleurAtout());
 			}
 			if (this.joueurCourant != joueurPrend) { // voir .equals()
-				this.joueurCourant.getMain().ajouter(table.getTas().retirerCarteDessusPaquet(), this.table.getCouleurAtout());
+				this.joueurCourant.getMain().ajouter(table.getTas().retirerPremiereCarte(), this.table.getCouleurAtout());
 			}
 			this.joueurCourant = table.joueurSuivant(this.joueurCourant);
 		} while (this.joueurCourant != premierJoueur);

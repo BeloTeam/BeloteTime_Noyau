@@ -19,7 +19,6 @@
 
 package noyau.classesMetier;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,21 +28,16 @@ import java.util.List;
  * @version 1.0
 **/
 public abstract class AbstractPaquetNonTrier {
+	
 	private List<Carte> paquet;
-	private int nbCarte;
-	private final int TAILLEMAX;
 
 	/**
 	 * Constructeur par defaut de AbstractPaquetNonTrier
-	 * @param TAILLEMAX int
 	 * */
-	public AbstractPaquetNonTrier(final int TAILLEMAX) {
-		this.paquet = new ArrayList<>(TAILLEMAX);
-		this.nbCarte = 0;
-		this.TAILLEMAX = TAILLEMAX;
+	public AbstractPaquetNonTrier() {
+		this.paquet = new ArrayList<>();
 	}
 
-	
 	/**
 	 * Retourne la liste des cartes
 	 * @return List<Carte> 
@@ -58,12 +52,7 @@ public abstract class AbstractPaquetNonTrier {
 	 * @return boolean true si l'ajout a ete effectue
 	 * */
 	public boolean ajouter(Carte c){
-		boolean estAjoute = false;
-		if(this.nbCarte < this.TAILLEMAX){
-			estAjoute = paquet.add(c);
-			if(estAjoute) nbCarte++;
-		}
-		return estAjoute;
+		return paquet.add(c);
 	}
 	
 	/**
@@ -72,20 +61,7 @@ public abstract class AbstractPaquetNonTrier {
 	 * @return boolean true si la suppression a ete effectue
 	 * */
 	public boolean supprimer(Carte c){
-		boolean estSupprime = false;
-		if(this.nbCarte > 0){
-			estSupprime = paquet.remove(c);
-			if(estSupprime) nbCarte--;
-		}
-		return estSupprime;
-	}
-	
-	/**
-	 * Retourne la taille du paquet
-	 * @return int
-	 * */
-	public int getTaillePaquet() {
-		return this.nbCarte;
+		return paquet.remove(c);
 	}
 
 	/**
@@ -93,7 +69,7 @@ public abstract class AbstractPaquetNonTrier {
 	 * @param atout CouleurEnum
 	 * @return int
 	 * */
-	public int calculerValeurPaquet(CouleurEnum atout) {
+	public int valeurPaquet(CouleurEnum atout) {
 		int valeur = 0;
 		for (Carte c : this.paquet) {
 			valeur += c.calculerValeurCarte(atout);
@@ -107,5 +83,13 @@ public abstract class AbstractPaquetNonTrier {
 	 * */
 	public String toString(){
 		return paquet.toString();
+	}
+	
+	/**
+	 * Surcharge de la methode size() d'Object
+	 * @return int 
+	 * */
+	public int size() {
+		return this.paquet.size();
 	}
 }

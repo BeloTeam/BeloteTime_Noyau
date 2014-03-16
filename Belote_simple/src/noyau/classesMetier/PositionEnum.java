@@ -19,11 +19,13 @@
 
 package noyau.classesMetier;
 
+
+
 /**
  * Classe representant une position de joueur
  * @author BeloTeam
  * @version 1.0
  * */
 public enum PositionEnum {
-	Nord,Sud,Est,Ouest
+	Nord, Sud, Est, Ouest
 }

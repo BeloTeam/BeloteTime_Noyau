@@ -19,15 +19,17 @@
 
 package noyau.classesMetier;
 
+
+
 /**
  * Classe representant une carte
  * @author BeloTeam
  * @version 1.0
 **/
 public class Carte implements Comparable<Carte>{
+	
 	private CouleurEnum couleur;
 	private FigureEnum figure;
-	
 	
 	/**
 	 * Constructeur par defaut de Carte
@@ -77,7 +79,7 @@ public class Carte implements Comparable<Carte>{
 	@Override
 	public int compareTo(Carte c) {
 		int res = this.getCouleur().compareTo(c.getCouleur()) + this.getFigure().compareTo(c.getFigure());
-		//System.out.println("Carte " + this + " compareTo carte " + c + " = " + res);
+		//Terminal.ecrireStringln("Carte " + this + " compareTo carte " + c + " = " + res);
 		return res;
 	}
 	

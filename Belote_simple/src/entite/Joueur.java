@@ -22,6 +22,7 @@ package entite;
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
 import noyau.classesMetier.Main;
+import noyau.classesMetier.Paquet;
 import noyau.classesMetier.PositionEnum;
 import noyau.classesMetier.TableDeJeu;
 
@@ -30,36 +31,36 @@ public abstract class Joueur {
 	private PositionEnum position;
 	private String nom;
 	private TableDeJeu table;
+	private boolean hasBeloteEtRe;
 
-	public Main getMain() {
-		return main;
-	}
-
+	/**
+	 * Constructeur Joueur, création d'un joueur.
+	 * @param PositionEnum Position du joueur sur la table
+	 * @param String Nom du joueur humain
+	 * @param String Table ou est assie le joueur humain
+	 * */
 	public Joueur(PositionEnum position, String nom, TableDeJeu table) {
 		this.main = new Main();
 		this.position = position;
 		this.nom = nom;
 		this.table = table;
+		this.hasBeloteEtRe = false;
 	}
-
-	public PositionEnum getPosition() {
-		return position;
-	}
-
+	
+	/**
+	 * Surcharge de l'opérateur toString d'Object
+	 * @return String
+	 */
+	@Override
 	public String toString() {
-		return "Joueur : " + this.nom;
+		return this.nom;
 	}
-
-	public TableDeJeu getTable() {
-		return table;
-	}
-
-	public abstract boolean prendPremiereDonne();
-
-	public abstract CouleurEnum prendDeuxiemeDonne();
-
-	public abstract Carte jouerPli();
-
+	
+	/**
+	 * Surcharge de l'opérateur equals d'Object
+	 * @return boolean
+	 */
+	@Override
 	public boolean equals(Object joueur) {
 		if (joueur instanceof Joueur) {
 			if (((Joueur) joueur).nom.equals(this.nom) && ((Joueur) joueur).position.equals(this.position)) {
@@ -69,4 +70,75 @@ public abstract class Joueur {
 		}
 		return false;
 	}
+
+	/**
+	 * maj de la variable, vrai si le joueur a la belote et rebelote dans sa main de départ, sinon faux.
+	 * @param boolean
+	 */
+	public void setHasBeloteEtRe(boolean b) {
+		this.hasBeloteEtRe = b;
+	}
+
+	/**
+	 * Retourne vrai si le joueur a la belote et rebelote dans sa main de départ, sinon faux.
+	 * @return boolean
+	 */
+	public boolean hasBeloteEtRe() {
+		return this.hasBeloteEtRe;
+	}
+	
+	/**
+	 * Retourne la position du joueur sur la table
+	 * @return PositionEnum
+	 */
+	public PositionEnum getPosition() {
+		return position;
+	}
+
+	/**
+	 * Retourne la main courante du joueur
+	 * @return Main
+	 */
+	public Main getMain() {
+		return main;
+	}
+	
+	/**
+	 * Retourne la table de jeu où est assis le joueur.
+	 * @return TableDeJeu
+	 */
+	public TableDeJeu getTable() {
+		return table;
+	}
+	
+	/**
+	 * Retourne si oui ou non le joueur prend au premier tour
+	 * @return boolean
+	 */
+	public abstract boolean prendPremiereDonne();
+
+	/**
+	 * Retourne si oui ou non le joueur prend au deuxieme tour
+	 * @return CouleurEnum
+	 */
+	public abstract CouleurEnum prendDeuxiemeDonne();
+
+	/**
+	 * Action permettant de jouer une carte lors d'un pli.
+	 * @return Carte
+	 */
+	public abstract Carte jouerPli();
+
+	/**
+	 * Action permettant de couper un tas de cartes
+	 * @return boolean
+	 */
+	public abstract boolean coupe(Paquet tas);
+	
+
+	/**
+	 * Action permettant d'analyser la main courante (belotes?)
+	 * @return boolean
+	 */
+	public abstract void analyserSonJeu();
 }

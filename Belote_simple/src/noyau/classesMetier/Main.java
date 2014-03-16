@@ -18,8 +18,10 @@
  */
 
 package noyau.classesMetier;
+
+import gui.Terminal;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,13 +34,12 @@ import java.util.TreeSet;
  * Classe representant une main de carte
  * @author BeloTeam
  * @version 1.0
- * */
+**/
 public class Main {
-
+	
 	private Map<CouleurEnum, SortedSet<Carte>> main;
 	private int nbCarte;
 	private final int TAILLEMAX;
-
 
 	/**
 	 * Constructeur surcharge de Main
@@ -212,8 +213,7 @@ public class Main {
 	 * @return boolean true si le dame et roi sont dans la main
 	 * */
 	public boolean hasBeloteRebolote(CouleurEnum couleurAtout){
-		return this.hasCarte(couleurAtout, FigureEnum.Dame) 
-				&& this.hasCarte(couleurAtout, FigureEnum.Roi);
+		return this.hasCarte(couleurAtout, FigureEnum.Dame) && this.hasCarte(couleurAtout, FigureEnum.Roi);
 	}
 
 	/**
@@ -287,60 +287,14 @@ public class Main {
 
 		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
 		if(setCarteAtoutPlusForte.size() == 0){
-			System.out.println("Vous ne pouvez pas monter à l'atout.");
+			Terminal.ecrireStringln("Vous ne pouvez pas monter à l'atout.");
 			return this.get(carteMaitre.getCouleur());
 		}
 		else{
 			//affichage temporaire
-			System.out.println("Vous devez monter a l'atout");
+			Terminal.ecrireStringln("Vous devez monter a l'atout");
 			return setCarteAtoutPlusForte;
 		}
 
 	}
-
-
-
-	/**
-	 * Retourne les atouts plus fort que la carte donnee
-	 * @param carteMaitre CarteJouee
-	 * @return List<Carte>
-	 * */
-	/*
-	public List<Carte> getAtoutPlusFortListQue(final CarteJouee carteMaitre) {
-		List<Carte> listCarteAtoutPlusForte = new ArrayList<Carte>();
-		Comparator<Carte> compAtout = new Comparator<Carte>() {
-			@Override
-			public int compare(Carte o1, Carte o2) {
-				int res = 0;
-				if(o1.calculerValeurCarte(carteMaitre.getCouleur()) > o2.calculerValeurCarte(carteMaitre.getCouleur())){
-					res = 1;
-				} else {
-					if(o1.calculerValeurCarte(carteMaitre.getCouleur()) < o2.calculerValeurCarte(carteMaitre.getCouleur())){
-						res = -1;
-					} else {
-						res = o1.compareTo(o2);
-					}
-				}
-				return res;
-			}
-		};
-
-
-		for (Carte carte : this.get(carteMaitre.getCouleur())) {
-			if(compAtout.compare(carteMaitre, carte)<0){
-				listCarteAtoutPlusForte.add(carte);
-			}
-		}
-
-		//si setCarteAtoutPlusForte est vide alors le joueur n'a pas d'atout plus forte
-		if(listCarteAtoutPlusForte.size() == 0){
-			return this.getList(carteMaitre.getCouleur());
-		}
-		else{
-			//affichage temporaire
-			System.out.println("Vous devez monter a l'atout");
-			return listCarteAtoutPlusForte;
-		}		
-	}
-	 */
 }

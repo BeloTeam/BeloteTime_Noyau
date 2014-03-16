@@ -20,8 +20,9 @@
 package noyau.classesMetier;
 
 
+
 /**
- * Classe representant une figure de carte
+ * Classe representant une figure de carte, l'ordre des déclaration a une importance sur le tri des cartes
  * @author BeloTeam
  * @version 1.0
  * */

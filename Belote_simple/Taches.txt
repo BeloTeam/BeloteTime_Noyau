@@ -1,14 +1,8 @@
-finir les classes metiers 
+fixer le bug du mauvais joueur maitre (voir issue github) - pas checké, c'est peut être réglé
 
-finir l'implementation des regles dans joueur
- - joueurHumain , methode jouerPli : le joueur peut couper et pisser (nathan loic)
+Supprimer les branches qu'on utilise plus
 
-faire l'implementation de la belote / rebelote
+Dossier de conception - vous trouverez une image uml du projet dans ce repertoire
 
-fixer le bug du mauvais joueur maitre (voir issue github)
-
-supprimer les branches qu'on utilise plus
-
-dossier de conception
-commenter le code 
+Toutes les fonctionnalitées sont faites et fonctionnelles. J'ai pas remarqué de bug. Couper, belote, rebelote, capo, dedans, c'est OK.
 

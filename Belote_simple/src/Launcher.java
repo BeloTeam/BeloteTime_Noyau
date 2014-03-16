@@ -25,8 +25,5 @@ public class Launcher {
 		TableDeJeu t = new TableDeJeu();
 		//t.getTas().melanger(200); Pour les tests, evitons de melanger les cartes au debut
 		t.getGm().debuterPartie();
-		
-		
-		
 	}
 }

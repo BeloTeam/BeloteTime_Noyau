@@ -27,8 +27,7 @@ import entite.JoueurHumain;
  * La table de jeu contient toutes les informations nécessaire pour réaliser une partie de belote.
  * @author BeloTeam
  * @version 1.0
- *
- */
+**/
 public class TableDeJeu {
 	//TODO Tous les joueurs doivent pouvoir savoir qui est le donneur, qui a pris et quel est le joueur courant. Déplacer ces attributs de GameMaster ici?
 	// (ce serait utilisé dans le todo suivant, cf attribuerCarteRetourneeA(Joueur) )
@@ -39,21 +38,25 @@ public class TableDeJeu {
 	private Pli pliCourant;
 	private CouleurEnum couleurAtout;
 	private Carte carteRetournee;
+	private boolean beloteAnnoncee;
+	private boolean rebeloteAnnoncee;
 
 	/**
-	 * Constructeur de la table de jeu.
-	 */
+	 * Constructeur d'une table de jeu
+	 * */
 	public TableDeJeu() {
 		sensDesAiguilleDuneMontre = true;
 		joueurs = new Joueur[4];
 		joueurs[0] = new JoueurHumain(PositionEnum.Sud,"Humain",this);
-		joueurs[1] = new JoueurHumain(PositionEnum.Nord,"Joueur Nord",this);
-		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Joueur Est",this);
-		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Joueur Ouest",this);
+		joueurs[1] = new JoueurHumain(PositionEnum.Nord,"IA Bob",this);
+		joueurs[2] = new JoueurHumain(PositionEnum.Est,"IA Bryan",this);
+		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"IA Kevin",this);
 		gm = new GameMaster(joueurs,this);
 		paquet = new Paquet();
 		paquet.melanger(50);
 		couleurAtout = null;
+		beloteAnnoncee = false;
+		rebeloteAnnoncee = false;
 	}
 	
 	/**
@@ -74,7 +77,7 @@ public class TableDeJeu {
 	
 	/**
 	 * Créé le nouveau pli courant.
-	 * @param dixDeDer le dernier pli vaut 10 points supplémentaires
+	 * @param boolean le dernier pli vaut 10 points supplémentaires
 	 */
 	public void nouveauPliCourant(boolean dixDeDer){
 		this.pliCourant = new Pli(this.couleurAtout,dixDeDer);
@@ -82,8 +85,8 @@ public class TableDeJeu {
 	
 	/**
 	 * Permet à un joueur de jouer une carte.
-	 * @param carte
-	 * @param joueur
+	 * @param Carte carte jouée
+	 * @param Joueur joueur qui joue
 	 */
 	public void jouerCarte(Carte carte, Joueur joueur){
 		if(this.pliCourant != null && this.couleurAtout != null){
@@ -101,7 +104,7 @@ public class TableDeJeu {
 	
 	/**
 	 * Défini la couleur à l'atout.
-	 * @param couleurAtout
+	 * @param CouleurEnum 
 	 */
 	public void setCouleurAtout(CouleurEnum couleurAtout) {
 		this.couleurAtout = couleurAtout;
@@ -111,7 +114,7 @@ public class TableDeJeu {
 	 * Retourne la carte du dessus du paquet.
 	 */
 	public void retournerUneCarte(){
-		this.carteRetournee = this.paquet.retirerCarteDessusPaquet();
+		this.carteRetournee = this.paquet.retirerPremiereCarte();
 	}
 	
 	/**
@@ -122,10 +125,9 @@ public class TableDeJeu {
 		return this.carteRetournee;
 	}
 	
-	
 	/**
 	 * Ajouter la carte retournée au joueur qui a choisi l'atout.
-	 * @param joueur
+	 * @param Joueur
 	 */
 	public void attribuerCarteRetourneeA(Joueur joueur){
 		//TODO En suivant le todo en haut de la page pas besoin d'indiquer le joueur qui récupère la carte retournée en paramètre
@@ -143,8 +145,8 @@ public class TableDeJeu {
 	
 	/**
 	 * Indique le joueur suivant en fonction du sens de parcours
-	 * @param j le joueur de référence
-	 * @return le joueur suivant
+	 * @param Joueur le joueur de référence
+	 * @return Joueur le joueur suivant
 	 */
 	public Joueur joueurSuivant(Joueur j){
 		if(sensDesAiguilleDuneMontre){
@@ -156,8 +158,8 @@ public class TableDeJeu {
 	
 	/**
 	 * Indique le joueur se trouvant à gauche du joueur donné.
-	 * @param j le joueur de référence
-	 * @return le joueur à sa gauche
+	 * @param Joueur le joueur de référence
+	 * @return Joueur le joueur à sa gauche
 	 */
 	public Joueur aGaucheDe(Joueur j){
 		PositionEnum aGauche = null;
@@ -185,8 +187,8 @@ public class TableDeJeu {
 	
 	/**
 	 * Indique le joueur se trouvant à droite du joueur donné.
-	 * @param j le joueur de référence
-	 * @return le joueur à sa droite
+	 * @param Joueur le joueur de référence
+	 * @return Joueur le joueur à sa droite
 	 */
 	public Joueur aDroiteDe(Joueur j){
 		PositionEnum aGauche = null;
@@ -214,8 +216,8 @@ public class TableDeJeu {
 	
 	/**
 	 * Indique le nombre de cartes dans la main d'un joueur donné.
-	 * @param joueur
-	 * @return le nombre de cartes
+	 * @param Joueur
+	 * @return int le nombre de cartes
 	 */
 	public int nbCartesDe(Joueur joueur){
 		//TODO La méthode ne semble pas utilisée (du moins pas dans GameMaster), c'est dommage! 
@@ -238,9 +240,50 @@ public class TableDeJeu {
 	
 	/**
 	 * Renvoit les 4 joueurs de belote
-	 * @return
+	 * @return Joueur]
 	 */
 	public Joueur[] getJoueurs() {
 		return joueurs;
 	}
+	
+	/**
+	 * Réinitialise les annonces de belote/rebelote
+	 */
+	public void reinitialiserLesAnnonces() {
+		this.beloteAnnoncee = false;
+		this.rebeloteAnnoncee = false;
+	}
+	
+	/**
+	 * Renvoit vrai si la belote a été annoncée, faux sinon
+	 * @return boolean
+	 */
+	public boolean isBeloteAnnoncee() {
+		return beloteAnnoncee;
+	}
+
+	/**
+	 * Maj de la variable booleene, vrai si la belote a été annoncée, faux sinon.
+	 * @param boolean
+	 */
+	public void setBeloteAnnoncee(boolean beloteAnnoncee) {
+		this.beloteAnnoncee = beloteAnnoncee;
+	}
+	
+	/**
+	 * Renvoit vrai si la rebelote a été annoncé, faux sinon
+	 * @return boolean
+	 */
+	public boolean isRebeloteAnnoncee() {
+		return rebeloteAnnoncee;
+	}
+	
+	/**
+	 * Maj de la variable booleene, vrai si la rebelote a été annoncée, faux sinon.
+	 * @param boolean
+	 */
+	public void setRebeloteAnnoncee(boolean rebeloteAnnoncee) {
+		this.rebeloteAnnoncee = rebeloteAnnoncee;
+	}
+
 }

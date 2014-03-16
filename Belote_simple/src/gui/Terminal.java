@@ -43,7 +43,8 @@ public class Terminal {
 		try {
 			x = Integer.parseInt(lireString());
 		} catch (NumberFormatException e) {
-			exceptionHandler(e);
+			Terminal.ecrireStringln("Erreur de saisie, recommencez : ");
+			x = lireInt();
 		}
 		return x;
 	}

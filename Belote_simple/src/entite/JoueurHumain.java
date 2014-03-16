@@ -21,32 +21,38 @@ package entite;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.FigureEnum;
 import noyau.classesMetier.Main;
 import noyau.classesMetier.Paquet;
 import noyau.classesMetier.PositionEnum;
 import noyau.classesMetier.TableDeJeu;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
+import gui.Terminal;
+
 import java.util.SortedSet;
 
 public class JoueurHumain extends Joueur {
 
-	static BufferedReader in = new BufferedReader(new InputStreamReader(
-			System.in));
-
+	/**
+	 * Surcharge du constructeur Joueur, création d'un joueur humain.
+	 * @param PositionEnum Position du joueur sur la table
+	 * @param String Nom du joueur humain
+	 * @param String Table ou est assie le joueur humain
+	 * */
 	public JoueurHumain(PositionEnum position, String nom, TableDeJeu table) {
 		super(position, nom, table);
 
 	}
 
+	/**
+	 * Retourne si oui ou non le joueur humain prend au premier tour
+	 * @return boolean
+	 */
 	public boolean prendPremiereDonne() {
-		System.out.println("Votre main :\n" + this.getMain()
+		Terminal.ecrireStringln("Votre main :\n" + this.getMain()
 				+ "\nPrenez vous pour l'atout : " + this.getTable().getCarteRetournee().toString()
 				+ " (1-oui/0-non)");
 		int rep = 0;
-		rep = saisieClavier();
+		rep = Terminal.lireInt();
 		if (rep == 1) {
 			return true;
 		} else {
@@ -54,13 +60,17 @@ public class JoueurHumain extends Joueur {
 		}
 	}
 
+	/**
+	 * Retourne si oui ou non le joueur humain prend au deuxieme tour
+	 * @return CouleurEnum
+	 */
 	@Override
 	public CouleurEnum prendDeuxiemeDonne() {
-		System.out.println("Votre main :\n" + this.getMain()
+		Terminal.ecrireStringln("Votre main :\n" + this.getMain()
 				+ "Quelle couleur prenez vous : "
 				+ " (1-Coeur/2-Pique/3-Carreau/4-Trefle/5-passe)");
 		int rep = 0;
-		rep = saisieClavier();
+		rep = Terminal.lireInt();
 		//TODO Ne pas proposer la couleur de la carte du paquet qui est retournée!
 		switch (rep) {
 		case 1:
@@ -77,25 +87,29 @@ public class JoueurHumain extends Joueur {
 		}
 	}
 
+	/**
+	 * Action permettant de jouer une carte lors d'un pli.
+	 * @return Carte
+	 */
 	@Override
 	public Carte jouerPli() {
 		Carte carteJouee = null;
 		SortedSet<Carte> cartesPossibles = null;
 		Main mainTemp = new Main();
 		
-		System.out.println("-------------JEU--------------\n" + this.toString());
+		Terminal.ecrireStringln("-------------JEU--------------\n Joueur courant : " + this.toString());
 		while (carteJouee == null) {
 			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
-			if (this.getTable().getPliCourant().getTaillePaquet() == 0) {	
+			if (this.getTable().getPliCourant().size() == 0) {	
 				mainTemp = this.getMain();
-				System.out.println("Vous commencez.");
+				Terminal.ecrireStringln("Vous commencez.");
 			} 
 			// S'il y a au moins une carte sur la table
 			else {				
-				System.out.println("Pli actuel : "+ this.getTable().getPliCourant());
-				System.out.println("Joueur maitre : "+ this.getTable().getPliCourant().getJoueurMaitre());
-				System.out.println("Couleur demande : "+ this.getTable().getPliCourant().getCouleurDemandee());
-				System.out.println("Votre main :\n" + this.getMain().toString());
+				Terminal.ecrireStringln("Pli actuel : "+ this.getTable().getPliCourant());
+				Terminal.ecrireStringln("Joueur maitre : "+ this.getTable().getPliCourant().getJoueurMaitre());
+				Terminal.ecrireStringln("Couleur demande : "+ this.getTable().getPliCourant().getCouleurDemandee());
+				Terminal.ecrireStringln("Votre main :\n" + this.getMain().toString());
 
 
 				// Si nous avons la couleur demandee
@@ -107,16 +121,16 @@ public class JoueurHumain extends Joueur {
 						cartesPossibles = this.getMain().filtrerAtoutsPourSurcoupe(this.getTable().getPliCourant().getCarteMaitre());
 						mainTemp.getMain().put(this.getTable().getCouleurAtout(), cartesPossibles);
 						mainTemp.setSize(cartesPossibles.size());
-						System.out.println("Vous devez jouer de l'atout.");
+						Terminal.ecrireStringln("Vous devez jouer de l'atout.");
 						// n'a pas obligé le joueur à surcouper alors qu'il le pouvait ?!
 					}
 					else {
 						cartesPossibles = this.getMain().get(this.getTable().getPliCourant().getCouleurDemandee());
 						mainTemp.getMain().put(this.getTable().getPliCourant().getCouleurDemandee(), cartesPossibles);
 						mainTemp.setSize(cartesPossibles.size());
-						System.out.println("Vous devez jouer la couleur demandée.");
+						Terminal.ecrireStringln("Vous devez jouer la couleur demandée.");
 					}					
-					//System.out.println("\nVous avez le choix entre : "+ cartesPossibles);
+					//Terminal.ecrireStringln("\nVous avez le choix entre : "+ cartesPossibles);
 					//carteJouee = selectionnerUneCarte(cartesPossibles);
 				} 
 				// Sinon le joueur n'a pas la couleur demandee
@@ -124,10 +138,10 @@ public class JoueurHumain extends Joueur {
 					// Si la couleur demandée est l'atout
 					if (this.getTable().getPliCourant().getCouleurDemandee() == this.getTable().getCouleurAtout()){
 						mainTemp = this.getMain();
-						System.out.println("Vous n'avez pas d'atout, jouez une autre couleur.");
+						Terminal.ecrireStringln("Vous n'avez pas d'atout, jouez une autre couleur.");
 					}	
 					else {
-						System.out.println("\nVous n'avez pas la couleur demandée! ");	
+						Terminal.ecrireStringln("\nVous n'avez pas la couleur demandée! ");	
 						/********** on a peut-être le droit de se défausser! **********/
 						// on regarde si le partenaire du joueur courant est maitre
 						Joueur joueurMaitre = this.getTable().getPliCourant().getJoueurMaitre();
@@ -140,7 +154,7 @@ public class JoueurHumain extends Joueur {
 						if(joueurMaitre == joueurCoequipier){
 							// Il peut jouer la carte qu'il veut
 							mainTemp = this.getMain();	
-							System.out.println("Votre partenaire est maitre, vous avez le droit de vous défausser (pisser)");	
+							Terminal.ecrireStringln("Votre partenaire est maitre, vous avez le droit de vous défausser (pisser)");	
 							//TODO cas de test pas encore atteint : il a le droit de se défausser mais il choisit de prendre la main 
 						} 
 						// le partenaire n'est pas maître donc il ne peut pas se défausser 
@@ -154,12 +168,12 @@ public class JoueurHumain extends Joueur {
 								}									
 								mainTemp.getMain().put(this.getTable().getCouleurAtout(), cartesPossibles);
 								mainTemp.setSize(cartesPossibles.size());
-								System.out.println("\nVous devez jouer à l'atout");
+								Terminal.ecrireStringln("\nVous devez jouer à l'atout");
 							} 
 							// sinon il doit jouer une autre carte.
 							else {								
 								mainTemp = this.getMain();								
-								System.out.println("Vous n'avez pas d'atout, vous devez vous défausser.\n");
+								Terminal.ecrireStringln("Vous n'avez pas d'atout, vous devez vous défausser.\n");
 							}
 						}
 					}
@@ -180,31 +194,56 @@ public class JoueurHumain extends Joueur {
 		Carte carteSelectionnee = null;
 		tailleEnsembleCartePropose = cartesPossibles.getTailleMain();
 		
-		System.out.println("\nVous avez le choix entre : \n"+ cartesPossibles);		
-		System.out.println("\nChoisissez une carte : [entre 0 et "+ (cartesPossibles.getTailleMain() - 1) + "]");
-		int rep = saisieClavier();
-		
+		Terminal.ecrireStringln("\nVous avez le choix entre : \n"+ cartesPossibles);		
+		Terminal.ecrireStringln("\nChoisissez une carte : [entre 0 et "+ (cartesPossibles.getTailleMain() - 1) + "]");
+		int rep = Terminal.lireInt();
+
 		if (rep < tailleEnsembleCartePropose) {
 			// Sur l'interface le mieux serait de récupérer directement la carte selectionnée 
 			// comme ça on peut directement aller chercher la carte dans la main par le getteur adequat.			
-			carteSelectionnee = cartesPossibles.hashtableToList().get(rep);			
+			carteSelectionnee = cartesPossibles.hashtableToList().get(rep);		
+			
+			// Si le joueur possède la dame et le roi à l'atout... 
+			if(super.hasBeloteEtRe()) {
+				// ...alors il annonce la belote/rebelote lorsqu'il joue la dame / le roi.
+				if (carteSelectionnee.getCouleur() == this.getTable().getCouleurAtout() && carteSelectionnee.getFigure() == FigureEnum.Dame) {
+					this.getTable().setBeloteAnnoncee(true);
+					Terminal.ecrireStringln("J'annonce (Re)Belote");
+				}
+				if (carteSelectionnee.getCouleur() == this.getTable().getCouleurAtout() && carteSelectionnee.getFigure() == FigureEnum.Roi) {
+					this.getTable().setRebeloteAnnoncee(true);
+					Terminal.ecrireStringln("J'annonce (Re)Belote");
+				}
+			}
+			
 			this.getMain().supprimer(carteSelectionnee);			 
 		} 
 		else {
-			System.out.println("ERREUR");
+			Terminal.ecrireStringln("ERREUR");
 		}	
 		
 		return carteSelectionnee;
 	}
-
-	public int saisieClavier() {
-		int rep = 0;
-		try {
-			rep = Integer.parseInt(in.readLine());
-		} catch (Exception e) {
-			System.out.println("Erreur de saisie, veuillez resaisir  :");
-			rep = saisieClavier();
+	
+	/**
+	 * Action permettant de couper un tas de cartes
+	 * @return boolean
+	 */
+	public boolean coupe(Paquet tas) {
+		int pourcentageCoupe = 0;
+		Terminal.ecrireString("Veuillez entrer une valeur de coupe(poucentage): ");
+		pourcentageCoupe = Terminal.lireInt();
+		return tas.couper(pourcentageCoupe);
+	}
+	
+	/**
+	 * Action permettant d'analyser la main courante (belotes?)
+	 * @return boolean
+	 */
+	@Override
+	public void analyserSonJeu() {
+		if(this.getMain().hasBeloteRebolote(this.getTable().getCouleurAtout())) {
+			super.setHasBeloteEtRe(true);
 		}
-		return rep;
 	}
 }

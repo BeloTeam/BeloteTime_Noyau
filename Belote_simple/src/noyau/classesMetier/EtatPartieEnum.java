@@ -19,6 +19,8 @@
 
 package noyau.classesMetier;
 
+
+
 /**
  * Classe representant l'etat d'une partie
  * @author BeloTeam

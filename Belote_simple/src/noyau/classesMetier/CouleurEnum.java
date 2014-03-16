@@ -19,6 +19,8 @@
 
 package noyau.classesMetier;
 
+
+
 /**
  * Classe representant une couleur de carte
  * @author BeloTeam

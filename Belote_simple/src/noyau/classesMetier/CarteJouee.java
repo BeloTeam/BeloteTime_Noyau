@@ -27,7 +27,7 @@ import entite.Joueur;
  * @version 1.0
 **/
 public class CarteJouee extends Carte {
-
+	
 	private Joueur joueur;
 	
 	/**

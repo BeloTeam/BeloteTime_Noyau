@@ -21,31 +21,74 @@ package entite;
 
 import noyau.classesMetier.Carte;
 import noyau.classesMetier.CouleurEnum;
+import noyau.classesMetier.Paquet;
 import noyau.classesMetier.PositionEnum;
 import noyau.classesMetier.TableDeJeu;
 
-public class JoueurVirtuel extends Joueur{
+/**
+ * JoueurVirtuel représante un joueur non humain, qui possède une intéligence artificielle
+ * @author BeloTeam
+ * @version 1.0
+ **/
+public class JoueurVirtuel extends Joueur {
 	Intelligence ia;
 
-	public JoueurVirtuel(PositionEnum position,String nom, TableDeJeu table) {
-		super(position,nom, table);
+	/**
+	 * Surcharge du constructeur Joueur, création d'un joueur virtuel.
+	 * @param PositionEnum Position du joueur sur la table
+	 * @param String Nom du joueur virtuel
+	 * @param String Table ou est assie le joueur virtuel
+	 * */
+	public JoueurVirtuel(PositionEnum position, String nom, TableDeJeu table) {
+		super(position, nom, table);
 		ia = new Intelligence();
 	}
 
+	/**
+	 * Retourne si oui ou non le joueur virtuel prend au premier tour
+	 * @return boolean
+	 */
+	@Override
 	public boolean prendPremiereDonne() {
-		//TODO a faire
+		// TODO a faire
 		return false;
 	}
 
+	/**
+	 * Retourne si oui ou non le joueur virtuel prend au deuxieme tour
+	 * @return boolean
+	 */
 	@Override
 	public CouleurEnum prendDeuxiemeDonne() {
-		//TODO a faire
+		// TODO a faire
 		return null;
 	}
 
+	/**
+	 * Action permettant de jouer une carte lors d'un pli.
+	 * @return Carte
+	 */
 	@Override
 	public Carte jouerPli() {
 		return null;
+	}
+
+	/**
+	 * Action permettant de couper un tas de cartes
+	 * @return boolean
+	 */
+	@Override
+	public boolean coupe(Paquet tas) {
+		return false;
+	}
+
+	/**
+	 * Action permettant d'analyser la main courante (belotes?)
+	 * @return boolean
+	 */
+	@Override
+	public void analyserSonJeu() {
+		
 	}
 
 }
