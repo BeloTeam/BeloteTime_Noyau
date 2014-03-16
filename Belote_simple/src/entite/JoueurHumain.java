@@ -100,7 +100,7 @@ public class JoueurHumain extends Joueur {
 		Main mainTemp = new Main();
 		
 		Terminal.ecrireStringln("-------------JEU--------------\n Joueur courant : " + this.toString() 
-				+ "( "+this.getEquipeDuJoueur()+")");
+				+ " ("+this.getEquipeDuJoueur()+")");
 		while (carteJouee == null) {
 			// S'il n'y a aucune carte sur la table (le cas ou le joueur commence)
 			if (this.getTable().getPliCourant().size() == 0) {	
@@ -148,9 +148,9 @@ public class JoueurHumain extends Joueur {
 						/********** on a peut-être le droit de se défausser! **********/
 						// on regarde si le partenaire du joueur courant est maitre
 						Joueur joueurMaitre = this.getTable().getPliCourant().getJoueurMaitre();
-						Joueur joueurCoequipier = this.getTable().getGm().getEquipes().get(0).getPartenaire(this);
+						Joueur joueurCoequipier = this.getTable().getEquipes().get(0).getPartenaire(this);
 						if (joueurCoequipier == null) {
-							joueurCoequipier = this.getTable().getGm().getEquipes().get(1).getPartenaire(this);
+							joueurCoequipier = this.getTable().getEquipes().get(1).getPartenaire(this);
 						}
 
 						// si le partenaire est maitre il peut se défausser 
@@ -246,8 +246,9 @@ public class JoueurHumain extends Joueur {
 	 */
 	@Override
 	public void analyserSonJeu() {
-		if(this.getMain().hasBeloteRebolote(this.getTable().getCouleurAtout())) {
+		if(this.getMain().hasBeloteRebelote(this.getTable().getCouleurAtout())) {
 			super.setHasBeloteEtRe(true);
-		}
+			this.getEquipeDuJoueur().setEquipeHasBeloteEtRe(true);
+		} 
 	}
 }

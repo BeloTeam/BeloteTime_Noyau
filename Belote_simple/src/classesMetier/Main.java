@@ -213,7 +213,7 @@ public class Main {
 	 * @param couleurAtout CouleurEnum
 	 * @return boolean true si le dame et roi sont dans la main
 	 * */
-	public boolean hasBeloteRebolote(CouleurEnum couleurAtout){
+	public boolean hasBeloteRebelote(CouleurEnum couleurAtout){
 		return this.hasCarte(couleurAtout, FigureEnum.Dame) && this.hasCarte(couleurAtout, FigureEnum.Roi);
 	}
 

@@ -19,6 +19,9 @@
 
 package classesMetier;
 
+import java.util.ArrayList;
+
+import entite.Equipe;
 import entite.GameMaster;
 import entite.Joueur;
 import entite.JoueurHumain;
@@ -32,6 +35,7 @@ public class TableDeJeu {
 	//TODO Tous les joueurs doivent pouvoir savoir qui est le donneur, qui a pris et quel est le joueur courant. Déplacer ces attributs de GameMaster ici?
 	// (ce serait utilisé dans le todo suivant, cf attribuerCarteRetourneeA(Joueur) )
 	private Joueur[] joueurs;
+	private ArrayList<Equipe> equipes;
 	private GameMaster gm;
 	private Paquet paquet;
 	private boolean sensDesAiguilleDuneMontre;
@@ -47,10 +51,13 @@ public class TableDeJeu {
 	public TableDeJeu() {
 		sensDesAiguilleDuneMontre = true;
 		joueurs = new Joueur[4];
-		joueurs[0] = new JoueurHumain(PositionEnum.Sud,"Humain",this);
-		joueurs[1] = new JoueurHumain(PositionEnum.Nord,"IA Bob",this);
-		joueurs[2] = new JoueurHumain(PositionEnum.Est,"IA Bryan",this);
-		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"IA Kevin",this);
+		joueurs[0] = new JoueurHumain(PositionEnum.Nord,"Arthur",this);
+		joueurs[1] = new JoueurHumain(PositionEnum.Sud,"David",this);
+		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Loïc",this);
+		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Nathan",this);
+		this.equipes = new ArrayList<>();
+		equipes.add(new Equipe(joueurs[0], joueurs[1],"Nord/Sud"));
+		equipes.add(new Equipe(joueurs[2], joueurs[3],"Est/Ouest")); 
 		gm = new GameMaster(joueurs,this);
 		paquet = new Paquet();
 		paquet.melanger(50);
@@ -60,10 +67,32 @@ public class TableDeJeu {
 	}
 	
 	/**
-	 * Retourne le tas de cartes.
+	 * Retourne l'équipe d'un joueur donné.
+	 * @param joueur
+	 * @return L'équipe du joueur donné
+	 */
+	public Equipe getEquipeDuJoueur(Joueur joueur) {		
+		Equipe e;
+		if (joueur.getPosition() == PositionEnum.Nord || joueur.getPosition() == PositionEnum.Sud)
+			e = this.equipes.get(0);
+		else 
+			e = this.equipes.get(1);
+		return e;
+	}
+	
+	/**
+	 * Retourne les équipes.
+	 * @return ArrayList<Equipe>
+	 */
+	public ArrayList<Equipe> getEquipes() {
+		return equipes;
+	}
+
+	/**
+	 * Retourne le paquet de cartes.
 	 * @return Paquet
 	 */
-	public Paquet getTas() {
+	public Paquet getPaquet() {
 		return paquet;
 	}
 	
@@ -252,6 +281,12 @@ public class TableDeJeu {
 	public void reinitialiserLesAnnonces() {
 		this.beloteAnnoncee = false;
 		this.rebeloteAnnoncee = false;
+		for (Equipe e : this.getEquipes()){
+			e.setEquipeHasBeloteEtRe(false);
+			for (Joueur j : e.getJoueurs()){
+				j.setHasBeloteEtRe(false);
+			}
+		}
 	}
 	
 	/**

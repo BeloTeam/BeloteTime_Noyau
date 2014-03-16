@@ -1,5 +1,7 @@
 Taches : 
+- Gérer le litige : Litige : En cas d’égalité parfaite au score, il y a « litige » : la défense marque ses points, mais les points des preneurs sont remis en jeu et seront offerts en bonus aux vainqueurs de la prochaine prise.  En cas de litige lors de la dernière donne, chaque équipe marque ses points sans donne supplémentaire.
+Pour cela on aurait besoin de détacher les scores de la partie qui sont dans équipe et créer une nouvelle classe FeuilleDesScores par exemple pour rajouter le litige dans la feuille des scores
 
-Aucune
-Noyaux fini.
+- Gérer la fin de partie
+
 Livrables disponible dans le dossier dropbox livrable/iteration1

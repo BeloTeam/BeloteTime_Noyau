@@ -39,13 +39,16 @@ public class Equipe {
 	private int scoreManche;
 	private int scorePartie;
 	private int nbManche;
+	private String nomEquipe;
+	private boolean equipeHasBeloteEtRe;
 	
+
 	/**
 	 * Constructeur d'une equipe
 	 * @param le joueur 1
 	 * @param le joueur 2
 	 * */
-	public Equipe(Joueur joueur1, Joueur joueur2) {
+	public Equipe(Joueur joueur1, Joueur joueur2, String nom) {
 		this.joueurs = new ArrayList<>();
 		this.joueurs.add(joueur1);
 		this.joueurs.add(joueur2);
@@ -54,6 +57,8 @@ public class Equipe {
 		this.scorePartie = 0;
 		this.scoreManche = 0;
 		this.nbManche = 0;
+		this.nomEquipe = nom;
+		this.equipeHasBeloteEtRe = false;
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class Equipe {
 	 * @return String
 	 */
 	public String toString() {
-		return "Equipe de : " + this.getJoueurs();
+		return "L'équipe '"+ this.nomEquipe + "' est composée de : " + this.getJoueurs();
 	}
 	
 	/* **** Méthodes manipulant les joueurs de l'équipe **** **/
@@ -137,6 +142,7 @@ public class Equipe {
 	 */
 	 public boolean addScoreMancheToHistorique(int score) {
 		 this.nbManche++;
+		 this.scorePartie += score;
 		 return this.historiqueScoreManches.add(score);
 	 }
 	 
@@ -197,6 +203,7 @@ public class Equipe {
 		this.scoreManche = 0;
 		this.scorePartie = 0;
 		this.nbManche = 0;
+		this.equipeHasBeloteEtRe = false;
 	}
 	/* **************************************************** **/
 	
@@ -225,4 +232,20 @@ public class Equipe {
 		return cartesARendre;
 	}
 	/* **************************************************** **/
+
+	/**
+	 * Définit si l'équipe a la belote ou non
+	 * @param boolean
+	 */
+	public void setEquipeHasBeloteEtRe(boolean b) {
+		this.equipeHasBeloteEtRe = b;		
+	}
+
+	/**
+	 * Retourne si l'équipe a le belote ou non
+	 * @return boolean
+	 */
+	public boolean isEquipeHasBeloteEtRe() {
+		return equipeHasBeloteEtRe;
+	}
 }

@@ -149,11 +149,11 @@ public abstract class Joueur {
 	 */
 	public Equipe getEquipeDuJoueur(){
 		
-		if( this.table.getGm().getEquipes().get(0).estDansEquipe(this)){
-			return this.table.getGm().getEquipes().get(0);
+		if( this.table.getEquipes().get(0).estDansEquipe(this)){
+			return this.table.getEquipes().get(0);
 		}
 		else{
-			return this.table.getGm().getEquipes().get(1);
+			return this.table.getEquipes().get(1);
 		}
 	}
 }
