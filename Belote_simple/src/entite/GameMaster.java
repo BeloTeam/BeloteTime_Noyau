@@ -119,8 +119,8 @@ public class GameMaster {
 
 	
 	/**
-	 * Permet de calculer le score de la manche pour chaque équipe.
-	 * {@link http://www.leswampsenpire.fr/content/77-r%C3%A8glement-officiel-du-concours-de-belote-sans-annonces}
+	 * Permet de calculer le score de la manche pour chaque équipe. On utilise les règles suivantes comme référence :
+	 * http://www.ffbelote.org/regles-officielle-belote/
 	 */
 	private void determinerScoreMancheCourante(){		
 		Equipe equipeQuiAPris = this.table.getEquipeDuJoueur(joueurPrend);
