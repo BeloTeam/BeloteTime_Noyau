@@ -1,8 +1,5 @@
-fixer le bug du mauvais joueur maitre (voir issue github) - pas checké, c'est peut être réglé - ok
+Taches : 
 
-branches supprimees - ok
-
-Dossier de conception - vous trouverez une image uml du projet dans ce repertoire -ok 
-
-Toutes les fonctionnalitées sont faites et fonctionnelles. J'ai pas remarqué de bug. Couper, belote, rebelote, capo, dedans, c'est OK.
-
+Aucune
+Noyaux fini.
+Livrables disponible dans le dossier dropbox livrable/iteration1
