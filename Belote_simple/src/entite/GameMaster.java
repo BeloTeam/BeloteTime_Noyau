@@ -53,7 +53,90 @@ public class GameMaster {
 		this.etat = EtatPartieEnum.PremiereDistribution;
 		this.typePartie = typePartie;
 	}
-	
+
+	/**
+	 * Lancement de la partie.
+	 */
+	public void debuterPartie() {
+		this.joueurPrend = null;
+		int jouer = 1;
+		while (jouer == 1) {
+			while (!this.partieFinie()) {
+				switch (etat) {
+				case PremiereDistribution:
+					Terminal.ecrireStringln("Donneur : " + this.joueurDonneur);
+					this.joueurCourant = table
+							.joueurSuivant(this.joueurDonneur);
+					distribuer(3);
+					distribuer(2);
+					this.table.retournerUneCarte();
+					etat = EtatPartieEnum.PremierTourDonne;
+					break;
+				case PremierTourDonne:
+					this.joueurPrend = quiPrendPremiereDonne();
+					if (this.joueurPrend == null) {
+						etat = EtatPartieEnum.DeuxiemeTourDonne;
+					} else {
+						this.table.attribuerCarteRetourneeA(this.joueurPrend);
+						etat = EtatPartieEnum.DeuxiemeDistribution;
+					}
+					break;
+				case DeuxiemeTourDonne:
+					this.joueurPrend = quiPrendDeuxiemeDonne();
+					if (this.joueurPrend == null) {
+						// Personne n'a pris, on re-distribue les cartes
+						// on récupère les cartes
+						recupererCartesMain();
+						this.table.remettreCarteRetourneeDansLePaquet();
+						// on mélange
+						this.table.getPaquet().melanger(50);
+						etat = EtatPartieEnum.PremiereDistribution;
+					} else {
+						this.table.attribuerCarteRetourneeA(this.joueurPrend); 
+						// TODO ça devrait aller dans distribuerDeuxiemeTour
+						// ou au moins dans le case DeuxiemeDistribution
+						Terminal.ecrireStringln("----FIN DE LA DONNE-----\n"
+								+ this.joueurPrend.toString() + " a pris à : "
+								+ this.table.getCouleurAtout());
+						etat = EtatPartieEnum.DeuxiemeDistribution;
+					}
+					break;
+				case DeuxiemeDistribution:
+					distribuerDeuxiemeTour(this.joueurPrend);
+					this.joueurCourant = table.joueurSuivant(joueurDonneur);
+					etat = EtatPartieEnum.PhaseDePli;
+					break;
+				case PhaseDePli:
+					jouerUnPli();
+					if (this.joueurCourant.getMain().getTailleMain() == 0) {
+						/***************** FIN DE LA MANCHE *****************/
+						determinerScoreMancheCourante();
+						this.joueurPrend = null;
+						remettreLesPlisDansLeTas();
+						this.table.reinitialiserLesAnnonces();
+						this.joueurDonneur.coupe(this.table.getPaquet());
+						this.joueurDonneur = table
+								.joueurSuivant(this.joueurDonneur);
+						etat = EtatPartieEnum.PremiereDistribution;
+					} else {
+						etat = EtatPartieEnum.PhaseDePli;
+					}
+					break;
+				}
+			}
+			Terminal.ecrireStringln("FIN DE LA PARTIE \n---------------------");
+			Terminal.ecrireStringln("Voulez-vous rejouer ? (oui - 1 / non - 0)");
+			jouer = Terminal.lireInt();
+			//reinitialiser les scores dans equipes
+			this.table.getEquipes().get(0).resetScorePartie();
+			this.table.getEquipes().get(1).resetScorePartie();
+		}
+		Terminal.ecrireStringln("Merci d'avoir joue a notre jeu !");
+	}
+
+	/**
+	 * Permet de savoir si la partie est finie en fonction du type de partie jouee
+	 * */
 	public boolean partieFinie() {
 		switch (this.typePartie) {
 		case CINQ_MANCHES:
@@ -66,8 +149,8 @@ public class GameMaster {
 			return this.table.getEquipes().get(0).getScorePartie() > 500
 					|| this.table.getEquipes().get(1).getScorePartie() > 500;
 		case MILLE_POINTS:
-			return this.table.getEquipes().get(0).getScorePartie() > 1000
-					|| this.table.getEquipes().get(1).getScorePartie() > 1000;
+			return this.table.getEquipes().get(0).getScorePartie() > 50
+					|| this.table.getEquipes().get(1).getScorePartie() > 50;
 		case DEUX_MILLE_POINTS:
 			return this.table.getEquipes().get(0).getScorePartie() > 2000
 					|| this.table.getEquipes().get(1).getScorePartie() > 2000;
@@ -78,74 +161,6 @@ public class GameMaster {
 		return false;
 	}
 	
-
-	/**
-	 * Lancement de la partie.
-	 */
-	public void debuterPartie() {
-		this.joueurPrend = null;
-		while (!this.partieFinie()) {
-			switch (etat) {
-			case PremiereDistribution:
-				Terminal.ecrireStringln("Donneur : " + this.joueurDonneur);
-				this.joueurCourant = table.joueurSuivant(this.joueurDonneur);
-				distribuer(3);
-				distribuer(2);
-				this.table.retournerUneCarte();
-				etat = EtatPartieEnum.PremierTourDonne;
-				break;
-			case PremierTourDonne:
-				this.joueurPrend = quiPrendPremiereDonne();
-				if (this.joueurPrend == null) {
-					etat = EtatPartieEnum.DeuxiemeTourDonne;
-				} else {
-					this.table.attribuerCarteRetourneeA(this.joueurPrend);
-					etat = EtatPartieEnum.DeuxiemeDistribution;
-				}
-				break;
-			case DeuxiemeTourDonne:
-				this.joueurPrend = quiPrendDeuxiemeDonne();
-				if (this.joueurPrend == null) {
-					// Personne n'a pris, on re-distribue les cartes
-					// on récupère les cartes
-					recupererCartesMain();
-					this.table.remettreCarteRetourneeDansLePaquet();
-					// on mélange
-					this.table.getPaquet().melanger(50);
-					etat = EtatPartieEnum.PremiereDistribution;
-				} else {
-					this.table.attribuerCarteRetourneeA(this.joueurPrend); //TODO ça devrait aller dans distribuerDeuxiemeTour ou au moins dans le case DeuxiemeDistribution
-					Terminal.ecrireStringln("----FIN DE LA DONNE-----\n"
-							+ this.joueurPrend.toString() + " a pris à : "
-							+ this.table.getCouleurAtout());
-					etat = EtatPartieEnum.DeuxiemeDistribution;
-				}
-				break;
-			case DeuxiemeDistribution:
-				distribuerDeuxiemeTour(this.joueurPrend);
-				this.joueurCourant = table.joueurSuivant(joueurDonneur);
-				etat = EtatPartieEnum.PhaseDePli;
-				break;
-			case PhaseDePli:
-				jouerUnPli();
-				if(this.joueurCourant.getMain().getTailleMain() == 0){
-					/***************** FIN DE LA MANCHE *****************/
-					determinerScoreMancheCourante();
-					this.joueurPrend = null;
-					remettreLesPlisDansLeTas();
-					this.table.reinitialiserLesAnnonces();
-					this.joueurDonneur.coupe(this.table.getPaquet());
-					this.joueurDonneur = table.joueurSuivant(this.joueurDonneur);
-					etat = EtatPartieEnum.PremiereDistribution;
-				} else {
-					etat = EtatPartieEnum.PhaseDePli;
-				}
-				break;
-			}
-		}
-		Terminal.ecrireStringln("FIN DE LA PARTIE \n---------------------");
-	}
-
 	
 	/**
 	 * Permet de calculer le score de la manche pour chaque équipe. On utilise les règles suivantes comme référence :
