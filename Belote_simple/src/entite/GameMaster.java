@@ -25,6 +25,7 @@ import control.Terminal;
 import classesMetier.Carte;
 import classesMetier.EtatPartieEnum;
 import classesMetier.TableDeJeu;
+import classesMetier.TypePartieEnum;
 
 
 /**
@@ -39,24 +40,51 @@ public class GameMaster {
 	private Joueur joueurDonneur;
 	private Joueur joueurPrend;
 	private EtatPartieEnum etat;
+	private TypePartieEnum typePartie; 
 	
 	/**
 	 * Constructeur de GameMaster.
 	 * @param joueurs Les 4 joueurs de belote
 	 * @param table	La table de jeu	
 	 */
-	public GameMaster(Joueur joueurs[], TableDeJeu table) {		
+	public GameMaster(Joueur joueurs[], TableDeJeu table, TypePartieEnum typePartie) {		
 		this.table = table;
 		this.joueurDonneur = getDonneurRandom();
-		etat = EtatPartieEnum.PremiereDistribution;
+		this.etat = EtatPartieEnum.PremiereDistribution;
+		this.typePartie = typePartie;
 	}
+	
+	public boolean partieFinie() {
+		switch (this.typePartie) {
+		case CINQ_MANCHES:
+			return (this.table.getEquipes().get(0).getNbManche() == 5);
+		case DIX_MANCHES:
+			return (this.table.getEquipes().get(0).getNbManche() == 10);
+		case VINGT_MANCHES:
+			return (this.table.getEquipes().get(0).getNbManche() == 20);
+		case CINQ_CENTS_POINTS:
+			return this.table.getEquipes().get(0).getScorePartie() > 500
+					|| this.table.getEquipes().get(1).getScorePartie() > 500;
+		case MILLE_POINTS:
+			return this.table.getEquipes().get(0).getScorePartie() > 1000
+					|| this.table.getEquipes().get(1).getScorePartie() > 1000;
+		case DEUX_MILLE_POINTS:
+			return this.table.getEquipes().get(0).getScorePartie() > 2000
+					|| this.table.getEquipes().get(1).getScorePartie() > 2000;
+		default:
+			// lever un exception
+			break;
+		}
+		return false;
+	}
+	
 
 	/**
 	 * Lancement de la partie.
 	 */
 	public void debuterPartie() {
 		this.joueurPrend = null;
-		while (this.table.getEquipes().get(0).getScorePartie() < 1000 && this.table.getEquipes().get(1).getScorePartie() < 1000) {
+		while (!this.partieFinie()) {
 			switch (etat) {
 			case PremiereDistribution:
 				Terminal.ecrireStringln("Donneur : " + this.joueurDonneur);
@@ -115,6 +143,7 @@ public class GameMaster {
 				break;
 			}
 		}
+		Terminal.ecrireStringln("FIN DE LA PARTIE \n---------------------");
 	}
 
 	

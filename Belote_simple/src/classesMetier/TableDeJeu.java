@@ -58,7 +58,7 @@ public class TableDeJeu {
 		this.equipes = new ArrayList<>();
 		equipes.add(new Equipe(joueurs[0], joueurs[1],"Nord/Sud"));
 		equipes.add(new Equipe(joueurs[2], joueurs[3],"Est/Ouest")); 
-		gm = new GameMaster(joueurs,this);
+		gm = new GameMaster(joueurs,this,TypePartieEnum.MILLE_POINTS);
 		paquet = new Paquet();
 		paquet.melanger(50);
 		couleurAtout = null;
