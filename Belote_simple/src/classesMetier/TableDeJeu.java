@@ -25,6 +25,7 @@ import entite.Equipe;
 import entite.GameMaster;
 import entite.Joueur;
 import entite.JoueurHumain;
+import entite.JoueurVirtuel;
 
 /**
  * La table de jeu contient toutes les informations nécessaire pour réaliser une partie de belote.
@@ -51,14 +52,14 @@ public class TableDeJeu {
 	public TableDeJeu() {
 		sensDesAiguilleDuneMontre = true;
 		joueurs = new Joueur[4];
-		joueurs[0] = new JoueurHumain(PositionEnum.Nord,"Arthur",this);
-		joueurs[1] = new JoueurHumain(PositionEnum.Sud,"David",this);
-		joueurs[2] = new JoueurHumain(PositionEnum.Est,"Loïc",this);
-		joueurs[3] = new JoueurHumain(PositionEnum.Ouest,"Nathan",this);
+		joueurs[0] = new JoueurVirtuel(PositionEnum.Nord,"Arthur",this);
+		joueurs[1] = new JoueurVirtuel(PositionEnum.Sud,"David",this);
+		joueurs[2] = new JoueurVirtuel(PositionEnum.Est,"Loïc",this);
+		joueurs[3] = new JoueurVirtuel(PositionEnum.Ouest,"Nathan",this);
 		this.equipes = new ArrayList<>();
 		equipes.add(new Equipe(joueurs[0], joueurs[1],"Nord/Sud"));
 		equipes.add(new Equipe(joueurs[2], joueurs[3],"Est/Ouest")); 
-		gm = new GameMaster(joueurs,this,TypePartieEnum.MILLE_POINTS);
+		gm = new GameMaster(joueurs,this,TypePartieEnum.DEUX_MILLE_POINTS);
 		paquet = new Paquet();
 		paquet.melanger(50);
 		couleurAtout = null;

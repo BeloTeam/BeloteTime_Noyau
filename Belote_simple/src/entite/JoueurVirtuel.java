@@ -21,6 +21,7 @@ package entite;
 
 import classesMetier.Carte;
 import classesMetier.CouleurEnum;
+import classesMetier.Main;
 import classesMetier.Paquet;
 import classesMetier.PositionEnum;
 import classesMetier.TableDeJeu;
@@ -32,6 +33,7 @@ import classesMetier.TableDeJeu;
  **/
 public class JoueurVirtuel extends Joueur {
 	Intelligence ia;
+	public static int SEUIL = 35;
 
 	/**
 	 * Surcharge du constructeur Joueur, création d'un joueur virtuel.
@@ -50,27 +52,41 @@ public class JoueurVirtuel extends Joueur {
 	 */
 	@Override
 	public boolean prendPremiereDonne() {
-		// TODO a faire
-		return false;
+		CouleurEnum couleurAtout = this.getTable().getCarteRetournee().getCouleur();
+		int scoreMain = this.getMain().calculerValeurMain(couleurAtout);
+		System.out.println(scoreMain);
+		System.out.println(couleurAtout);
+		System.out.println(this.getMain());
+		if (scoreMain > SEUIL){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
-	 * Retourne si oui ou non le joueur virtuel prend au deuxieme tour
-	 * @return boolean
+	 * Retourne la couleur choisie ou null si le joueur virtuel ne prend pas au deuxieme tour
+	 * @return CouleurEnum
 	 */
 	@Override
 	public CouleurEnum prendDeuxiemeDonne() {
-		// TODO a faire
-		return null;
-	}
+		CouleurEnum couleurChoisie = null;
+		int scoreMaxMain = 0;
+		int score;
 
-	/**
-	 * Action permettant de jouer une carte lors d'un pli.
-	 * @return Carte
-	 */
-	@Override
-	public Carte jouerPli() {
-		return null;
+		System.out.println(this.getMain());
+		
+		for(CouleurEnum couleur : CouleurEnum.values()){
+			score = this.getMain().calculerValeurMain(couleur);
+			
+			System.out.println(score);
+			System.out.println(couleur);
+		
+			if (score > SEUIL && score > scoreMaxMain){
+				couleurChoisie = couleur;
+			}
+		}
+		return couleurChoisie;
 	}
 
 	/**
@@ -89,6 +105,17 @@ public class JoueurVirtuel extends Joueur {
 	@Override
 	public void analyserSonJeu() {
 		
+	}
+
+	@Override
+	public Carte selectionnerUneCarte(Main mainTemp) {
+		System.out.println(mainTemp);
+		Carte carteSelectionnee;
+		carteSelectionnee = mainTemp.hashtableToList().get(0);
+		System.out.println(this.toString() + " joue : " + carteSelectionnee);
+
+		this.getMain().supprimer(carteSelectionnee);	
+		return carteSelectionnee;
 	}
 
 }
