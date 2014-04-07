@@ -41,6 +41,7 @@ public class TableDeJeu {
 	private Paquet paquet;
 	private boolean sensDesAiguilleDuneMontre;
 	private Pli pliCourant;
+	private Pli pliPrecedent;
 	private CouleurEnum couleurAtout;
 	private Carte carteRetournee;
 	private boolean beloteAnnoncee;
@@ -110,6 +111,7 @@ public class TableDeJeu {
 	 * @param dixDeDer boolean le dernier pli vaut 10 points supplémentaires
 	 */
 	public void nouveauPliCourant(boolean dixDeDer){
+		this.pliPrecedent = this.pliCourant;
 		this.pliCourant = new Pli(this.couleurAtout,dixDeDer);
 	}
 	
@@ -154,6 +156,16 @@ public class TableDeJeu {
 	public Carte getCarteRetournee() {
 		return this.carteRetournee;
 	}
+	
+
+	public Pli getPliPrecedent() {
+		return pliPrecedent;
+	}
+
+	public void setPliPrecedent(Pli pliPrecedent) {
+		this.pliPrecedent = pliPrecedent;
+	}
+
 	
 	/**
 	 * Ajouter la carte retournée au joueur qui a choisi l'atout.

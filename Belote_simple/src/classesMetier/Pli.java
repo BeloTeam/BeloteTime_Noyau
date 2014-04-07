@@ -45,6 +45,10 @@ public class Pli extends AbstractPaquetNonTrier {
 		this.couleurDemandee = null;
 	}
 
+	public boolean isDixDeDer() {
+		return hasDixDeDer;
+	}
+
 	/**
 	 * Permet d'ajouter une carte au pli
 	 * @param c Carte

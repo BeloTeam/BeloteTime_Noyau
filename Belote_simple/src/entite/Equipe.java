@@ -41,7 +41,15 @@ public class Equipe {
 	private int nbManche;
 	private String nomEquipe;
 	private boolean equipeHasBeloteEtRe;
-	
+	private boolean equipeHasPris;
+
+	public boolean isEquipeHasPris() {
+		return equipeHasPris;
+	}
+
+	public void setEquipeHasPris(boolean equipeHasPris) {
+		this.equipeHasPris = equipeHasPris;
+	}
 
 	/**
 	 * Constructeur d'une equipe

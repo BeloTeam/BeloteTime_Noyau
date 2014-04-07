@@ -64,6 +64,7 @@ public class GameMaster {
 			while (!this.partieFinie()) {
 				switch (etat) {
 				case PremiereDistribution:
+					initIAForManche();
 					Terminal.ecrireStringln("Donneur : " + this.joueurDonneur);
 					this.joueurCourant = table
 							.joueurSuivant(this.joueurDonneur);
@@ -159,6 +160,14 @@ public class GameMaster {
 			break;
 		}
 		return false;
+	}
+	
+	private void initIAForManche(){
+		for(Joueur joueur: this.table.getJoueurs()){
+			if(joueur instanceof JoueurVirtuel){
+				((JoueurVirtuel)joueur).initIA();
+			}
+		}
 	}
 	
 	

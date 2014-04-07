@@ -123,4 +123,65 @@ public class Carte implements Comparable<Carte>{
 		}
 		return point;
 	}
+	
+	/**
+	 * Calcule la valeur d'une carte en fonction de la couleur d'atout donee
+	 * @param atout CouleurEnum
+	 * @return int 
+	 * */
+	public int numeroOrdre(CouleurEnum atout){
+		int num = 0;
+		switch (this.figure) {
+		case Neuf:
+			if(atout.equals(this.getCouleur())) {
+				num = 6;
+			}else{
+				num = 2;
+			}
+			break;
+		case Dix:
+			if(atout.equals(this.getCouleur())) {
+				num = 4;
+			}else{
+				num = 6;
+			}
+			break;
+		case Valet:
+			if(atout.equals(this.getCouleur())) {
+				num = 7;
+			}else{
+				num = 3;
+			}
+			break;
+		case Dame:
+			if(atout.equals(this.getCouleur())) {
+				num = 2;
+			}else{
+				num = 4;
+			}
+			break;
+		case Roi:
+			if(atout.equals(this.getCouleur())) {
+				num = 3;
+			}else{
+				num = 5;
+			}
+			break;
+		case As:
+			if(atout.equals(this.getCouleur())) {
+				num = 5;
+			}else{
+				num = 7;
+			}
+			break;
+		case Sept:
+			num = 0;
+		break;
+		case Huit:
+			num = 1;
+			break;
+		}
+		return num;
+	}
+	
 }

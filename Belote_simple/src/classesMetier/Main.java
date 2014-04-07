@@ -159,8 +159,34 @@ public class Main {
 	 * @param c CouleurEnum
 	 * @return Carte carte la plus forte
 	 * */
-	public Carte getPlusForteCarteNormale(CouleurEnum c) {
-		return this.main.get(c).first();
+	public Carte getPlusForteCarteNormale(CouleurEnum c, CouleurEnum couleurAtout) {
+		Carte meilleur = null;
+		for (Carte carte : this.hashtableToList()){
+			if(carte.getCouleur() == c && meilleur == null){
+				meilleur = carte;
+			} else if(carte.getCouleur() == c && meilleur.numeroOrdre(couleurAtout) < carte.numeroOrdre(couleurAtout)){
+				meilleur = carte;
+			}
+		}
+		return meilleur;
+	}
+	
+	
+	/**
+	 * Retourne la carte la plus forte en valeur d'une couleur donnee
+	 * @param c CouleurEnum
+	 * @return Carte carte la plus forte
+	 * */
+	public Carte getPlusForteCarteAtout(CouleurEnum c) {
+		Carte meilleur = null;
+		for (Carte carte : this.hashtableToList()){
+			if(carte.getCouleur() == c && meilleur == null){
+				meilleur = carte;
+			} else if(carte.getCouleur() == c && meilleur.numeroOrdre(c) < carte.numeroOrdre(c)){
+				meilleur = carte;
+			}
+		}
+		return meilleur;
 	}
 
 	/**
@@ -168,8 +194,34 @@ public class Main {
 	 * @param c CouleurEnum
 	 * @return Carte carte la plus faible
 	 * */
-	public Carte getPlusFaibleCarteNormale(CouleurEnum c) {
-		return this.main.get(c).last();
+	public Carte getPlusFaibleCarteNormale(CouleurEnum c, CouleurEnum couleurAtout) {
+		Carte mauvaise = null;
+		for (Carte carte : this.hashtableToList()){
+			if(carte.getCouleur() == c && mauvaise == null){
+				mauvaise = carte;
+			} else if(carte.getCouleur() == c && mauvaise.numeroOrdre(couleurAtout) > carte.numeroOrdre(couleurAtout)){
+				mauvaise = carte;
+			}
+		}
+		return mauvaise;
+	}
+	
+	/**
+	 * Retourne la carte la plus faible en valeur d'une couleur donnee
+	 * @param couleurAtout CouleurEnum
+	 * @return Carte carte la plus faible
+	 * */
+	public Carte getPlusFaibleCarteAtout(CouleurEnum couleurAtout) {
+		Carte mauvaise = null;
+		for (Carte carte : this.hashtableToList()){
+			if(carte.getCouleur() == couleurAtout && mauvaise == null){
+				mauvaise = carte;
+			} else if(carte.getCouleur() == couleurAtout && mauvaise.numeroOrdre(couleurAtout) > carte.numeroOrdre(couleurAtout)){
+				mauvaise = carte;
+			}
+		}
+		
+		return mauvaise;
 	}
 
 	/**
