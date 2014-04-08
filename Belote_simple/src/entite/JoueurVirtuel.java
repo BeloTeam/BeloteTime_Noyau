@@ -233,6 +233,7 @@ public class JoueurVirtuel extends Joueur {
 		
 		//raccourci
 		if(mainTemp.getTailleMain() == 1){
+			System.out.println("CODE:AppelRacourci");
 			return mainTemp.hashtableToList().get(0);
 		}
 		
@@ -242,6 +243,7 @@ public class JoueurVirtuel extends Joueur {
 		if(this.getEquipeDuJoueur().isEquipeHasPris()){
 		//si on peut faire tomber les atouts
 			if (mainTemp.get(couleurAtout).size() > 1 && !ia.adversaireHasNotCouleur(couleurAtout)){
+				System.out.println("CODE:AppelPreneurTomberAtout");
 				return mainTemp.getPlusForteCarteAtout(couleurAtout);
 			} else {
 				int nbMinCarteMemeCouleur = 9;
@@ -254,26 +256,30 @@ public class JoueurVirtuel extends Joueur {
 						nbMinCarteMemeCouleur = nbCourant;
 					}
 				}
+
+				System.out.println("CODE:AppelPreneurPasTomberAtout");
 				return mainTemp.getPlusFaibleCarteNormale(couleurMin,couleurAtout);
 			}
 		//stratégie défenseur
 		} else {
-			int nbMinCarteMemeCouleur = 9;
+			CouleurEnum couleurMax = null;
+			int nbMaxCarteMemeCouleur = 0;
 			int nbCourant;
-			CouleurEnum couleurMin = null;
 			for(CouleurEnum couleur : CouleurEnum.values()){
 				nbCourant = mainTemp.getNbCarteCouleur(couleur);
-				if (nbCourant > 0 && nbCourant < nbMinCarteMemeCouleur && !couleur.equals(couleurAtout)){
-					couleurMin = couleur;
-					nbMinCarteMemeCouleur = nbCourant;
+				if(nbCourant > nbMaxCarteMemeCouleur && couleur != couleurAtout){
+					couleurMax = couleur;
+					nbMaxCarteMemeCouleur = nbCourant;
 				}
 			}
 			//cas particulier ou il ne reste plus que de l'atout
-			if(couleurMin == null){
+			if(couleurMax == null){
+
+				System.out.println("CODE:AppelDefenseurObligerAtout");
 				return mainTemp.getPlusFaibleCarteAtout(couleurAtout);
 			}
-			
-		return mainTemp.getPlusFaibleCarteNormale(couleurMin,couleurAtout);
+			System.out.println("CODE:AppelDefenseur");
+			return mainTemp.getPlusFaibleCarteNormale(couleurMax,couleurAtout);
 		}
 	}
 	
@@ -282,6 +288,7 @@ public class JoueurVirtuel extends Joueur {
 		
 		//raccourci
 		if(mainTemp.getTailleMain() == 1){
+			System.out.println("CODE:LLC-Raccourci");
 			return mainTemp.hashtableToList().get(0);
 		}
 		
@@ -302,8 +309,10 @@ public class JoueurVirtuel extends Joueur {
 			}
 			//cas particulier ou il ne reste plus que de l'atout
 			if(couleurMax == null){
+				System.out.println("CODE:LLC-CasAtout-GMpatEtDernier");
 				return mainTemp.getPlusFaibleCarteAtout(couleurAtout);
 			}
+			System.out.println("CODE:LLC-CasNormal-GMpatEtDernier");
 			return mainTemp.getPlusForteCarteNormale(couleurMax,couleurAtout);
 		} else {
 			int nbMaxCarteMemeCouleur = 0;
@@ -315,6 +324,7 @@ public class JoueurVirtuel extends Joueur {
 					nbMaxCarteMemeCouleur = nbCourant;
 				}
 			}
+			System.out.println("CODE:LLC");
 			return mainTemp.getPlusFaibleCarteNormale(couleurMax,couleurAtout);
 		}
 	}
@@ -323,6 +333,7 @@ public class JoueurVirtuel extends Joueur {
 		
 		//raccourci
 		if(mainTemp.getTailleMain() == 1){
+			System.out.println("CODE:SurCoupe-Raccourci");
 			return mainTemp.hashtableToList().get(0);
 		}
 		
@@ -333,11 +344,14 @@ public class JoueurVirtuel extends Joueur {
 		if(cartePlusForte.calculerValeurCarte(couleurAtout) > this.getTable().getPliCourant().getCarteMaitre().calculerValeurCarte(couleurAtout)){
 			//si on est le dernier ou si aucun adversaire n'est en mesure de surcouper 
 			if(this.getTable().getPliCourant().size() == 3 || ia.isPlusForteCarteRestanteDansSaCouleur(mainTemp.getPlusForteCarteAtout(couleurAtout), couleurAtout) || ia.adversaireHasNotCouleur(couleurAtout)){
+				System.out.println("CODE:SurCoupe-DernierOuAdversairePeutPasSurCoupe");
 				carteJouee = mainTemp.getPlusForteCarteAtout(couleurAtout);
 			} else {
+				System.out.println("CODE:SurCoupe-PasDernierEtAdversairePeutSurCoupe");
 				carteJouee = mainTemp.getPlusFaibleCarteAtout(couleurAtout);
 			}
 		} else {
+			System.out.println("CODE:SurCoupe-OnAPasMieux");
 			carteJouee = mainTemp.getPlusFaibleCarteAtout(couleurAtout);
 		}
 		return carteJouee;
@@ -347,6 +361,7 @@ public class JoueurVirtuel extends Joueur {
 		
 		//raccourci
 		if(mainTemp.getTailleMain() == 1){
+			System.out.println("CODE:JouerCouleur-Raccourci");
 			return mainTemp.hashtableToList().get(0);
 		}
 		
@@ -356,8 +371,10 @@ public class JoueurVirtuel extends Joueur {
 		if(mainTemp.getPlusForteCarteNormale(couleur,couleurAtout).calculerValeurCarte(couleurAtout) > this.getTable().getPliCourant().getCarteMaitre().calculerValeurCarte(couleurAtout)){
 				//si on est le dernier ou si aucun adversaire n'est en mesure de couper 
 				if(this.getTable().getPliCourant().size() == 3 || (ia.isPlusForteCarteRestanteDansSaCouleur(mainTemp.getPlusForteCarteNormale(couleur,couleurAtout), couleurAtout) || ia.adversaireHasNotCouleur(couleur)) && ia.adversaireHasNotCouleur(couleurAtout)){
+					System.out.println("CODE:JouerCouleur-DernierOuAdversairePeutPasCoupe");
 					carteJouee = mainTemp.getPlusForteCarteNormale(couleur,couleurAtout);
 				} else {
+					System.out.println("CODE:JouerCouleur-PasDernierEtAdversairePeutCoupe");
 					carteJouee = mainTemp.getPlusFaibleCarteNormale(couleur,couleurAtout);
 				}
 		} else {
@@ -365,11 +382,14 @@ public class JoueurVirtuel extends Joueur {
 			if(this.getTable().getPliCourant().getJoueurMaitre().getEquipeDuJoueur() == this.getEquipeDuJoueur()){
 				//si on est le dernier ou si aucun adversaire n'est en mesure de couper 
 				if(this.getTable().getPliCourant().size() == 3 || ia.isPlusForteCarteRestanteDansSaCouleur(mainTemp.getPlusForteCarteNormale(couleur,couleurAtout), couleurAtout)){
+					System.out.println("CODE:JouerCouleur-MPPart-DernierOuAdversairePeutPasCoupe");
 					carteJouee = mainTemp.getPlusForteCarteNormale(couleur,couleurAtout);
 				} else {
+					System.out.println("CODE:JouerCouleur-MPPart-PasDernierEtAdversairePeutCoupe");
 					carteJouee = mainTemp.getPlusFaibleCarteNormale(couleur,couleurAtout);
 				}
 			} else {
+				System.out.println("CODE:JouerCouleur-PeutPasSurEncherirEtPartNonMP");
 				carteJouee = mainTemp.getPlusFaibleCarteNormale(couleur,couleurAtout);
 			}
 		}

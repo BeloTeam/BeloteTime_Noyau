@@ -55,17 +55,14 @@ public class Intelligence {
 	public void AnalyserPliPrecedent(){
 		CouleurEnum couleurAtout = moi.getTable().getCouleurAtout();
 		Pli pli = moi.getTable().getPliPrecedent();
-		Carte annonce = pli.getCartes().get(0);
+		CouleurEnum couleurDemandee = pli.getCouleurDemandee();
 		for(Carte carte : pli.getCartes()){
 			for(InfoJoueur infoJoueur : infoSurAutresJoueurs){
 				if(((CarteJouee)carte).getJoueur() == infoJoueur.getJoueur()){
 					infoJoueur.ajouterCarteJouer(carte, couleurAtout);
-					if(annonce.getCouleur() == carte.getCouleur()){
-						infoJoueur.setHasNotCouleur(annonce.getCouleur());
-					}/*
-					if(annonce.getCouleur() == couleurAtout && carte.getCouleur() != couleurAtout && pli.getJoueurMaitre() != infoJoueur.getJoueur().getPartenaire()){
-						infoJoueur.setHasNotAtout(true);
-					}*/
+					if(couleurDemandee != carte.getCouleur()){
+						infoJoueur.setHasNotCouleur(couleurDemandee);
+					}
 				}
 			}
 				
@@ -98,6 +95,7 @@ public class Intelligence {
 			carteIsJouer = carteIsJouer || info.getCarteJouer().get(carte.getCouleur()).contains(carte);
 		}
 		carteIsJouer = carteIsJouer || infoSurMoi.getCarteJouer().get(carte.getCouleur()).contains(carte);
+		carteIsJouer = carteIsJouer || moi.getTable().getPliCourant().getCartes().contains(carte);
 		return carteIsJouer;
 	}
 	
@@ -112,4 +110,5 @@ public class Intelligence {
 		}
 		return true;
 	}
+	
 }
